@@ -9,7 +9,7 @@
   "author": "Enrico Fasoli (fazo96)",
   "license": "MIT",
   "dependencies": {
-    "diet": "^0.9.22",
+    "express": "^4.13.3",
     "ipfs-api": "^2.6.2"
   }
 }
