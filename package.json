@@ -1,0 +1,15 @@
+{
+  "name": "ipfs-board",
+  "version": "0.1.0",
+  "description": "decentralized discussion board",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Enrico Fasoli (fazo96)",
+  "license": "MIT",
+  "dependencies": {
+    "diet": "^0.9.22",
+    "ipfs-api": "^2.6.2"
+  }
+}
