@@ -33,7 +33,28 @@ With security, control, reliability, rock solid stability, fully distributed arc
 
 ## How
 
-To be continued...
+...
+
+#### Control
+
+Each user can create a board with any name. A board is identified like this: `admin-id@board-name`
+
+`admin` is the administrator of the repo. He decides the rules. He can name moderators and their modifications
+will be merged with his boards' profile by his Admin Node.
+
+A board can be configured to be:
+
+- completely open allowing _anything_ to be posted
+- completely closed with a whitelist of people allowed to post
+- having every post or comment be approved by the administration. Users can still view disapproved or not yet
+judged content but it will be marked as such and will be hidden by default.
+- moderated by a vote system similar to reddit (not sure about this as it's too easily exploited by bots)
+- any sane combination of the above
+
+__Auto Moderator Proposal__: this is an idea of a system to automatically find potential moderators for a board.
+It works like this: users can vote if a content should be approved before it actually gets approved or denied by
+moderators. If a user's votes are really close to the moderators' actions, then he is a valid candidate.
+If this gets implemented it should go in the Admin Node.
 
 ## Faq
 
@@ -45,6 +66,8 @@ To be continued...
   - a static web application to access IPFS Boards
 - __Cache Server__
   - can cache boards, helping to serve them via IPFS and via an HTTP gateway to the static web application and the boards' data
+- __Admin Node__
+  - small service that allows an admin to outsource moderations to other users.
 
 __Note:__ until the __IPFS Javascript Implementation__ is done:
 
