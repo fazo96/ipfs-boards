@@ -14,8 +14,9 @@ Image and discussion boards, forums and the like have many problems:
   - what if the datacenter is flooded and data is lost?
 
 - Closed Down, limited in possibilities
-  - What if I want to write a custom client?
+  - What if I want to write a custom client and there is no API?
   - What if I want to change the user interface?
+  - What if I want to use it in a LAN with no Internet access?
   - What if I want a name that someone else already has?
   - What if I want to move my data to another service/subreddit/forum ?
   - What if I want more control (think a private forum), or less control (think 4chan) ?
@@ -33,39 +34,97 @@ With security, control, reliability, rock solid stability, fully distributed arc
 
 ## How
 
-...
+This system uses the IPFS protocol. The protocol takes care of distributing data in a safe and efficiently distributed way.
 
-#### Control
+In a nutshell, it works like this:
 
-Each user can create a board with any name. A board is identified like this: `admin-id@board-name`
+- IPFS uses content based addressing, so each file or folder has an address calculated using an hash of the content
+- IPFS is fully distributed, and safe, because anyone can verify some data actually matches the address
+- IPFS is efficient because anyone that views some content caches it and helps redistribute it. Your machines however will never redistribute data you haven't viewed or downloaded
+- IPNS associates an IPFS address to the address of a node, it works like a pointer to track data that changes over time
+- This project's discovery and storage protocols are entirely based on IPNS and IPFS
+
+__Data Storage:__ A user's profile, posts, votes, comments and all his other data is served by him and stored in his computer(s). Anyone that views his
+content will cache it by default thus helping others to see his profile. That's why if hundreds of people open the profile page of some
+guy, his computer won't be overwhelmed because the data will be passed from computer to computer and will be available unless _everyone that has a copy goes offline_. Even then, we thought about fully optional __Cache Servers__ to help. You can learn more about them below.
+
+#### Control and Administration
+
+Each user can create a board with any name. A board is identified like this: `@board-name`
+
+That user's board is identified like this: `user-id@board-name`
+
+This means that `user` created an __administration__ for the board __board-name__ and thus by visiting `user-id@board-name`
+you will view the board according to the rules and administration of `user`.
+
+All the __administration__'s data is stored in `user`'s profile.
+
+When you post something, by default it goes to all the administrations, but you can also choose a _preferred administration_ to show your
+support or decide in any way which administrations will receive it.
+This way administrations can be ranked and communities can form. If you don't like the administration of your board,
+you can just use a new one for browsing, prefer a new one in your posts or create your own administration.
+
+__Administrations can be a lot more than filters:__
+
+An administration can personalize almost everything in how content is viewed, what content is allowed (acting a filter), whitelists, blacklists, eventually even the CSS or Layout of the front page, post tags and a lot more.
 
 `admin` is the administrator of the repo. He decides the rules. He can name moderators and their modifications
 will be merged with his boards' profile by his Admin Node.
 
-A board can be configured to be:
+You (the user) will be able to choose a main _administration_ for a board and then also include content from other administrations.
+
+An administration can also instruct clients to include posts approved by other administrations, distributing administrative work and/or
+aggregating more content.
+
+To sum it up, an __administration__ can configure a board to be:
 
 - completely open allowing _anything_ to be posted
 - completely closed with a whitelist of people allowed to post
 - having every post or comment be approved by the administration. Users can still view disapproved or not yet
 judged content but it will be marked as such and will be hidden by default.
 - moderated by a vote system similar to reddit (not sure about this as it's too easily exploited by bots)
-- any sane combination of the above
+- any sane combination of the above rules and probably even more
 
 __Auto Moderator Proposal__: this is an idea of a system to automatically find potential moderators for a board.
 It works like this: users can vote if a content should be approved before it actually gets approved or denied by
 moderators. If a user's votes are really close to the moderators' actions, then he is a valid candidate.
 If this gets implemented it should go in the Admin Node.
 
+__About private boards__
+
+They probably will be possible but are not included for now, because hidden content is far away in the IPFS roadmap.
+Administration can forbit people to write, but not to read.
+
+__Important Note:__ due to how the system works, an _administration_'s rules and decisions are just _guidelines_ for your computer.
+Your computer will always be able to choose what to see and what to hide, it just uses your administration's guidelines _by default_.
+
+#### But isn't gathering all the data slow? What if a user goes offline?
+
+That's why there are __Cache Servers__.
+They monitor _administrations_ and cache all the content (or some of it) as soon as it becomes available on the network, making sure it never gets lost.
+They are completely optional but they help out in serving the users.
+
+Also note that due to how IPFS works, the more popular some content gets, the _faster it downloads_ and the _easier it is for your computer to find it_. Censorship is impractical in such a system and data is almost impossible to take down. That's why IPFS is also called _the
+permanent web_.
+
 ## Faq
 
-To be continued...
+#### Can I be anonymous? 
+
+What if someone monitors my IPFS node? Will they know what content I'm seeing and everything I post and link it to my IP?
+
+__Yes, but there is a solution.__
+
+You can access a Cache Server's HTTP(s) gateway via Tor for read only access to content.
+
+To post while mantaining anonimity, you would need to run IPFS via Tor. This is probably not easily done at the moment but [it is planned](
 
 ## Components
 
 - __Client__
   - a static web application to access IPFS Boards
 - __Cache Server__
-  - can cache boards, helping to serve them via IPFS and via an HTTP gateway to the static web application and the boards' data
+  - can cache boards, helping to serve them via IPFS and optionally via an HTTP gateway to the static web application and the boards' data
 - __Admin Node__
   - small service that allows an admin to outsource moderations to other users.
 
