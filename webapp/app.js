@@ -1,5 +1,3 @@
-console.log(require('ipfs-api'))
-
 var boards = angular.module('boards',['ui.router'])
 
 boards.config(function($stateProvider,$urlRouterProvider,$locationProvider){

@@ -2,13 +2,24 @@
   "name": "ipfs-board",
   "version": "0.1.0",
   "description": "decentralized discussion board",
-  "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node cli/server.js"
   },
+  "bin": {
+    "ipfs-board": "cli/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/fazo96/ipfs-board.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fazo96/ipfs-board/issues"
+  },
+  "homepage": "https://github.com/fazo96/ipfs-board#readme",
   "author": "Enrico Fasoli (fazo96)",
   "license": "MIT",
   "dependencies": {
+    "commander": "^2.9.0",
     "express": "^4.13.3",
     "ipfs-api": "^2.6.2"
   }

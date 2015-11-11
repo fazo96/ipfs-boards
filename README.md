@@ -68,8 +68,7 @@ __Administrations can be a lot more than filters:__
 
 An administration can personalize almost everything in how content is viewed, what content is allowed (acting a filter), whitelists, blacklists, eventually even the CSS or Layout of the front page, post tags and a lot more.
 
-`admin` is the administrator of the repo. He decides the rules. He can name moderators and their modifications
-will be merged with his boards' profile by his Admin Node.
+`admin` is the administrator of the repo. He decides the rules.
 
 You (the user) will be able to choose a main _administration_ for a board and then also include content from other administrations.
 
@@ -93,7 +92,7 @@ If this gets implemented it should go in the Admin Node.
 __About private boards__
 
 They probably will be possible but are not included for now, because hidden content is far away in the IPFS roadmap.
-Administration can forbit people to write, but not to read.
+Administrations can forbit people to write, but not to read.
 
 __Important Note:__ due to how the system works, an _administration_'s rules and decisions are just _guidelines_ for your computer.
 Your computer will always be able to choose what to see and what to hide, it just uses your administration's guidelines _by default_.
@@ -104,12 +103,14 @@ That's why there are __Cache Servers__.
 They monitor _administrations_ and cache all the content (or some of it) as soon as it becomes available on the network, making sure it never gets lost.
 They are completely optional but they help out in serving the users.
 
+Cache servers also act as gateways and provide an HTTP API to access the boards.
+
 Also note that due to how IPFS works, the more popular some content gets, the _faster it downloads_ and the _easier it is for your computer to find it_. Censorship is impractical in such a system and data is almost impossible to take down. That's why IPFS is also called _the
 permanent web_.
 
 ## Faq
 
-#### Can I be anonymous? 
+#### Can I be anonymous?
 
 What if someone monitors my IPFS node? Will they know what content I'm seeing and everything I post and link it to my IP?
 
@@ -117,7 +118,7 @@ __Yes, but there is a solution.__
 
 You can access a Cache Server's HTTP(s) gateway via Tor for read only access to content.
 
-To post while mantaining anonimity, you would need to run IPFS via Tor. This is probably not easily done at the moment but [it is planned](
+To post while mantaining anonimity, you would need to run IPFS via Tor. This is probably not easily done at the moment but it is planned.
 
 ## Components
 
@@ -141,25 +142,30 @@ Each user exposes via IPNS a folder containing:
 
 - boards
   - _board name(s)_
+    - settings.json - the board's settings
+    - whitelist - contains links to all whitelisted users
+    - blacklist - contains links to all blacklisted users
+    - approved - contains links to all approved content
 - posts
   - _board name(s)_
-    - _admin name(s)_
-      - _post(s)_
+    - _post(s)_
 - comments
   - _board name(s)_
-    - _admin name(s)_
-      - _comment(s)_
+    - _comment(s)_
 - votes
   - _board name(s)_
-    - _admin name(s)_
-      - _vote(s)_
-- compatibility: could be used to store compatibility information
+    - _vote(s)_
+- name - stores the user's screen name (also stored in profile?)
+- profile.json - user's additional profile data
+- ipfs-boards-version.txt - used to store compatibility information
 
 #### Post
 
     {
       "title": "Title of the post",
       "date": "date of the post",
+      "op": "id_of_the_original_poster",
+      "preference": "id_of_the_preferred_administration",
       "text": "Content of the post"
     }
 
@@ -168,16 +174,21 @@ possible for lange texts without duplicating data.
 
 #### Comment
 
-    Comment text
+    {
+      "parent": "id_of_the_parent_object",
+      "date": "date of the comment"
+      "preference": "id_of_the_preferred_administration",
+      "op": "id_of_the_original_poster",
+      "text": "Content of the post"
+    }
 
 #### Vote
 
-    ipfs-board:vote-for:object_url
+    ipfs:boards:vote-for:object_url
 
-### Versioning
+#### Versioning
 
-a `version` file or something should be included in the user's files to ensure compatibility between different
-versions or forks.
+    just the version ID written in the version file
 
 ### License
 
