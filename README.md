@@ -32,6 +32,21 @@ and some optional cache servers, we can solve these problems and create a true u
 
 With security, control, reliability, rock solid stability, fully distributed architecture or, optionally, none of these!
 
+## Demo
+
+Doesn't have:
+
+- Write ability in web app (only a small cli to validate and publish a folder)
+- Aggregation (only the admin can post)
+- Advanced customization, control, user profile
+- Media support
+- Votes
+
+Maybe will have:
+
+- No backend needed (for read only access)
+- Comments
+
 ## How
 
 This system uses the IPFS protocol. The protocol takes care of distributing data in a safe and efficiently distributed way.
@@ -148,14 +163,14 @@ Each user exposes via IPNS a folder containing:
     - approved - contains links to all approved content
 - posts
   - _board name(s)_
-    - _post(s)_
+    - _post(s)_ - named with their creation date
 - comments
   - _board name(s)_
-    - _comment(s)_
+    - _comment(s)_ - named with their parent object uri
 - votes
   - _board name(s)_
-    - _vote(s)_
-- name - stores the user's screen name (also stored in profile?)
+    - _vote(s)_ - named with their parent object uri
+- name - stores the user's screen name (maybe store it in profile?)
 - profile.json - user's additional profile data
 - ipfs-boards-version.txt - used to store compatibility information
 
