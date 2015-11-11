@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "description": "decentralized discussion board",
   "scripts": {
-    "start": "node cli/server.js"
+    "start": "node server/server.js"
   },
   "bin": {
-    "ipfs-board": "cli/server.js"
+    "ipfs-board": "server/server.js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
   "dependencies": {
     "commander": "^2.9.0",
     "express": "^4.13.3",
-    "ipfs-api": "^2.6.2"
+    "ipfs-api": "^2.6.2",
+    "moment": "^2.10.6"
   }
 }
