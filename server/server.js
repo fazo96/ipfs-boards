@@ -40,7 +40,8 @@ app.get('/@:user/:board',(req,res) => {
   boards.getBoardSettings(req.params.user,req.params.board,apiToHandler(req,res))
 })
 
-//boards.searchUsers()
+setInterval(boards.searchUsers.bind(boards),3 * 60 * 1000)
+boards.searchUsers()
 
 // Start the web server
 
