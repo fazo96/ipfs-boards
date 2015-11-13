@@ -1,3 +1,4 @@
 example_user/
 node_modules/
 test/
+webapp/dist/
