@@ -47,17 +47,18 @@ See `PROTOCOL.md`
 
 It's being worked on, but __it doesn't have__:
 
-- Read only web app (only a small cli to publish stuff, without a comfortable UI)
-- Aggregation (only the admin can post)
-- Advanced customization, control, user profile
+- Ability to post and create a profile from the web app (it's read only for now)
+- Aggregation (only the admin can post, for now)
+- Advanced customization, control, user profile customization
 - Media support
 - Votes
 - Comments
 - Actually nice user interface
+- Ability to run without a backend (it is planned though)
 
 Ability to publish stuff in the browser won't be implemented until go-ipfs 0.4
 is ready. It will probably be ready before the new year, but we're not sure.
-You will be able to publish your blog/pages/profile using a CLI though
+You will be able to publish your blog/pages/profile using a CLI though.
 
 ## Components
 
