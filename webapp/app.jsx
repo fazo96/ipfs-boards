@@ -41,11 +41,13 @@ var Profile = React.createClass({
     return { name: '...' }
   },
   componentDidMount: function(){
-    console.log('mounted')
     boards.getProfile(this.props.id, (err,res) => {
       if(err){
         console.log(err)
-        this.setState({ name: 'Error'} )
+        this.setState({
+          name: '?',
+          error: 'Invalid profile'
+        })
       } else {
         console.log(res)
         this.setState({ name: res.name })
@@ -55,6 +57,7 @@ var Profile = React.createClass({
   render: function(){
     return (<div className="profile">
       <h1>{this.state.name}</h1>
+      <p>{this.state.error}</p>
       <h5 className="light">@{this.props.id}</h5>
     </div>)
   }
