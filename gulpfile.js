@@ -5,6 +5,7 @@ var minifyCss = require('gulp-minify-css')
 var browserify = require('browserify')
 var uglify = require('gulp-uglify')
 var clean = require('gulp-clean')
+var exorcist = require('exorcist')
 var connect = require('gulp-connect')
 
 var config = {
@@ -32,10 +33,16 @@ gulp.task('html',function(){
 })
 
 gulp.task('js',function(){
-  browserify(config.files.mainJs)
-      .transform('babelify', { presets: [ 'es2015', 'react' ]})
+  browserify(config.files.mainJs, { debug: true })
+      .transform('babelify', {
+        global: true,
+        presets: [ 'es2015', 'react' ],
+        ignore: /buffer|EventEmitter/
+      })
       .transform('eslintify')
+      .transform({ global: true },'uglifyify')
       .bundle()
+      .pipe(exorcist(__dirname+'/webapp/dist/app.js.map'))
       .on('error', console.error.bind(console))
       .pipe(source('app.js')) // do this or browserify won't work
       .pipe(buffer()) // do this or uglify won't work

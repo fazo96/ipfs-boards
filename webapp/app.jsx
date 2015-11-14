@@ -67,7 +67,6 @@ var Profile = React.createClass({
       }
     })
     ee.on('boards',l => {
-      console.log('Arrived boards',l)
       this.setState({ boards: l })
     })
   },
