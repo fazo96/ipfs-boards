@@ -12,7 +12,8 @@ var config = {
     mainJs: 'webapp/app.jsx',
     css: 'webapp/*.css',
     js: ['webapp/*.js','webapp/*.jsx'],
-    html: 'webapp/*.html'
+    html: 'webapp/*.html',
+    jsLibs: 'lib/*.js'
   },
   dest: 'webapp/dist/'
 }
@@ -60,6 +61,7 @@ gulp.task('server',function(){
 
 gulp.task('watch',function(){
   gulp.watch(config.files.js,['js'])
+  gulp.watch(config.files.jsLibs,['js'])
   gulp.watch(config.files.html,['html'])
   gulp.watch(config.files.css,['css'])
 })

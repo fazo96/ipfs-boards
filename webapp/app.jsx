@@ -9,6 +9,9 @@ var ipfs = require('ipfs-api')('localhost',5001)
 var BoardsAPI = require('../lib/boards-api.js')
 
 var boards = new BoardsAPI(ipfs)
+boards.init(_ => {
+  console.log('Boards init complete')
+})
 
 var Container = React.createClass({
   render: function(){
@@ -47,10 +50,10 @@ var Navbar = React.createClass({
 
 var Profile = React.createClass({
   getInitialState: function(){
-    return { name: '...' }
+    return { name: '...', boards: [] }
   },
   componentDidMount: function(){
-    boards.getProfile(this.props.params.userid, (err,res) => {
+    var ee = boards.getProfile(this.props.params.userid, (err,res) => {
       if(err){
         console.log(err)
         this.setState({
@@ -62,24 +65,62 @@ var Profile = React.createClass({
         this.setState({ name: res.name })
       }
     })
+    ee.on('boards',l => {
+      console.log('Arrived boards',l)
+      this.setState({ boards: l })
+    })
   },
   render: function(){
     return (<div className="profile">
       <h1>{this.state.name}</h1>
       <p>{this.state.error}</p>
       <h5 className="light">@{this.props.params.userid}</h5>
+      <ul>
+        {this.state.boards.map(n => {
+          return <li key={this.props.params.userid+'/'+n.name}>
+            <Link to={'/@'+this.props.params.userid+'/'+n.name}>{n.name}</Link>
+          </li>
+        })}
+      </ul>
     </div>)
   }
 })
 
-var Board = React.createClass({
+var PostList = React.createClass({
   getInitialState: function(){
     return { posts: [] }
   },
+  componentDidMount: function(){
+    var ee = boards.getPostsInBoard(this.props.admin,this.props.board)
+    ee.on('post',(post) => {
+      var posts = this.state.posts
+      posts.push(post)
+      this.setState({ posts })
+    })
+  },
   render: function(){
     return (
-      <div></div>
+      <div className="postList">
+        {this.state.posts.map(post => {
+          return (<div className="post">
+            <h5 key={post.title}>{post.title}</h5>
+            <p>{post.text}</p>
+          </div>)
+        })}
+      </div>
     )
+  }
+})
+
+var Board = React.createClass({
+  render: function(){
+    return (<div className="board">
+      <h2>{this.props.params.boardname}</h2>
+      <Link to={'/@'+this.props.params.userid}>
+        <h5 className="light">@{this.props.params.userid}</h5>
+      </Link>
+      <PostList board={this.props.params.boardname} admin={this.props.params.userid}/>
+    </div>)
   }
 })
 
@@ -87,7 +128,10 @@ ReactDOM.render(
   <Router>
     <Route path="/" component={App}>
       <IndexRoute component={Homepage} />
-      <Route path="/@:userid" component={Profile} />
+      <Route path="/@:userid">
+        <IndexRoute component={Profile} />
+        <Route path=":boardname" component={Board}/>
+      </Route>
     </Route>
   </Router>, document.getElementById('root')
 )

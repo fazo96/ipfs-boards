@@ -10,7 +10,7 @@ boards.init(function(err){
   if(err){
     console.log(err)
   } else {
-    BoardsAPIHttp(boards)
+    // BoardsAPIHttp(boards)
     // setInterval(boards.searchUsers.bind(boards),3 * 60 * 1000)
     // boards.searchUsers()
   }
