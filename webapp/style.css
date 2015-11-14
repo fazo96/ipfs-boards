@@ -20,6 +20,11 @@
   height: 4.5em
 }
 
+.navbar a {
+  text-decoration: none;
+  color: inherit;
+}
+
 .navbar .container {
   padding-top: 1em
 }
