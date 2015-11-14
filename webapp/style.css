@@ -6,6 +6,10 @@
   top: 20%;
 }
 
+.text-center {
+  text-align: center
+}
+
 .light {
   color: #ababab
 }

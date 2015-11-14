@@ -9,9 +9,6 @@ var ipfs = require('ipfs-api')('localhost',5001)
 var BoardsAPI = require('../lib/boards-api.js')
 
 var boards = new BoardsAPI(ipfs)
-boards.init(_ => {
-  console.log('Boards init complete')
-})
 
 var Container = React.createClass({
   render: function(){
@@ -160,14 +157,39 @@ var Board = React.createClass({
   }
 })
 
-ReactDOM.render(
-  <Router>
-    <Route path="/" component={App}>
-      <IndexRoute component={Homepage} />
-      <Route path="/@:userid">
-        <IndexRoute component={Profile} />
-        <Route path=":boardname" component={Board}/>
-      </Route>
-    </Route>
-  </Router>, document.getElementById('root')
-)
+var GetIPFS = React.createClass({
+  render: function(){
+    return (
+      <div className="text-center">
+        <h1>Missing IPFS Node</h1>
+        <p>You don't have an IPFS node running at <code>localhost:5001</code>
+        or it is not reachable</p>
+        <p>The IPFS Boards prototype requires a full IPFS node running at localhost.
+        Please start one by following the
+        <a href="https://github.com/ipfs/go-ipfs"><code>go-ipfs</code> documentation.</a></p>
+        <p>If you have a running node but still this doesn't work, it's probably a CORS issue</p>
+        <p>You can find out how to fix CORS issues related to this app <a href="https://github.com/fazo96/ipfs-board/blob/master/ipfs_daemon_set_cors.sh">here</a>.</p>
+        <p>Still can't fix it? <a href="https://github.com/fazo96/ipfs-board/issues">File a issue on GitHub</a>, we'll be happy to help!</p>
+      </div>
+    )
+  }
+})
+
+boards.init(err => {
+  if(err){
+    console.log('FATAL: IPFS NODE NOT AVAILABLE')
+    ReactDOM.render(<App><GetIPFS/></App>, document.getElementById('root'))
+  } else {
+    ReactDOM.render(
+      <Router>
+        <Route path="/" component={App}>
+          <IndexRoute component={Homepage} />
+          <Route path="/@:userid">
+            <IndexRoute component={Profile} />
+            <Route path=":boardname" component={Board}/>
+          </Route>
+        </Route>
+      </Router>, document.getElementById('root')
+    )
+  }
+})
