@@ -55,6 +55,7 @@ var Profile = React.createClass({
   },
   componentDidMount: function(){
     var ee = boards.getProfile(this.props.params.userid, (err,res) => {
+      if(!this.isMounted()) return true
       if(err){
         console.log(err)
         this.setState({
@@ -67,6 +68,7 @@ var Profile = React.createClass({
       }
     })
     ee.on('boards',l => {
+      if(!this.isMounted()) return true
       this.setState({ boards: l })
     })
   },
@@ -91,8 +93,9 @@ var PostList = React.createClass({
     return { posts: [] }
   },
   componentDidMount: function(){
-    var ee = boards.getPostsInBoard(this.props.admin,this.props.board)
-    ee.on('post',(post) => {
+    console.log('Initial POSTS',this.state.posts.length)
+    boards.getPostsInBoard(this.props.admin,this.props.board).on('post',(post,hash) => {
+      if(!this.isMounted()) return true
       var posts = this.state.posts
       posts.push(post)
       this.setState({ posts })
@@ -118,6 +121,7 @@ var UserID = React.createClass({
   },
   componentDidMount: function(){
     boards.getProfile(this.props.id, (err,res) => {
+      if(!this.isMounted()) return true
       if(!err) {
         this.setState({ name: '@'+res.name.trim() })
       }
@@ -138,6 +142,7 @@ var Board = React.createClass({
   },
   componentDidMount: function(){
     boards.getBoardSettings(this.props.params.userid,this.props.params.boardname, (err,res) => {
+      if(!this.isMounted()) return true
       if(err) {
         console.log('Huh? Invalid board settings?',err)
       } else {
