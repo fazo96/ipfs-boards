@@ -6,13 +6,14 @@ var browserify = require('browserify')
 var reactify = require('reactify') // Transforms React JSX to JS
 var uglify = require('gulp-uglify')
 var clean = require('gulp-clean')
+var connect = require('gulp-connect')
 
 var config = {
   files: {
+    mainJs: 'webapp/app.jsx',
     css: 'webapp/*.css',
-    js: 'webapp/*.js',
-    html: 'webapp/*.html',
-    mainJs: 'webapp/app.js'
+    js: ['webapp/*.js','webapp/*.jsx'],
+    html: 'webapp/*.html'
   },
   dest: 'webapp/dist/'
 }
@@ -21,11 +22,13 @@ gulp.task('css',function(){
   gulp.src(config.files.css)
       .pipe(minifyCss())
       .pipe(gulp.dest(config.dest))
+      .pipe(connect.reload())
 })
 
 gulp.task('html',function(){
   gulp.src(config.files.html)
       .pipe(gulp.dest(config.dest))
+      .pipe(connect.reload())
 })
 
 gulp.task('js',function(){
@@ -37,11 +40,20 @@ gulp.task('js',function(){
       .pipe(buffer()) // do this or uglify won't work
       .pipe(uglify())
       .pipe(gulp.dest(config.dest))
+      .pipe(connect.reload())
 })
 
 gulp.task('clean',function(){
   gulp.src(config.dest, { read: false })
       .pipe(clean())
+})
+
+gulp.task('serve',function(){
+  connect.server({
+    root: config.dest,
+    port: 9090,
+    livereload: true
+  });
 })
 
 gulp.task('watch',function(){
@@ -50,4 +62,4 @@ gulp.task('watch',function(){
   gulp.watch(config.files.css,['css'])
 })
 
-gulp.task('default', [ 'html', 'css', 'js', 'watch' ])
+gulp.task('default', [ 'html', 'css', 'js', 'watch', 'serve' ])
