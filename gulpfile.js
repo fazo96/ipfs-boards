@@ -38,7 +38,7 @@ gulp.task('js',function(){
       .on('error', console.error.bind(console))
       .pipe(source('app.js')) // do this or browserify won't work
       .pipe(buffer()) // do this or uglify won't work
-      .pipe(uglify())
+      //.pipe(uglify())
       .pipe(gulp.dest(config.dest))
       .pipe(connect.reload())
 })

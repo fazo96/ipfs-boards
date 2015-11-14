@@ -1,0 +1,25 @@
+#loading {
+  text-align: center;
+  display: block;
+  position: fixed;
+  width: 100%;
+  top: 20%;
+}
+
+.light {
+  color: #ababab
+}
+
+.app {
+  padding-top: 2em
+}
+
+.navbar {
+  border-bottom: 1px solid #eee;
+  display: block;
+  height: 4.5em
+}
+
+.navbar .container {
+  padding-top: 1em
+}
