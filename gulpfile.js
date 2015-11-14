@@ -3,7 +3,6 @@ var source = require('vinyl-source-stream')
 var buffer = require('vinyl-buffer')
 var minifyCss = require('gulp-minify-css')
 var browserify = require('browserify')
-var reactify = require('reactify') // Transforms React JSX to JS
 var uglify = require('gulp-uglify')
 var clean = require('gulp-clean')
 var connect = require('gulp-connect')
@@ -34,6 +33,7 @@ gulp.task('html',function(){
 gulp.task('js',function(){
   browserify(config.files.mainJs)
       .transform('babelify', { presets: [ 'es2015', 'react' ]})
+      .transform('eslintify')
       .bundle()
       .on('error', console.error.bind(console))
       .pipe(source('app.js')) // do this or browserify won't work
@@ -43,17 +43,19 @@ gulp.task('js',function(){
       .pipe(connect.reload())
 })
 
+
+
 gulp.task('clean',function(){
   gulp.src(config.dest, { read: false })
       .pipe(clean())
 })
 
-gulp.task('serve',function(){
+gulp.task('server',function(){
   connect.server({
     root: config.dest,
     port: 9090,
     livereload: true
-  });
+  })
 })
 
 gulp.task('watch',function(){
@@ -62,4 +64,6 @@ gulp.task('watch',function(){
   gulp.watch(config.files.css,['css'])
 })
 
-gulp.task('default', [ 'html', 'css', 'js', 'watch', 'serve' ])
+gulp.task('serve', [ 'html', 'css', 'js', 'watch', 'server' ])
+
+gulp.task('default', [ 'html', 'css', 'js' ])
