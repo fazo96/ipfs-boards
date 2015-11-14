@@ -17,11 +17,6 @@ var config = {
   dest: 'webapp/dist/'
 }
 
-config.browserify = browserify({
-  entries: config.files.mainJs,
-  transform: [ reactify  ]
-})
-
 gulp.task('css',function(){
   gulp.src(config.files.css)
       .pipe(minifyCss())
@@ -34,7 +29,9 @@ gulp.task('html',function(){
 })
 
 gulp.task('js',function(){
-  config.browserify.bundle()
+  browserify(config.files.mainJs)
+      .transform('babelify', { presets: [ 'es2015', 'react' ]})
+      .bundle()
       .on('error', console.error.bind(console))
       .pipe(source('app.js')) // do this or browserify won't work
       .pipe(buffer()) // do this or uglify won't work
