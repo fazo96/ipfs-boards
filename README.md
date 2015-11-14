@@ -25,10 +25,12 @@ Image and discussion boards, forums and the like have many problems:
 This project was conceived to solve that. With the help of modern web technologies, the IPFS and IPNS protocols
 and some optional cache servers, we can solve these problems and create a true universal platform which can act as:
 
-- Discussion board
+- Discussion board, like reddit or 4chan
+- Blog with dynamic comments
 - Wiki
 - File Sharing platform
-- E-Learning platform
+- (Maybe) Forum (not sure because it would require some changes, but maybe)
+- (Maybe) E-Learning platform
 
 With security, control, reliability, rock solid stability, fully distributed
 architecture or, optionally, none of these!
@@ -41,20 +43,21 @@ See `FAQ.md`
 
 See `PROTOCOL.md`
 
-## Prototype
+## Demo / Prototype
 
-It's being worked on, but it doesn't have:
+It's being worked on, but __it doesn't have__:
 
-- Write ability in web app (only a small cli to validate and publish a folder)
+- Read only web app (only a small cli to publish stuff, without a comfortable UI)
 - Aggregation (only the admin can post)
 - Advanced customization, control, user profile
 - Media support
 - Votes
-
-Maybe it will have:
-
-- No backend needed (for read only access)
 - Comments
+- Actually nice user interface
+
+Ability to publish stuff in the browser won't be implemented until go-ipfs 0.4
+is ready. It will probably be ready before the new year, but we're not sure.
+You will be able to publish your blog/pages/profile using a CLI though
 
 ## Components
 

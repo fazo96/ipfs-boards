@@ -37,9 +37,20 @@ publication, containing:
 - votes
   - _board name(s)_
     - _vote(s)_ - named with their parent object uri
-- name - stores the user's screen name (maybe store it in profile?)
-- profile.json - user's additional profile data
+- profile.json - user's profile data, like name, email, etc
 - ipfs-boards-version.txt - used to store compatibility information
+
+#### Board settings
+
+    {
+      "whitelist": true,
+      "blacklist": false,
+      "approval_required": true,
+      "fullname": "The Full Name Can Be Long With Spaces",
+      "description": "A very Long Full Description with Spaces"
+    }
+
+The blacklist and whitelist should contain just IDs separated by spaces.
 
 #### Post
 

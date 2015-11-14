@@ -29,9 +29,10 @@ var Homepage = React.createClass({
   render: function(){
     return (
       <div>
-        <h3>Hello</h3>
+        <h3>Welcome to the IPFS Boards Prototype</h3>
         <p>Not much is implemented...</p>
-        <p>You can try <Link to="@QmXnfA41SXMX3tqFD4kjED7ehyvgTsuAho86TkEoTbZdpw">Opening a Profile</Link> though :)</p>
+        <p>You can try <Link to="@QmXnfA41SXMX3tqFD4kjED7ehyvgTsuAho86TkEoTbZdpw">Opening my Profile</Link> though :)</p>
+        <p>More information about the project on <a href="https://github.com/fazo96/ipfs-board">GitHub</a></p>
       </div>
     )
   }
@@ -102,8 +103,8 @@ var PostList = React.createClass({
     return (
       <div className="postList">
         {this.state.posts.map(post => {
-          return (<div className="post">
-            <h5 key={post.title}>{post.title}</h5>
+          return (<div key={post.title} className="post">
+            <h5>{post.title}</h5>
             <p>{post.text}</p>
           </div>)
         })}
@@ -112,13 +113,44 @@ var PostList = React.createClass({
   }
 })
 
-var Board = React.createClass({
+var UserID = React.createClass({
+  getInitialState: function(){
+    return { name: '@'+this.props.id }
+  },
+  componentDidMount: function(){
+    boards.getProfile(this.props.id, (err,res) => {
+      if(!err) {
+        this.setState({ name: '@'+res.name.trim() })
+      }
+    })
+  },
   render: function(){
     return (<div className="board">
-      <h2>{this.props.params.boardname}</h2>
-      <Link to={'/@'+this.props.params.userid}>
-        <h5 className="light">@{this.props.params.userid}</h5>
+      <Link to={'/@'+this.props.id}>
+        <h5 className="light">{this.state.name}</h5>
       </Link>
+    </div>)
+  }
+})
+
+var Board = React.createClass({
+  getInitialState: function(){
+    return { name: '# '+this.props.params.boardname }
+  },
+  componentDidMount: function(){
+    boards.getBoardSettings(this.props.params.userid,this.props.params.boardname, (err,res) => {
+      if(err) {
+        console.log('Huh? Invalid board settings?',err)
+      } else {
+        console.log('Found name:',res.fullname)
+        this.setState({ name: '# '+res.fullname.trim() })
+      }
+    })
+  },
+  render: function(){
+    return (<div className="board">
+      <h2>{this.state.name}</h2>
+      <UserID id={this.props.params.userid} />
       <PostList board={this.props.params.boardname} admin={this.props.params.userid}/>
     </div>)
   }
