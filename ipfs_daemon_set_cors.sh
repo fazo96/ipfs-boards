@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # This will make sure your ipfs node works with the app.
-# Note that it's not safe to do if your node is accessible from the internet or your LAN. Be careful!
+# NOTE: this change is PERMANENT until reversed!
+# See https://github.com/ipfs/js-ipfs-api#cors for a temporary solution instead
 
 ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["*"]'
 ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods '["PUT", "GET", "POST"]'
