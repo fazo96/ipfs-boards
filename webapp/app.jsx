@@ -93,9 +93,7 @@ var PostList = React.createClass({
     console.log('Initial POSTS',this.state.posts.length)
     boards.getPostsInBoard(this.props.admin,this.props.board).on('post',(post,hash) => {
       if(!this.isMounted()) return true
-      var posts = this.state.posts
-      posts.push(post)
-      this.setState({ posts })
+      this.setState({ posts: this.state.posts.concat(post) })
     })
   },
   render: function(){
