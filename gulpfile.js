@@ -7,6 +7,7 @@ var uglify = require('gulp-uglify')
 var clean = require('gulp-clean')
 var exorcist = require('exorcist')
 var connect = require('gulp-connect')
+var watchify = require('watchify')
 
 var config = {
   files: {
@@ -27,35 +28,50 @@ gulp.task('css',function(){
 })
 
 gulp.task('html',function(){
-  gulp.src(config.files.html)
+  return gulp.src(config.files.html)
       .pipe(gulp.dest(config.dest))
       .pipe(connect.reload())
 })
 
 gulp.task('js',function(){
-  browserify(config.files.mainJs, { debug: true })
-      .transform('babelify', {
-        global: true,
-        presets: [ 'es2015', 'react' ],
-        ignore: /buffer|EventEmitter/
-      })
-      .transform('eslintify')
-      .transform({ global: true },'uglifyify')
-      .bundle()
-      .pipe(exorcist(__dirname+'/webapp/dist/app.js.map'))
-      .on('error', console.error.bind(console))
-      .pipe(source('app.js')) // do this or browserify won't work
-      .pipe(buffer()) // do this or uglify won't work
-      //.pipe(uglify())
-      .pipe(gulp.dest(config.dest))
-      .pipe(connect.reload())
+  return applyBrowserify(getBrowserify())
 })
 
+gulp.task('js-watch',function(){
+  var b = watchify(getBrowserify())
+  b.on('update', function(){
+    applyBrowserify(b)
+  })
+  return b
+})
 
+function getBrowserify(){
+  return browserify(config.files.mainJs, {
+    cache: {},
+    packageCache: {},
+    fullPaths: true,
+    debug: true })
+        .transform('babelify', {
+          global: true,
+          presets: [ 'es2015', 'react' ],
+          ignore: /buffer|EventEmitter/
+        })
+        .transform('eslintify')
+        .transform({ global: true },'uglifyify')
+}
+
+function applyBrowserify(b){
+  return b.bundle()
+  .pipe(exorcist(__dirname+'/webapp/dist/app.js.map'))
+  .on('error', console.error.bind(console))
+  .pipe(source('app.js'))
+  .pipe(buffer())
+  .pipe(gulp.dest(config.dest))
+  .pipe(connect.reload())
+}
 
 gulp.task('clean',function(){
-  gulp.src(config.dest, { read: false })
-      .pipe(clean())
+  return gulp.src(config.dest, { read: false }).pipe(clean())
 })
 
 gulp.task('server',function(){
@@ -67,8 +83,8 @@ gulp.task('server',function(){
 })
 
 gulp.task('watch',function(){
-  gulp.watch(config.files.js,['js'])
-  gulp.watch(config.files.jsLibs,['js'])
+  var jsfiles = config.files.jsLibs.concat(config.files.mainJs)
+  gulp.watch(jsfiles,['js-watch'])
   gulp.watch(config.files.html,['html'])
   gulp.watch(config.files.css,['css'])
 })
