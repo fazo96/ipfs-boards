@@ -45,7 +45,16 @@ See `PROTOCOL.md`
 
 ## Demo / Prototype
 
-It's being worked on, but __it doesn't have__:
+You can find a working build [here](http://localhost:8080/ipfs/QmX7AnVBcujwKQRrfVnFw6uHLSTsSE8WsyLS7ajtn4AnvH).
+You need a local instance of go-ipfs running to see it. You also need to set
+CORS settings right or it won't work. However, in that case, it will complain to
+you and provide instructions.
+
+Keep in mind that it's a _very early_ prototype, nothing is finished, nothing
+is polished, but something works. It's also probably full of security holes,
+very inefficient, slow, etc. You're welcome to help in any way though!
+
+Also, remember that __it doesn't have__:
 
 - Ability to post and create a profile from the web app (it's read only for now)
 - Aggregation (only the admin can post, for now)
@@ -54,11 +63,11 @@ It's being worked on, but __it doesn't have__:
 - Votes
 - Comments
 - Actually nice user interface
-- Ability to run without a backend (it is planned though)
+- Ability to run without a full IPFS node. That would require either a backend or the (currently not done) js implementation of IPFS
 
 Ability to publish stuff in the browser won't be implemented until go-ipfs 0.4
-is ready. It will probably be ready before the new year, but we're not sure.
-You will be able to publish your blog/pages/profile using a CLI though.
+is ready. It will maybe be ready before the new year.
+You will be able to publish your boards/profile/posts using a CLI though.
 
 ## Components
 
