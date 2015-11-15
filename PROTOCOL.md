@@ -8,7 +8,8 @@ In a nutshell, it works like this:
 - IPFS is fully distributed, and safe, because anyone can verify some data actually matches the address
 - IPFS is efficient because anyone that views some content caches it and helps redistribute it. Your machines however will never redistribute data you haven't viewed or downloaded
 - IPNS associates an IPFS address to the address of a node, it works like a pointer to track data that changes over time
-- This project's discovery and storage protocols are entirely based on IPNS and IPFS
+- IPNS publications are signed from the node matching the publication's actual address, so they can be trusted
+- This project's discovery, storage and communications protocols are entirely based on IPNS and IPFS
 
 __Data Storage:__ A user's profile, posts, votes, comments and all his other data is served by him and stored in his computer(s). Anyone that views his
 content will cache it by default thus helping others to see his profile. That's why if hundreds of people open the profile page of some
@@ -145,9 +146,11 @@ Your computer will always be able to choose what to see and what to hide, it jus
 
 They monitor _administrations_ and cache all the content (or some of it)
 as soon as it becomes available on the network, making sure it never gets lost.
-They are completely optional but they help out in serving the users.
+They are completely optional but they help out, making the system faster and
+more stable and consistent.
 
-Cache servers also act as gateways and provide an HTTP API to access the boards.
+Cache servers can also act as gateways and provide an HTTP
+or WebSocket API to access the boards when IPFS is not available.
 
 Also note that due to how IPFS works, the more popular some content gets,
 the _faster it downloads_ and the _easier it is for your computer to find it_.

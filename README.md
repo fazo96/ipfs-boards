@@ -69,6 +69,10 @@ Ability to publish stuff in the browser won't be implemented until go-ipfs 0.4
 is ready. It will maybe be ready before the new year.
 You will be able to publish your boards/profile/posts using a CLI though.
 
+### How do I set up a development environment?
+
+See `HACKING.md`
+
 ## Components
 
 - __Client__
