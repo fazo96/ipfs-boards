@@ -64,7 +64,7 @@ var Profile = React.createClass({
         this.setState({ name: res.name })
       }
     })
-    ee.on('boards',l => {
+    ee.on('boards for '+this.props.params.userid,l => {
       if(!this.isMounted()) return true
       this.setState({ boards: l })
     })
