@@ -3,10 +3,11 @@
   "version": "0.1.0",
   "description": "decentralized discussion board",
   "scripts": {
-    "start": "node server/server.js"
+    "serve": "gulp serve",
+    "build": "gulp"
   },
   "bin": {
-    "ipfs-board": "server/server.js"
+    "ipfs-board": "cli.js"
   },
   "repository": {
     "type": "git",
