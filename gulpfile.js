@@ -8,6 +8,7 @@ var clean = require('gulp-clean')
 var exorcist = require('exorcist')
 var connect = require('gulp-connect')
 var watchify = require('watchify')
+var util = require('gulp-util')
 
 var config = {
   files: {
@@ -33,27 +34,31 @@ gulp.task('html',function(){
       .pipe(connect.reload())
 })
 
-gulp.task('js',function(){
-  return applyBrowserify(getBrowserify())
-})
-
 gulp.task('js-watch',function(){
-  var b = watchify(getBrowserify())
+  var b = getBrowserify()
+  b.on('log',function(l){
+    util.log(l)
+  })
   b.on('error',function(error){
-    console.log(error)
+    util.log(error)
   })
   b.on('update', function(){
-    console.log('Rebundling')
+    util.log('Rebundling')
     applyBrowserify(b)
   })
-  return b
+  return applyBrowserify(b)
+})
+
+gulp.task('js',function(){
+  return applyBrowserify(getBrowserify())
 })
 
 function getBrowserify(){
   return browserify(config.files.mainJs, {
     cache: {},
     packageCache: {},
-    fullPaths: true,
+    plugin: [watchify],
+    //fullPaths: true,
     debug: true })
         .transform('babelify', {
           global: true,
@@ -92,6 +97,6 @@ gulp.task('watch',['js-watch'],function(){
   gulp.watch(config.files.css,['css'])
 })
 
-gulp.task('serve', [ 'html', 'css', 'js', 'watch', 'server' ])
+gulp.task('serve', [ 'html', 'css', 'watch', 'server' ])
 
 gulp.task('default', [ 'html', 'css', 'js' ])
