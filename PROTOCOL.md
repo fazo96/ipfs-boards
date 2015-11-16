@@ -17,7 +17,7 @@ guy, his computer won't be overwhelmed because the data will be passed from comp
 
 ### Data Storage
 
-Each user exposes a folder called `ipfs-boards` in the root of the IPNS
+Each user exposes a folder called `ipfs-boards-profile` in the root of the IPNS
 publication, containing:
 
 - boards
