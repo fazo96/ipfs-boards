@@ -39,7 +39,11 @@ gulp.task('js',function(){
 
 gulp.task('js-watch',function(){
   var b = watchify(getBrowserify())
+  b.on('error',function(error){
+    console.log(error)
+  })
   b.on('update', function(){
+    console.log('Rebundling')
     applyBrowserify(b)
   })
   return b
@@ -82,9 +86,8 @@ gulp.task('server',function(){
   })
 })
 
-gulp.task('watch',function(){
-  var jsfiles = config.files.jsLibs.concat(config.files.mainJs)
-  gulp.watch(jsfiles,['js-watch'])
+gulp.task('watch',['js-watch'],function(){
+  //gulp.watch([config.files.jsLibs,config.files.mainJs],['js-watch'])
   gulp.watch(config.files.html,['html'])
   gulp.watch(config.files.css,['css'])
 })
