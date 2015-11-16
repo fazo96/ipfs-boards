@@ -91,7 +91,8 @@ var PostList = React.createClass({
   },
   componentDidMount: function(){
     console.log('Initial POSTS',this.state.posts.length)
-    boards.getPostsInBoard(this.props.admin,this.props.board).on('post',(post,hash) => {
+    boards.getPostsInBoard(this.props.admin,this.props.board)
+    .on('post in '+this.props.board+'@'+this.props.admin,(post,hash) => {
       if(!this.isMounted()) return true
       this.setState({ posts: this.state.posts.concat(post) })
     })
@@ -136,14 +137,11 @@ var Board = React.createClass({
     return { name: '# '+this.props.params.boardname }
   },
   componentDidMount: function(){
-    boards.getBoardSettings(this.props.params.userid,this.props.params.boardname, (err,res) => {
+    var ee = boards.getBoardSettings(this.props.params.userid,this.props.params.boardname)
+    ee.on('settings for '+this.props.params.boardname+'@'+this.props.params.userid, (res) => {
       if(!this.isMounted()) return true
-      if(err) {
-        console.log('Huh? Invalid board settings?',err)
-      } else {
-        console.log('Found name:',res.fullname)
-        this.setState({ name: '# '+res.fullname.trim() })
-      }
+      console.log('Found name:',res.fullname)
+      this.setState({ name: '# '+res.fullname.trim() })
     })
   },
   render: function(){

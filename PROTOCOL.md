@@ -46,12 +46,32 @@ publication, containing:
     {
       "whitelist": true,
       "blacklist": false,
-      "approval_required": true,
+      "approval_required": false,
+      "whitelist_only": true,
       "fullname": "The Full Name Can Be Long With Spaces",
       "description": "A very Long Full Description with Spaces"
     }
 
 The blacklist and whitelist should contain just IDs separated by spaces.
+The admin is _always_ considered as if he is in the whitelist.
+
+if content approval is required:
+
+- content is allowed if it's approved even if the author isn't whitelisted or he is blacklisted
+- content is allowed even if not approved if the author is in the whitelist
+- content from the whitelisted users is allowed, doesn't need approval
+
+If only whitelisted users are allowed to post:
+
+- only show content from whitelisted users
+- approval required option and blacklist are not considered
+
+If the whitelist is disabled, whitelist only is disabled and approval required is disabled:
+
+- eveything from everyone except blacklisted users is allowed
+- if the blacklist is disabled, everything is allowed
+
+__TODO__ implement the ability to manually hide content and to name moderators that can approve and hide content 
 
 #### Post
 
