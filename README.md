@@ -45,8 +45,9 @@ See `PROTOCOL.md`
 
 ## Demo / Prototype
 
-You can find a working build [here](http://localhost:8080/ipfs/QmX7AnVBcujwKQRrfVnFw6uHLSTsSE8WsyLS7ajtn4AnvH).
-You need a local instance of go-ipfs running to see it. You also need to set
+You can find a working build [here](http://ipfs.io/ipfs/Qmbf34Vdo3TtnFugSQQPzGfjjq6SBcgDfBB6P9kmSQs9Ay).
+
+You need a local instance of go-ipfs running for it to work. You also need to set
 CORS settings right or it won't work. However, in that case, it will complain to
 you and provide instructions.
 
