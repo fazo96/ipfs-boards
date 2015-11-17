@@ -58,3 +58,23 @@ a:hover {
 .navbar .iconbar .fa {
   margin-left: .5rem;
 }
+
+.settings .buttons .button {
+  display: block;
+  margin: 1rem auto;
+  width: 80%
+}
+
+@media (min-width: 400px) {
+  /* larger than mobile */
+  .settings .buttons {
+    text-align: inherit;
+  }
+  .settings .buttons .not-first {
+    margin: 0 1rem;
+  }
+  .settings .buttons .button {
+    display: inline-block;
+    width: auto;
+  }
+}

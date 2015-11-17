@@ -234,8 +234,44 @@ var Users = React.createClass({
 })
 
 var Settings = React.createClass({
+  getInitialState: function(){
+    // get from localstorage
+    return { addr: 'localhost', port: '5001' }
+  },
+  save: function(){
+    // write to localstorage
+
+  },
+  setDefaults: function(){
+    this.setState({ addr: 'localhost', port: '5001' })
+  },
+  onChange: function(event){
+    console.log(event.target.id)
+    //this.setState({})
+  },
   render: function(){
-    return <NotImplemented />
+    return (
+      <div className="settings">
+        <h2><Icon name="cog"/> Settings</h2>
+        <h4>Note that this page doesn't work yet.</h4>
+        <p>Use this page to customize the application's behavior. For now, you can change how it connects to IPFS.</p>
+        <p>All settings are saved in your browser.</p>
+        <div className="row">
+          <div className="six columns">
+            <label for="nodeAddress">IPFS Node</label>
+            <input className="u-full-width" type="text" id="nodeAddess" value={this.state.addr} onChange={this.onChange} placeholder="localhost" />
+          </div>
+          <div className="six columns">
+            <label for="nodePort">API Port</label>
+            <input className="u-full-width" type="text" id="nodePort" value={this.state.port} onChange={this.onChange} placeholder="5001" />
+          </div>
+        </div>
+        <div className="buttons">
+          <button className="button button-primary" onClick={this.save}>Save</button>
+          <button className="button not-first" onClick={this.setDefaults}>Defaults</button>
+        </div>
+      </div>
+    )
   }
 })
 
