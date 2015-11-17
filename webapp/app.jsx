@@ -6,9 +6,15 @@ var IndexRoute = require('react-router').IndexRoute
 var Link = require('react-router').Link
 
 var MarkdownLib = require('react-markdown')
-var ipfs = require('ipfs-api')('localhost',5001)
 var BoardsAPI = require('../lib/boards-api.js')
 
+var opt, s = localStorage.getItem('ipfs-boards-settings')
+try {
+  opt = JSON.parse(s)
+} catch(e){
+  opt = { addr: 'localhost', port: 5001 }
+}
+var ipfs = require('ipfs-api')(opt.addr || 'localhost',opt.port || 5001)
 var boards = new BoardsAPI(ipfs)
 
 // Components
@@ -130,15 +136,19 @@ var Homepage = React.createClass({
 var GetIPFS = React.createClass({
   render: function(){
     return (
-      <div className="text-center">
-        <h1>Missing IPFS Node</h1>
-        <p>You don't have an IPFS node running at <code>localhost:5001</code>
-        or it is not reachable</p>
+      <div className="">
+        <h1><Icon name="ban"/> Missing IPFS Node</h1>
+        <p>You don't have an IPFS node running at <code>{opt.addr}:{opt.port}</code> or it is not reachable</p>
         <p>The IPFS Boards prototype requires a full IPFS node running at localhost.
         Please start one by following the
         <a href="https://github.com/ipfs/go-ipfs"><code>go-ipfs</code> documentation.</a></p>
-        <p>If you have a running node but still this doesn't work, it's probably a CORS issue</p>
-        <p>You can find out how to fix CORS issues related to this app <a href="https://github.com/fazo96/ipfs-board/blob/master/ipfs_daemon_set_cors.sh">here</a>.</p>
+        <h5>Do you have a running node but the app won't work?</h5>
+        <p>It's probably one of these issues:</p>
+        <ul>
+          <li>Your IPFS node doesn't allow requests from the domain you're running the app from (CORS issue). See <a href="https://github.com/fazo96/ipfs-board/blob/master/ipfs_daemon_set_cors.sh">here</a> for the fix.</li>
+          <li>Your IPFS node is not listening for API requests at <code>{opt.addr}:{opt.port}</code>. Go to the <Link to="/settings">Settings page</Link>, provide the correct address for the node, then save and reload the page.</li>
+        <li>Some other networking issue is preventing the App from talking to your node.</li>
+        </ul>
         <p>Still can't fix it? <a href="https://github.com/fazo96/ipfs-board/issues">File a issue on GitHub</a>, we'll be happy to help!</p>
       </div>
     )
@@ -234,32 +244,51 @@ var Users = React.createClass({
 })
 
 var Settings = React.createClass({
+  getDefaults: function(){
+    return { addr: 'localhost', port: 5001 }
+  },
   getInitialState: function(){
-    // get from localstorage
-    return { addr: 'localhost', port: '5001' }
+    var s = localStorage.getItem('ipfs-boards-settings')
+    var obj = this.getDefaults()
+    try {
+      obj = JSON.parse(s)
+    } catch(e){
+      localStorage.removeItem('ipfs-boards-settings')
+    }
+    return obj || this.getDefaults()
   },
   save: function(){
-    // write to localstorage
-
+    if(isNaN(this.state.port) || parseInt(this.state.port) > 65535 || parseInt(this.state.port) < 1){
+      alert('Port number invalid')
+    } else {
+      localStorage.setItem('ipfs-boards-settings',JSON.stringify({
+        addr: this.state.addr,
+        port: parseInt(this.state.port)
+      }))
+      alert('Saved')
+    }
   },
   setDefaults: function(){
-    this.setState({ addr: 'localhost', port: '5001' })
+    this.setState(this.getDefaults())
   },
   onChange: function(event){
-    console.log(event.target.id)
-    //this.setState({})
+    if(event.target.id === 'nodeAddress'){
+      this.setState({ addr: event.target.value })
+    } else {
+      this.setState({ port: event.target.value })
+    }
   },
   render: function(){
     return (
       <div className="settings">
         <h2><Icon name="cog"/> Settings</h2>
-        <h4>Note that this page doesn't work yet.</h4>
+        <h5>This page is still a little rough, but it works. Reload the page after saving to apply changes.</h5>
         <p>Use this page to customize the application's behavior. For now, you can change how it connects to IPFS.</p>
         <p>All settings are saved in your browser.</p>
         <div className="row">
           <div className="six columns">
             <label for="nodeAddress">IPFS Node</label>
-            <input className="u-full-width" type="text" id="nodeAddess" value={this.state.addr} onChange={this.onChange} placeholder="localhost" />
+            <input className="u-full-width" type="text" id="nodeAddress" value={this.state.addr} onChange={this.onChange} placeholder="localhost" />
           </div>
           <div className="six columns">
             <label for="nodePort">API Port</label>
@@ -280,7 +309,14 @@ var Settings = React.createClass({
 boards.init(err => {
   if(err){
     console.log('FATAL: IPFS NODE NOT AVAILABLE')
-    ReactDOM.render(<App><GetIPFS/></App>, document.getElementById('root'))
+    ReactDOM.render(
+      <Router>
+        <Route path="/" component={App}>
+          <IndexRoute component={GetIPFS} />
+          <Route path="/settings" component={Settings} />
+        </Route>
+      </Router>
+    , document.getElementById('root'))
   } else {
     ReactDOM.render(
       <Router>
