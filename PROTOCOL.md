@@ -71,7 +71,14 @@ If the whitelist is disabled, whitelist only is disabled and approval required i
 - eveything from everyone except blacklisted users is allowed
 - if the blacklist is disabled, everything is allowed
 
-__TODO__ implement the ability to manually hide content and to name moderators that can approve and hide content 
+__TODO__ implement the ability to manually hide content and to name moderators that can approve and hide content
+
+#### Profile.json
+
+    {
+      "name": "username",
+      "description": "something about me"
+    }
 
 #### Post
 
