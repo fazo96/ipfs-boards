@@ -5,10 +5,33 @@ var Route = require('react-router').Route
 var IndexRoute = require('react-router').IndexRoute
 var Link = require('react-router').Link
 
+var MarkdownLib = require('react-markdown')
 var ipfs = require('ipfs-api')('localhost',5001)
 var BoardsAPI = require('../lib/boards-api.js')
 
 var boards = new BoardsAPI(ipfs)
+
+// Components
+
+var Markdown = React.createClass({
+  renderIfApplicable: function(){
+    if(this.props.source)
+      return <MarkdownLib source={this.props.source} skipHtml={true} />
+    return <p>...</p>
+  },
+  render: function(){
+    return this.renderIfApplicable()
+  }
+})
+
+var Icon = React.createClass({
+  class: function(){
+    return 'fa fa-'+this.props.name+' '+this.props.class
+  },
+  render: function(){
+    return ( <i className={this.class()}></i> )
+  }
+})
 
 var Container = React.createClass({
   render: function(){
@@ -22,66 +45,23 @@ var App = React.createClass({
   }
 })
 
-var Homepage = React.createClass({
-  render: function(){
-    return (
-      <div>
-        <h3>Welcome to the IPFS Boards Prototype</h3>
-        <p>Not much is implemented...</p>
-        <p>You can try <Link to="@QmXnfA41SXMX3tqFD4kjED7ehyvgTsuAho86TkEoTbZdpw">Opening my Profile</Link> though :)</p>
-        <p>More information about the project on <a href="https://github.com/fazo96/ipfs-board">GitHub</a></p>
-      </div>
-    )
-  }
-})
-
 var Navbar = React.createClass({
   render: function(){
     return (
       <div className="navbar">
         <div className="container">
-          <h4><Link to="/">Boards</Link></h4>
+          <div className="row">
+            <div className="twelve columns">
+              <h4><Link to="/"><Icon name="comments" class="light"/> Boards</Link></h4>
+              <div className="u-pull-right iconbar">
+                <Link className="nounderline" to="/users"><Icon name="globe" class="fa-2x light"/></Link>
+                <Link className="nounderline" to="/settings"><Icon name="cog" class="fa-2x light"/></Link>
+                <a className="nounderline" href="https://github.com/fazo96/ipfs-boards"><Icon name="github" class="fa-2x light"/></a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>)
-  }
-})
-
-var Profile = React.createClass({
-  getInitialState: function(){
-    return { name: '...', boards: [] }
-  },
-  componentDidMount: function(){
-    var ee = boards.getProfile(this.props.params.userid, (err,res) => {
-      if(!this.isMounted()) return true
-      if(err){
-        console.log(err)
-        this.setState({
-          name: '?',
-          error: 'Invalid profile'
-        })
-      } else {
-        console.log(res)
-        this.setState({ name: res.name })
-      }
-    })
-    ee.on('boards for '+this.props.params.userid,l => {
-      if(!this.isMounted()) return true
-      this.setState({ boards: l })
-    })
-  },
-  render: function(){
-    return (<div className="profile">
-      <h1>{this.state.name}</h1>
-      <p>{this.state.error}</p>
-      <h5 className="light">@{this.props.params.userid}</h5>
-      <ul>
-        {this.state.boards.map(n => {
-          return <li key={this.props.params.userid+'/'+n.name}>
-            <Link to={'/@'+this.props.params.userid+'/'+n.name}>{n.name}</Link>
-          </li>
-        })}
-      </ul>
-    </div>)
   }
 })
 
@@ -103,7 +83,7 @@ var PostList = React.createClass({
         {this.state.posts.map(post => {
           return (<div key={post.title} className="post">
             <h5>{post.title}</h5>
-            <p>{post.text}</p>
+            <Markdown source={post.text} skipHtml={true} />
           </div>)
         })}
       </div>
@@ -119,37 +99,31 @@ var UserID = React.createClass({
     boards.getProfile(this.props.id, (err,res) => {
       if(!this.isMounted()) return true
       if(!err) {
-        this.setState({ name: '@'+res.name.trim() })
+        this.setState({ name: res.name.trim() })
       }
     })
   },
   render: function(){
     return (<div className="board">
-      <Link to={'/@'+this.props.id}>
-        <h5 className="light">{this.state.name}</h5>
+      <Link className="light nounderline" to={'/@'+this.props.id}>
+        <Icon name="user"/> {this.state.name}
       </Link>
     </div>)
   }
 })
 
-var Board = React.createClass({
-  getInitialState: function(){
-    return { name: '# '+this.props.params.boardname }
-  },
-  componentDidMount: function(){
-    var ee = boards.getBoardSettings(this.props.params.userid,this.props.params.boardname)
-    ee.on('settings for '+this.props.params.boardname+'@'+this.props.params.userid, (res) => {
-      if(!this.isMounted()) return true
-      console.log('Found name:',res.fullname)
-      this.setState({ name: '# '+res.fullname.trim() })
-    })
-  },
+// Static pages
+
+var Homepage = React.createClass({
   render: function(){
-    return (<div className="board">
-      <h2>{this.state.name}</h2>
-      <UserID id={this.props.params.userid} />
-      <PostList board={this.props.params.boardname} admin={this.props.params.userid}/>
-    </div>)
+    return (
+      <div>
+        <h3>Welcome to the IPFS Boards Prototype</h3>
+        <p>Not much is implemented...</p>
+        <p>You can try <Link to="@QmXnfA41SXMX3tqFD4kjED7ehyvgTsuAho86TkEoTbZdpw">Opening my Profile</Link> though :)</p>
+        <p>More information about the project on <a href="https://github.com/fazo96/ipfs-board">GitHub</a></p>
+      </div>
+    )
   }
 })
 
@@ -171,6 +145,102 @@ var GetIPFS = React.createClass({
   }
 })
 
+var NotFound = React.createClass({
+  render: function(){
+    return (<div className="text-center">
+      <h1><Icon name="ban"/></h1>
+      <p>Sorry, there's nothing here!</p>
+    </div>)
+  }
+})
+
+var NotImplemented = React.createClass({
+  render: function(){
+    return ( <div className="text-center">
+      <h1>Not yet implemented</h1>
+      <h1><Icon name="cog" class="fa-spin"/></h1>
+      <p>Sorry, working on it!</p>
+    </div> )
+  }
+})
+
+// Dynamic pages
+
+var Profile = React.createClass({
+  getInitialState: function(){
+    return { name: '...', boards: [] }
+  },
+  componentDidMount: function(){
+    var ee = boards.getProfile(this.props.params.userid, (err,res) => {
+      if(!this.isMounted()) return true
+      if(err){
+        console.log(err)
+        this.setState({
+          name: '?',
+          error: 'Invalid profile'
+        })
+      } else {
+        console.log(res)
+        this.setState({ name: res.name, description: res.description })
+      }
+    })
+    ee.on('boards for '+this.props.params.userid,l => {
+      if(!this.isMounted()) return true
+      this.setState({ boards: l })
+    })
+  },
+  render: function(){
+    return (<div className="profile">
+      <h1>{this.state.name}</h1>
+      <p>{this.state.error}</p>
+      <Markdown source={this.state.description} skipHtml={true} />
+      <hr/>
+      <h5 className="light">@{this.props.params.userid}</h5>
+      {this.state.boards.map(n => {
+        return <h6 className="light" key={this.props.params.userid+'/'+n.name}>
+          <Link to={'/@'+this.props.params.userid+'/'+n.name}># {n.name}</Link>
+        </h6>
+      })}
+    </div>)
+  }
+})
+
+var Board = React.createClass({
+  getInitialState: function(){
+    return { name: this.props.params.boardname }
+  },
+  componentDidMount: function(){
+    var ee = boards.getBoardSettings(this.props.params.userid,this.props.params.boardname)
+    ee.on('settings for '+this.props.params.boardname+'@'+this.props.params.userid, (res) => {
+      if(!this.isMounted()) return true
+      console.log('Found name:',res.fullname)
+      this.setState({ name: res.fullname.trim(), description: res.description })
+    })
+  },
+  render: function(){
+    return (<div className="board">
+      <h2>{this.state.name}</h2>
+      <Markdown source={this.state.description} skipHtml={true} />
+      <h5><UserID id={this.props.params.userid} /></h5>
+      <PostList board={this.props.params.boardname} admin={this.props.params.userid}/>
+    </div>)
+  }
+})
+
+var Users = React.createClass({
+  render: function(){
+    return <NotImplemented />
+  }
+})
+
+var Settings = React.createClass({
+  render: function(){
+    return <NotImplemented />
+  }
+})
+
+// Start
+
 boards.init(err => {
   if(err){
     console.log('FATAL: IPFS NODE NOT AVAILABLE')
@@ -182,8 +252,11 @@ boards.init(err => {
           <IndexRoute component={Homepage} />
           <Route path="/@:userid">
             <IndexRoute component={Profile} />
-            <Route path=":boardname" component={Board}/>
+            <Route path=":boardname" component={Board} />
           </Route>
+          <Route path="/users" component={Users} />
+          <Route path="/settings" component={Settings} />
+          <Route path="*" component={NotFound} />
         </Route>
       </Router>, document.getElementById('root')
     )

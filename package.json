@@ -41,6 +41,7 @@
     "moment": "^2.10.6",
     "react": "^0.14.2",
     "react-dom": "^0.14.2",
+    "react-markdown": "^1.0.5",
     "react-router": "^1.0.0",
     "uglifyify": "^3.0.1",
     "vinyl-buffer": "^1.0.0",

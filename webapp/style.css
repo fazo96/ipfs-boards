@@ -6,12 +6,35 @@
   top: 20%;
 }
 
+hr {
+  margin-top: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+a {
+  text-decoration: underline;
+  color: #ababab;
+}
+
+.nounderline {
+  text-decoration: none;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: inherit;
+}
+
+a:hover {
+  color: black;
+}
+
 .text-center {
   text-align: center
 }
 
 .light {
-  color: #ababab
+  color: #707070
 }
 
 .app {
@@ -24,11 +47,14 @@
   height: 4.5em
 }
 
-.navbar a {
-  text-decoration: none;
-  color: inherit;
-}
-
 .navbar .container {
   padding-top: 1em
+}
+
+.navbar .iconbar {
+  margin-top: -5.2rem;
+}
+
+.navbar .iconbar .fa {
+  margin-left: .5rem;
 }
