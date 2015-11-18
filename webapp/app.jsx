@@ -12,8 +12,9 @@ var opt, s = localStorage.getItem('ipfs-boards-settings')
 try {
   opt = JSON.parse(s)
 } catch(e){
-  opt = { addr: 'localhost', port: 5001 }
+  // Do nothing
 }
+if(opt === null || opt === undefined) opt = { addr: 'localhost', port: 5001 }
 var ipfs = require('ipfs-api')(opt.addr || 'localhost',opt.port || 5001)
 var boards = new BoardsAPI(ipfs)
 
