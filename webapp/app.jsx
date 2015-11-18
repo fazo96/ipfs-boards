@@ -3,6 +3,7 @@ var ReactDOM = require('react-dom')
 var Router = require('react-router').Router
 var Route = require('react-router').Route
 var IndexRoute = require('react-router').IndexRoute
+var Redirect = require('react-router').Redirect
 var Link = require('react-router').Link
 
 var MarkdownLib = require('react-markdown')
@@ -59,8 +60,9 @@ var Navbar = React.createClass({
         <div className="container">
           <div className="row">
             <div className="twelve columns">
-              <h4><Link to="/"><Icon name="comments" class="light"/> Boards</Link></h4>
+              {this.props.children || <h4><Link to="/"><Icon name="comments" class="light"/> Boards</Link></h4>}
               <div className="u-pull-right iconbar">
+                <Link className="nounderline" to="/@me"><Icon name="user" class="fa-2x light"/></Link>
                 <Link className="nounderline" to="/users"><Icon name="globe" class="fa-2x light"/></Link>
                 <Link className="nounderline" to="/settings"><Icon name="cog" class="fa-2x light"/></Link>
                 <a className="nounderline" href="https://github.com/fazo96/ipfs-boards"><Icon name="github" class="fa-2x light"/></a>
@@ -185,13 +187,11 @@ var Profile = React.createClass({
     var ee = boards.getProfile(this.props.params.userid, (err,res) => {
       if(!this.isMounted()) return true
       if(err){
-        console.log(err)
         this.setState({
           name: '?',
           error: 'Invalid profile'
         })
       } else {
-        console.log(res)
         this.setState({ name: res.name, description: res.description })
       }
     })
@@ -200,8 +200,18 @@ var Profile = React.createClass({
       this.setState({ boards: l })
     })
   },
+  linkToEditor: function(){
+    if(this.props.params.userid === boards.id){
+      return <div>
+        <h6>This is your profile</h6>
+        <hr/>
+      </div>
+    }
+    return ''
+  },
   render: function(){
     return (<div className="profile">
+      {this.linkToEditor()}
       <h1>{this.state.name}</h1>
       <p>{this.state.error}</p>
       <Markdown source={this.state.description} skipHtml={true} />
@@ -323,6 +333,7 @@ boards.init(err => {
       <Router>
         <Route path="/" component={App}>
           <IndexRoute component={Homepage} />
+          <Redirect from="/@me" to={'/@'+boards.id} />
           <Route path="/@:userid">
             <IndexRoute component={Profile} />
             <Route path=":boardname" component={Board} />
