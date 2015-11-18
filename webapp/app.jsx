@@ -102,7 +102,7 @@ var PostList = React.createClass({
 
 var UserID = React.createClass({
   getInitialState: function(){
-    return { name: '@'+this.props.id }
+    return { }
   },
   componentDidMount: function(){
     boards.getProfile(this.props.id, (err,res) => {
@@ -112,10 +112,17 @@ var UserID = React.createClass({
       }
     })
   },
+  getContent: function(){
+    if(this.state.name){
+      return (<Icon name="user" />)
+    } else {
+      return '@'
+    }
+  },
   render: function(){
     return (<div className="board">
       <Link className="light nounderline" to={'/@'+this.props.id}>
-        <Icon name="user"/> {this.state.name}
+        {this.getContent()}{this.state.name || this.props.id}
       </Link>
     </div>)
   }
@@ -184,20 +191,22 @@ var Profile = React.createClass({
     return { name: '...', boards: [] }
   },
   componentDidMount: function(){
-    var ee = boards.getProfile(this.props.params.userid, (err,res) => {
+    console.log('About to ask for profile for',this.props.params.userid)
+    var ee = boards.getEventEmitter()
+    ee.on('boards for '+this.props.params.userid,l => {
+      if(!this.isMounted()) return true
+      this.setState({ boards: l })
+    })
+    boards.getProfile(this.props.params.userid,(err,res) => {
       if(!this.isMounted()) return true
       if(err){
         this.setState({
-          name: '?',
-          error: 'Invalid profile'
+          name: <Icon name="ban" />,
+          description: err
         })
       } else {
         this.setState({ name: res.name, description: res.description })
       }
-    })
-    ee.on('boards for '+this.props.params.userid,l => {
-      if(!this.isMounted()) return true
-      this.setState({ boards: l })
     })
   },
   linkToEditor: function(){
@@ -213,7 +222,6 @@ var Profile = React.createClass({
     return (<div className="profile">
       {this.linkToEditor()}
       <h1>{this.state.name}</h1>
-      <p>{this.state.error}</p>
       <Markdown source={this.state.description} skipHtml={true} />
       <hr/>
       <h5 className="light">@{this.props.params.userid}</h5>
@@ -249,8 +257,25 @@ var Board = React.createClass({
 })
 
 var Users = React.createClass({
+  getInitialState: function(){
+    return { users: [ boards.id ] }
+  },
+  componentDidMount: function(){
+    boards.searchUsers().on('user',(id) => {
+      if(this.isMounted() && this.state.users.indexOf(id) < 0)
+        this.setState({ users: this.state.users.concat(id) })
+    })
+  },
   render: function(){
-    return <NotImplemented />
+    return <div>
+      <h1><Icon name="users" /> Users</h1>
+      <p>Found <b>{this.state.users.length}</b> users, looking for more...</p>
+      <ul>
+        {this.state.users.map(user => {
+          return <UserID key={user} id={user} />
+        })}
+      </ul>
+    </div>
   }
 })
 

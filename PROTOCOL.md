@@ -109,7 +109,7 @@ possible for lange texts without duplicating data.
 
 #### Versioning
 
-    just the version ID written in the version file
+    ipfs:boards:version:version_name
 
 ## Boards
 
