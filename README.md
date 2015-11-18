@@ -22,7 +22,7 @@ Image and discussion boards, forums and the like have many problems:
   - What if I want more control (think a private forum), or less control (think 4chan) ?
   - What if I want <feature> ?
 
-- Costs
+- Speed and stability
   - Hosting a custom discussion board is expensive. What if the speed and stability could scale with the number of users?
 
 This project was conceived to solve that. With the help of modern web technologies, the IPFS and IPNS protocols
