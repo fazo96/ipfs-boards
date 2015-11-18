@@ -22,6 +22,9 @@ Image and discussion boards, forums and the like have many problems:
   - What if I want more control (think a private forum), or less control (think 4chan) ?
   - What if I want <feature> ?
 
+- Costs
+  - What if I want to reduce costs of my cloud application?
+
 This project was conceived to solve that. With the help of modern web technologies, the IPFS and IPNS protocols
 and some optional cache servers, we can solve these problems and create a true universal platform which can act as:
 
