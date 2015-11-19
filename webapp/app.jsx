@@ -74,6 +74,22 @@ var Navbar = React.createClass({
   }
 })
 
+var Post = React.createClass({
+  render: function(){
+    return <div key={this.props.post.title} className="post">
+      <div className="content">
+        <h5>{this.props.post.title}</h5><hr/>
+        <Markdown source={this.props.post.text} skipHtml={true} /><hr/>
+        <div className="icons">
+          <UserID id={this.props.post.op} />
+          <Icon name="clock-o" class="not-first"/> Date
+          <Icon name="comments" class="not-first" /> Comments
+        </div>
+      </div>
+    </div>
+  }
+})
+
 var PostList = React.createClass({
   getInitialState: function(){
     return { posts: [] }
@@ -90,10 +106,7 @@ var PostList = React.createClass({
     return (
       <div className="postList">
         {this.state.posts.map(post => {
-          return (<div key={post.title} className="post">
-            <h5>{post.title}</h5>
-            <Markdown source={post.text} skipHtml={true} />
-          </div>)
+          return <Post key={post.title+post.text} post={post} />
         })}
       </div>
     )
@@ -120,7 +133,7 @@ var UserID = React.createClass({
     }
   },
   render: function(){
-    return (<div className="board">
+    return (<div className="user-id">
       <Link className="light nounderline" to={'/@'+this.props.id}>
         {this.getContent()}{this.state.name || this.props.id}
       </Link>

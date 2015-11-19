@@ -41,6 +41,35 @@ a:hover {
   padding-top: 2em
 }
 
+.user-id .fa {
+  margin-right: .25rem;
+}
+
+.post {
+  display: block;
+  max-width: 65rem;
+  border: 1px solid #bbb;
+  border-radius: .5rem;
+  margin: 3rem auto;
+}
+
+.post .content {
+  display: block;
+  margin: 2rem;
+}
+
+.post .icons .fa {
+  color: #707070;
+}
+
+.post .icons .user-id {
+  display: inline-block;
+}
+
+.post .icons .not-first{
+  margin-left: 1rem;
+}
+
 .navbar {
   border-bottom: 1px solid #eee;
   display: block;
