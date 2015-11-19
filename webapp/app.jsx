@@ -36,7 +36,7 @@ var Markdown = React.createClass({
 
 var Icon = React.createClass({
   class: function(){
-    return 'fa fa-'+this.props.name+' '+this.props.class
+    return 'fa fa-'+this.props.name+' '+this.props.className
   },
   render: function(){
     return ( <i className={this.class()}></i> )
@@ -62,12 +62,12 @@ var Navbar = React.createClass({
         <div className="container">
           <div className="row">
             <div className="twelve columns">
-              {this.props.children || <h4><Link to="/"><Icon name="comments" class="light"/> Boards</Link></h4>}
+              {this.props.children || <h4><Link to="/"><Icon name="comments" className="light"/> Boards</Link></h4>}
               <div className="u-pull-right iconbar">
-                <Link className="nounderline" to="/@me"><Icon name="user" class="fa-2x light"/></Link>
-                <Link className="nounderline" to="/users"><Icon name="globe" class="fa-2x light"/></Link>
-                <Link className="nounderline" to="/settings"><Icon name="cog" class="fa-2x light"/></Link>
-                <a className="nounderline" href="https://github.com/fazo96/ipfs-boards"><Icon name="github" class="fa-2x light"/></a>
+                <Link className="nounderline" to="/@me"><Icon name="user" className="fa-2x light"/></Link>
+                <Link className="nounderline" to="/users"><Icon name="globe" className="fa-2x light"/></Link>
+                <Link className="nounderline" to="/settings"><Icon name="cog" className="fa-2x light"/></Link>
+                <a className="nounderline" href="https://github.com/fazo96/ipfs-boards"><Icon name="github" className="fa-2x light"/></a>
               </div>
             </div>
           </div>
@@ -91,8 +91,8 @@ var Post = React.createClass({
         <Markdown source={this.props.post.text} skipHtml={true} /><hr/>
         <div className="icons">
           <UserID id={this.props.post.op}></UserID>
-          <Icon name="clock-o" class="not-first"/> {this.getDate()}
-          <Icon name="comments" class="not-first" /> Comments
+          <Icon name="clock-o" className="not-first"/> {this.getDate()}
+          <Icon name="comments" className="not-first" /> Comments
         </div>
       </div>
     </div>
@@ -217,7 +217,7 @@ var NotImplemented = React.createClass({
   render: function(){
     return ( <div className="text-center">
       <h1>Not yet implemented</h1>
-      <h1><Icon name="cog" class="fa-spin"/></h1>
+      <h1><Icon name="cog" className="fa-spin"/></h1>
       <p>Sorry, working on it!</p>
     </div> )
   }
