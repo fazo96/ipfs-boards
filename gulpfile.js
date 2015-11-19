@@ -9,6 +9,7 @@ var exorcist = require('exorcist')
 var connect = require('gulp-connect')
 var watchify = require('watchify')
 var util = require('gulp-util')
+var ghPages = require('gulp-gh-pages')
 
 var config = {
   files: {
@@ -95,6 +96,11 @@ gulp.task('watch',['js-watch'],function(){
   //gulp.watch([config.files.jsLibs,config.files.mainJs],['js-watch'])
   gulp.watch(config.files.html,['html'])
   gulp.watch(config.files.css,['css'])
+})
+
+gulp.task('gh-pages',[ 'html', 'css', 'js' ],function(){
+  gulp.src([config.dest+'*.js',config.dest+'*.css',config.dest+'*.html'])
+    .pipe(ghPages())
 })
 
 gulp.task('serve', [ 'html', 'css', 'watch', 'server' ])
