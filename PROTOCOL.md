@@ -90,6 +90,9 @@ __TODO__ implement the ability to manually hide content and to name moderators t
       "text": "Content of the post"
     }
 
+__Note:__ `op` should only be used for crossposting. When possible, the client
+should figure out on his own where the post came from
+
 Optionally a post could have a `text-url` field so that crossposting is
 possible for lange texts without duplicating data.
 
