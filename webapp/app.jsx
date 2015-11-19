@@ -60,16 +60,12 @@ var Navbar = React.createClass({
     return (
       <div className="navbar">
         <div className="container">
-          <div className="row">
-            <div className="twelve columns">
-              {this.props.children || <h4><Link to="/"><Icon name="comments" className="light"/> Boards</Link></h4>}
-              <div className="u-pull-right iconbar">
-                <Link className="nounderline" to="/@me"><Icon name="user" className="fa-2x light"/></Link>
-                <Link className="nounderline" to="/users"><Icon name="globe" className="fa-2x light"/></Link>
-                <Link className="nounderline" to="/settings"><Icon name="cog" className="fa-2x light"/></Link>
-                <a className="nounderline" href="https://github.com/fazo96/ipfs-boards"><Icon name="github" className="fa-2x light"/></a>
-              </div>
-            </div>
+          {this.props.children || <h4><Link to="/"><Icon name="comments" className="light"/> Boards</Link></h4>}
+          <div className="u-pull-right iconbar">
+            <Link className="nounderline" to="/@me"><Icon name="user" className="fa-2x light"/></Link>
+            <Link className="nounderline" to="/users"><Icon name="globe" className="fa-2x light"/></Link>
+            <Link className="nounderline" to="/settings"><Icon name="cog" className="fa-2x light"/></Link>
+            <a className="nounderline" href="https://github.com/fazo96/ipfs-boards"><Icon name="github" className="fa-2x light"/></a>
           </div>
         </div>
       </div>)
