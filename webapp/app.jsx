@@ -358,11 +358,11 @@ var Settings = React.createClass({
         <p>All settings are saved in your browser.</p>
         <div className="row">
           <div className="six columns">
-            <label for="nodeAddress">IPFS Node</label>
+            <label htmlFor="nodeAddress">IPFS Node</label>
             <input className="u-full-width" type="text" id="nodeAddress" value={this.state.addr} onChange={this.onChange} placeholder="localhost" />
           </div>
           <div className="six columns">
-            <label for="nodePort">API Port</label>
+            <label htmlFor="nodePort">API Port</label>
             <input className="u-full-width" type="text" id="nodePort" value={this.state.port} onChange={this.onChange} placeholder="5001" />
           </div>
         </div>
