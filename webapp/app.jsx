@@ -7,6 +7,8 @@ var Redirect = require('react-router').Redirect
 var Link = require('react-router').Link
 
 var MarkdownLib = require('react-markdown')
+var moment = require('moment')
+var sortedIndex = require('lodash.sortedindex')
 var BoardsAPI = require('../lib/boards-api.js')
 
 var opt, s = localStorage.getItem('ipfs-boards-settings')
@@ -75,14 +77,21 @@ var Navbar = React.createClass({
 })
 
 var Post = React.createClass({
+  getDate: function(){
+    if(this.props.post.date){
+      return moment.unix(this.props.post.date).fromNow()
+    } else {
+      return 'Unknown Date'
+    }
+  },
   render: function(){
     return <div key={this.props.post.title} className="post">
       <div className="content">
         <h5>{this.props.post.title}</h5><hr/>
         <Markdown source={this.props.post.text} skipHtml={true} /><hr/>
         <div className="icons">
-          <UserID id={this.props.post.op} />
-          <Icon name="clock-o" class="not-first"/> Date
+          <UserID id={this.props.post.op}></UserID>
+          <Icon name="clock-o" class="not-first"/> {this.getDate()}
           <Icon name="comments" class="not-first" /> Comments
         </div>
       </div>
@@ -94,12 +103,25 @@ var PostList = React.createClass({
   getInitialState: function(){
     return { posts: [] }
   },
+  sortFn: function(a,b){
+    return (b.date || 0) - (a.date || 0)
+  },
   componentDidMount: function(){
     console.log('Initial POSTS',this.state.posts.length)
     boards.getPostsInBoard(this.props.admin,this.props.board)
     .on('post in '+this.props.board+'@'+this.props.admin,(post,hash) => {
       if(!this.isMounted()) return true
-      this.setState({ posts: this.state.posts.concat(post) })
+      var now = moment().unix()
+      var posts = this.state.posts
+      if(post.date === undefined || post.date <= 0){
+        posts.push(post)
+      } else if(post.date <= now){
+        var i = sortedIndex(posts,post,(p) => now-p.date || now)
+        posts.splice(i,0,post)
+      } else {
+        console.log('Post discarded cause date in the future:',post)
+      }
+      this.setState({ posts })
     })
   },
   render: function(){
@@ -118,7 +140,7 @@ var UserID = React.createClass({
     return { }
   },
   componentDidMount: function(){
-    boards.getProfile(this.props.id, (err,res) => {
+    if(this.props.id) boards.getProfile(this.props.id, (err,res) => {
       if(!this.isMounted()) return true
       if(!err) {
         this.setState({ name: res.name.trim() })
@@ -133,11 +155,15 @@ var UserID = React.createClass({
     }
   },
   render: function(){
-    return (<div className="user-id">
-      <Link className="light nounderline" to={'/@'+this.props.id}>
-        {this.getContent()}{this.state.name || this.props.id}
-      </Link>
-    </div>)
+    if(this.props.id)
+      return (<div className="user-id">
+        <Link className="light nounderline" to={'/@'+this.props.id}>
+          {this.getContent()}{this.state.name || this.props.id}
+        </Link>
+      </div>)
+    else return <div className="user-id">
+        <Icon name="ban" /> Unknown User
+      </div>
   }
 })
 

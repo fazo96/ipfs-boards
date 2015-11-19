@@ -37,6 +37,7 @@
     "gulp-util": "~3.0.7",
     "history": "~1.13.1",
     "ipfs-api": "~2.7.6",
+    "lodash.sortedindex": "~3.1.1",
     "moment": "~2.10.6",
     "react": "~0.14.2",
     "react-dom": "~0.14.2",
