@@ -20,6 +20,14 @@ a {
   text-decoration: none;
 }
 
+.navbar {
+  position: fixed;
+  width: 100%;
+  opacity: 1;
+  background: rgb(255, 255, 255);
+  z-index: 99;
+}
+
 .navbar a {
   text-decoration: none;
   color: inherit;
@@ -38,7 +46,7 @@ a:hover {
 }
 
 .app {
-  padding-top: 2em
+  padding-top: 9rem
 }
 
 .user-id .fa {
