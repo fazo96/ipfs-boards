@@ -258,7 +258,7 @@ var Board = React.createClass({
 
 var Users = React.createClass({
   getInitialState: function(){
-    return { users: [ boards.id ] }
+    return { users: boards.getUsers() }
   },
   componentDidMount: function(){
     boards.searchUsers().on('user',(id) => {
@@ -269,7 +269,7 @@ var Users = React.createClass({
   render: function(){
     return <div>
       <h1><Icon name="users" /> Users</h1>
-      <p>Found <b>{this.state.users.length}</b> users, looking for more...</p>
+      <p>Found <b>{this.state.users.length}</b> users</p>
       <ul>
         {this.state.users.map(user => {
           return <UserID key={user} id={user} />
