@@ -297,6 +297,7 @@ var Users = React.createClass({
   },
   componentDidMount: function(){
     boards.searchUsers().on('user',(id) => {
+      if(id === undefined) console.log('found undefined user???')
       if(this.isMounted() && this.state.users.indexOf(id) < 0)
         this.setState({ users: this.state.users.concat(id) })
     })
