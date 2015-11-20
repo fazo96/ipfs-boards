@@ -5,10 +5,6 @@ var Route = require('react-router').Route
 var IndexRoute = require('react-router').IndexRoute
 var Redirect = require('react-router').Redirect
 var Link = require('react-router').Link
-
-var MarkdownLib = require('react-markdown')
-var moment = require('moment')
-var sortedIndex = require('lodash.sortedindex')
 var BoardsAPI = require('boards-api.js')
 
 // Load CSS
@@ -29,26 +25,6 @@ var ipfs = require('ipfs-api')(opt.addr || 'localhost',opt.port || 5001)
 var boards = new BoardsAPI(ipfs)
 
 // Components
-
-var Markdown = React.createClass({
-  renderIfApplicable: function(){
-    if(this.props.source)
-      return <MarkdownLib source={this.props.source} skipHtml={true} />
-    return <p>...</p>
-  },
-  render: function(){
-    return this.renderIfApplicable()
-  }
-})
-
-var Icon = React.createClass({
-  class: function(){
-    return 'fa fa-'+this.props.name+' '+this.props.className
-  },
-  render: function(){
-    return ( <i className={this.class()}></i> )
-  }
-})
 
 var Container = React.createClass({
   render: function(){
@@ -76,97 +52,6 @@ var Navbar = React.createClass({
           </div>
         </div>
       </div>)
-  }
-})
-
-var Post = React.createClass({
-  getDate: function(){
-    if(this.props.post.date){
-      return moment.unix(this.props.post.date).fromNow()
-    } else {
-      return 'Unknown Date'
-    }
-  },
-  render: function(){
-    return <div key={this.props.post.title} className="post">
-      <div className="content">
-        <h5>{this.props.post.title}</h5><hr/>
-        <Markdown source={this.props.post.text} skipHtml={true} /><hr/>
-        <div className="icons">
-          <UserID id={this.props.post.op}></UserID>
-          <Icon name="clock-o" className="not-first"/> {this.getDate()}
-          <Icon name="comments" className="not-first" /> Comments
-        </div>
-      </div>
-    </div>
-  }
-})
-
-var PostList = React.createClass({
-  getInitialState: function(){
-    return { posts: [] }
-  },
-  sortFn: function(a,b){
-    return (b.date || 0) - (a.date || 0)
-  },
-  componentDidMount: function(){
-    console.log('Initial POSTS',this.state.posts.length)
-    boards.getPostsInBoard(this.props.admin,this.props.board)
-    .on('post in '+this.props.board+'@'+this.props.admin,(post,hash) => {
-      if(!this.isMounted()) return true
-      var now = moment().unix()
-      var posts = this.state.posts
-      if(post.date === undefined || post.date <= 0){
-        posts.push(post)
-      } else if(post.date <= now){
-        var i = sortedIndex(posts,post,(p) => now-p.date || now)
-        posts.splice(i,0,post)
-      } else {
-        console.log('Post discarded cause date in the future:',post)
-      }
-      this.setState({ posts })
-    })
-  },
-  render: function(){
-    return (
-      <div className="postList">
-        {this.state.posts.map(post => {
-          return <Post key={post.title+post.text} post={post} />
-        })}
-      </div>
-    )
-  }
-})
-
-var UserID = React.createClass({
-  getInitialState: function(){
-    return { }
-  },
-  componentDidMount: function(){
-    if(this.props.id) boards.getProfile(this.props.id, (err,res) => {
-      if(!this.isMounted()) return true
-      if(!err) {
-        this.setState({ name: res.name.trim() })
-      }
-    })
-  },
-  getContent: function(){
-    if(this.state.name){
-      return (<Icon name="user" />)
-    } else {
-      return '@'
-    }
-  },
-  render: function(){
-    if(this.props.id)
-      return (<div className="user-id">
-        <Link className="light nounderline" to={'/@'+this.props.id}>
-          {this.getContent()}{this.state.name || this.props.id}
-        </Link>
-      </div>)
-    else return <div className="user-id">
-        <Icon name="ban" /> Unknown User
-      </div>
   }
 })
 
@@ -226,164 +111,13 @@ var NotImplemented = React.createClass({
   }
 })
 
-// Dynamic pages
-
-var Profile = React.createClass({
-  getInitialState: function(){
-    return { name: '...', boards: [] }
-  },
-  componentDidMount: function(){
-    console.log('About to ask for profile for',this.props.params.userid)
-    var ee = boards.getEventEmitter()
-    ee.on('boards for '+this.props.params.userid,l => {
-      if(!this.isMounted()) return true
-      this.setState({ boards: l })
-    })
-    boards.getProfile(this.props.params.userid,(err,res) => {
-      if(!this.isMounted()) return true
-      if(err){
-        this.setState({
-          name: <Icon name="ban" />,
-          description: err
-        })
-      } else {
-        this.setState({ name: res.name, description: res.description })
-      }
-    })
-  },
-  linkToEditor: function(){
-    if(this.props.params.userid === boards.id){
-      return <div>
-        <h6>This is your profile</h6>
-        <hr/>
-      </div>
-    }
-    return ''
-  },
-  render: function(){
-    return (<div className="profile">
-      {this.linkToEditor()}
-      <h1>{this.state.name}</h1>
-      <Markdown source={this.state.description} skipHtml={true} />
-      <hr/>
-      <h5 className="light">@{this.props.params.userid}</h5>
-      {this.state.boards.map(n => {
-        return <h6 className="light" key={this.props.params.userid+'/'+n.name}>
-          <Link to={'/@'+this.props.params.userid+'/'+n.name}># {n.name}</Link>
-        </h6>
-      })}
-    </div>)
-  }
-})
-
-var Board = React.createClass({
-  getInitialState: function(){
-    return { name: this.props.params.boardname }
-  },
-  componentDidMount: function(){
-    var ee = boards.getBoardSettings(this.props.params.userid,this.props.params.boardname)
-    ee.on('settings for '+this.props.params.boardname+'@'+this.props.params.userid, (res) => {
-      if(!this.isMounted()) return true
-      console.log('Found name:',res.fullname)
-      this.setState({ name: res.fullname.trim(), description: res.description })
-    })
-  },
-  render: function(){
-    return (<div className="board">
-      <h2>{this.state.name}</h2>
-      <Markdown source={this.state.description} skipHtml={true} />
-      <h5><UserID id={this.props.params.userid} /></h5>
-      <PostList board={this.props.params.boardname} admin={this.props.params.userid}/>
-    </div>)
-  }
-})
-
-var Users = React.createClass({
-  getInitialState: function(){
-    return { users: boards.getUsers() }
-  },
-  componentDidMount: function(){
-    boards.searchUsers().on('user',(id) => {
-      if(id === undefined) console.log('found undefined user???')
-      if(this.isMounted() && this.state.users.indexOf(id) < 0)
-        this.setState({ users: this.state.users.concat(id) })
-    })
-  },
-  render: function(){
-    return <div>
-      <h1><Icon name="users" /> Users</h1>
-      <p>Found <b>{this.state.users.length}</b> users</p>
-      <ul>
-        {this.state.users.map(user => {
-          return <UserID key={user} id={user} />
-        })}
-      </ul>
-    </div>
-  }
-})
-
-var Settings = React.createClass({
-  getDefaults: function(){
-    return { addr: 'localhost', port: 5001 }
-  },
-  getInitialState: function(){
-    var s = localStorage.getItem('ipfs-boards-settings')
-    var obj = this.getDefaults()
-    try {
-      obj = JSON.parse(s)
-    } catch(e){
-      localStorage.removeItem('ipfs-boards-settings')
-    }
-    return obj || this.getDefaults()
-  },
-  save: function(){
-    if(isNaN(this.state.port) || parseInt(this.state.port) > 65535 || parseInt(this.state.port) < 1){
-      alert('Port number invalid')
-    } else {
-      localStorage.setItem('ipfs-boards-settings',JSON.stringify({
-        addr: this.state.addr,
-        port: parseInt(this.state.port)
-      }))
-      alert('Saved')
-    }
-  },
-  setDefaults: function(){
-    this.setState(this.getDefaults())
-  },
-  onChange: function(event){
-    if(event.target.id === 'nodeAddress'){
-      this.setState({ addr: event.target.value })
-    } else {
-      this.setState({ port: event.target.value })
-    }
-  },
-  render: function(){
-    return (
-      <div className="settings">
-        <h2><Icon name="cog"/> Settings</h2>
-        <h5>This page is still a little rough, but it works. Reload the page after saving to apply changes.</h5>
-        <p>Use this page to customize the application's behavior. For now, you can change how it connects to IPFS.</p>
-        <p>All settings are saved in your browser.</p>
-        <div className="row">
-          <div className="six columns">
-            <label htmlFor="nodeAddress">IPFS Node</label>
-            <input className="u-full-width" type="text" id="nodeAddress" value={this.state.addr} onChange={this.onChange} placeholder="localhost" />
-          </div>
-          <div className="six columns">
-            <label htmlFor="nodePort">API Port</label>
-            <input className="u-full-width" type="text" id="nodePort" value={this.state.port} onChange={this.onChange} placeholder="5001" />
-          </div>
-        </div>
-        <div className="buttons">
-          <button className="button button-primary" onClick={this.save}>Save</button>
-          <button className="button not-first" onClick={this.setDefaults}>Defaults</button>
-        </div>
-      </div>
-    )
-  }
-})
-
 // Start
+
+var Users = require('users.jsx')(boards)
+var Settings = require('settings.jsx')(boards)
+var Profile = require('profile.jsx')(boards)
+var Board = require('board.jsx')(boards)
+var Icon = require('icon.jsx')
 
 boards.init(err => {
   if(err){

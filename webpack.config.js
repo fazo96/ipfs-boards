@@ -13,7 +13,7 @@ module.exports = {
   },
   resolve: {
     modulesDirectories: [
-      'node_modules', './webapp/', 'lib',
+      'node_modules', './webapp/', 'lib', './webapp/components/',
       'node_modules/font-awesome/css', 'node_modules/font-awesome/fonts'
     ],
     alias: {
