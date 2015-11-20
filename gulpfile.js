@@ -1,14 +1,7 @@
 var gulp = require('gulp')
-var source = require('vinyl-source-stream')
-var buffer = require('vinyl-buffer')
-var minifyCss = require('gulp-minify-css')
-var browserify = require('browserify')
-var uglify = require('gulp-uglify')
+var webpack = require('webpack-stream')
 var clean = require('gulp-clean')
-var exorcist = require('exorcist')
 var connect = require('gulp-connect')
-var watchify = require('watchify')
-var util = require('gulp-util')
 var ghPages = require('gulp-gh-pages')
 
 var config = {
@@ -22,63 +15,20 @@ var config = {
   dest: 'webapp/dist/'
 }
 
-gulp.task('css',function(){
-  gulp.src(config.files.css)
-      .pipe(minifyCss())
-      .pipe(gulp.dest(config.dest))
-      .pipe(connect.reload())
+gulp.task('watch',function(){
+  var cfg = require('./webpack.config.js')
+  cfg.watch = true
+  return gulp.src(config.files.mainJs)
+    .pipe(webpack(cfg))
+    .pipe(gulp.dest(config.dest))
+    .pipe(connect.reload())
 })
 
-gulp.task('html',function(){
-  return gulp.src(config.files.html)
-      .pipe(gulp.dest(config.dest))
-      .pipe(connect.reload())
+gulp.task('build',function(){
+  return gulp.src(config.files.mainJs)
+    .pipe(webpack(require('./webpack.config.js')))
+    .pipe(gulp.dest(config.dest))
 })
-
-gulp.task('js-watch',function(){
-  var b = getBrowserify()
-  b.on('log',function(l){
-    util.log(l)
-  })
-  b.on('error',function(error){
-    util.log(error)
-  })
-  b.on('update', function(){
-    util.log('Rebundling')
-    applyBrowserify(b)
-  })
-  return applyBrowserify(b)
-})
-
-gulp.task('js',function(){
-  return applyBrowserify(getBrowserify())
-})
-
-function getBrowserify(){
-  return browserify(config.files.mainJs, {
-    cache: {},
-    packageCache: {},
-    plugin: [watchify],
-    //fullPaths: true,
-    debug: true })
-        .transform('babelify', {
-          global: true,
-          presets: [ 'es2015', 'react' ],
-          ignore: /buffer|EventEmitter/
-        })
-        .transform('eslintify')
-        .transform({ global: true },'uglifyify')
-}
-
-function applyBrowserify(b){
-  return b.bundle()
-  .pipe(exorcist(__dirname+'/webapp/dist/app.js.map'))
-  .on('error', console.error.bind(console))
-  .pipe(source('app.js'))
-  .pipe(buffer())
-  .pipe(gulp.dest(config.dest))
-  .pipe(connect.reload())
-}
 
 gulp.task('clean',function(){
   return gulp.src(config.dest, { read: false }).pipe(clean())
@@ -92,17 +42,11 @@ gulp.task('server',function(){
   })
 })
 
-gulp.task('watch',['js-watch'],function(){
-  //gulp.watch([config.files.jsLibs,config.files.mainJs],['js-watch'])
-  gulp.watch(config.files.html,['html'])
-  gulp.watch(config.files.css,['css'])
-})
-
-gulp.task('gh-pages',[ 'html', 'css', 'js' ],function(){
+gulp.task('gh-pages',[ 'build' ],function(){
   gulp.src([config.dest+'*.js',config.dest+'*.css',config.dest+'*.html'])
     .pipe(ghPages())
 })
 
-gulp.task('serve', [ 'html', 'css', 'watch', 'server' ])
+gulp.task('serve', [ 'watch', 'server' ])
 
-gulp.task('default', [ 'html', 'css', 'js' ])
+gulp.task('default', [ 'build' ])

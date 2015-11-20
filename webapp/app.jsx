@@ -9,7 +9,13 @@ var Link = require('react-router').Link
 var MarkdownLib = require('react-markdown')
 var moment = require('moment')
 var sortedIndex = require('lodash.sortedindex')
-var BoardsAPI = require('../lib/boards-api.js')
+var BoardsAPI = require('boards-api.js')
+
+// Load CSS
+require('normalize.css')
+require('skeleton.css')
+require('style.css')
+require('font-awesome.min.css')
 
 var opt, s = localStorage.getItem('ipfs-boards-settings')
 try {
