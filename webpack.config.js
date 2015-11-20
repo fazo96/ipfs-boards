@@ -29,17 +29,10 @@ module.exports = {
       {
         test: /\.jsx?$/,
         exclude: /(node_modules|bower_components)/,
+        include: /webapp|lib|node_modules\/(ipfs-api|hoek|qs|boom|wreck)/,
         loader: 'babel',
         query: {
           presets: ['es2015','react'],
-          plugins: ['transform-runtime']
-        }
-      },{
-        test: /\.js$/,
-        include: /node_modules\/(ipfs-api|hoek|qs|boom|wreck)/,
-        loader: 'babel',
-        query: {
-          presets: ['es2015'],
           plugins: ['transform-runtime']
         }
       }
