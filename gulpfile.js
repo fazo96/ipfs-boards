@@ -15,16 +15,17 @@ var config = {
   dest: 'webapp/dist/'
 }
 
-gulp.task('watch',function(){
+gulp.task('watch',['clean'],function(){
   var cfg = require('./webpack.config.js')
   cfg.watch = true
+  cfg.devtool = 'eval'
   return gulp.src(config.files.mainJs)
     .pipe(webpack(cfg))
     .pipe(gulp.dest(config.dest))
     .pipe(connect.reload())
 })
 
-gulp.task('build',function(){
+gulp.task('build',['clean'],function(){
   return gulp.src(config.files.mainJs)
     .pipe(webpack(require('./webpack.config.js')))
     .pipe(gulp.dest(config.dest))
