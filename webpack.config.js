@@ -28,8 +28,8 @@ module.exports = {
       { test: /\.json$/, loader: 'json' },
       {
         test: /\.jsx?$/,
-        exclude: /(node_modules|bower_components)/,
         include: /webapp|lib|node_modules\/(ipfs-api|hoek|qs|boom|wreck)/,
+        exclude: /(node_modules|bower_components)/,
         loader: 'babel',
         query: {
           presets: ['es2015','react'],
