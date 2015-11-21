@@ -39,14 +39,23 @@ var App = React.createClass({
 })
 
 var Navbar = React.createClass({
+  extraButtons: function(){
+    if(boards.id && boards.version){
+      return <span>
+          <Link className="nounderline" to="/@me"><Icon name="user" className="fa-2x light"/></Link>
+          <Link className="nounderline" to="/users"><Icon name="globe" className="fa-2x light"/></Link>
+        </span>
+    } else {
+      return <Link className="nounderline" to="/error"><Icon name="ban" className="fa-2x light"/></Link>
+    }
+  },
   render: function(){
     return (
       <div className="navbar">
         <div className="container">
           {this.props.children || <h4><Link to="/"><Icon name="comments" className="light"/> Boards</Link></h4>}
           <div className="u-pull-right iconbar">
-            <Link className="nounderline" to="/@me"><Icon name="user" className="fa-2x light"/></Link>
-            <Link className="nounderline" to="/users"><Icon name="globe" className="fa-2x light"/></Link>
+            {this.extraButtons()}
             <Link className="nounderline" to="/settings"><Icon name="cog" className="fa-2x light"/></Link>
             <a className="nounderline" href="https://github.com/fazo96/ipfs-boards"><Icon name="github" className="fa-2x light"/></a>
           </div>
@@ -70,19 +79,6 @@ var Static = React.createClass({
   }
 })
 
-/*var Homepage = React.createClass({
-  render: function(){
-    return (
-      <div>
-        <h3>Welcome to the IPFS Boards Prototype</h3>
-        <p>Not much is implemented...</p>
-        <p>You can try <Link to="@QmXnfA41SXMX3tqFD4kjED7ehyvgTsuAho86TkEoTbZdpw">Opening my Profile</Link> though :)</p>
-        <p>More information about the project on <a href="https://github.com/fazo96/ipfs-board">GitHub</a></p>
-      </div>
-    )
-  }
-})*/
-
 var Homepage = React.createClass({
   render: function(){
     return <Static className="homepage" content={require('landing.md')} />
@@ -93,7 +89,8 @@ var GetIPFS = React.createClass({
   render: function(){
     return (
       <div className="">
-        <h1><Icon name="ban"/> Missing IPFS Node</h1>
+        <h1><Icon name="ban"/> Connection to IPFS not available</h1>
+        <h4 className="light">Sorry, but at the moment an external application is needed to try the Prototype</h4>
         <p>You don't have an IPFS node running at <code>{opt.addr}:{opt.port}</code> or it is not reachable</p>
         <p>The IPFS Boards prototype requires a full IPFS node running at localhost.
         Please start one by following the
