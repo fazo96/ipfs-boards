@@ -101,6 +101,15 @@ a:hover {
   margin: 1rem auto;
   width: 80%
 }
+.homepage {
+  text-align: center;
+  max-width: 70rem;
+  margin: auto;
+}
+
+.homepage li {
+  text-decoration: none;
+}
 
 @media (min-width: 400px) {
   /* larger than mobile */

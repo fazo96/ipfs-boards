@@ -57,7 +57,20 @@ var Navbar = React.createClass({
 
 // Static pages
 
-var Homepage = React.createClass({
+var Static = React.createClass({
+  html: function(){
+    return { __html: this.props.content }
+  },
+  render: function(){
+    if(this.props.content){
+      return <div className={this.props.className} dangerouslySetInnerHTML={this.html()} />
+    } else {
+      return <NotFound />
+    }
+  }
+})
+
+/*var Homepage = React.createClass({
   render: function(){
     return (
       <div>
@@ -67,6 +80,12 @@ var Homepage = React.createClass({
         <p>More information about the project on <a href="https://github.com/fazo96/ipfs-board">GitHub</a></p>
       </div>
     )
+  }
+})*/
+
+var Homepage = React.createClass({
+  render: function(){
+    return <Static className="homepage" content={require('landing.md')} />
   }
 })
 
@@ -125,8 +144,9 @@ boards.init(err => {
     ReactDOM.render(
       <Router>
         <Route path="/" component={App}>
-          <IndexRoute component={GetIPFS} />
+          <IndexRoute component={Homepage} />
           <Route path="/settings" component={Settings} />
+          <Route path="*" component={GetIPFS} />
         </Route>
       </Router>
     , document.getElementById('root'))

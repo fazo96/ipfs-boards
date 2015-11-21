@@ -13,7 +13,7 @@ module.exports = {
   },
   resolve: {
     modulesDirectories: [
-      'node_modules', './webapp/', 'lib', './webapp/components/',
+      'node_modules', './webapp/', 'lib', './webapp/components/', './webapp/assets/',
       'node_modules/font-awesome/css', 'node_modules/font-awesome/fonts'
     ],
     alias: {
@@ -25,6 +25,7 @@ module.exports = {
     loaders: [
       { test: /\.(ttf|eot|svg|woff(2?))(\?v=\d+\.\d+\.\d+)?$/, loader: 'file' },
       { test: /\.css$/, loaders: ['style','css'] },
+      { test: /\.md$/, loaders: ['html','markdown'] },
       { test: /\.json$/, loader: 'json' },
       {
         test: /\.jsx?$/,
@@ -52,7 +53,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       title: 'Boards',
-      template: 'webapp/template.html',
+      template: 'webapp/index.html',
       inject: 'body'
     }),
     // Optimization
