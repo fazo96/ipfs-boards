@@ -20,6 +20,11 @@ a {
   text-decoration: none;
 }
 
+.center-block {
+  margin:auto;
+  display:block;
+}
+
 .navbar {
   position: fixed;
   width: 100%;
@@ -109,6 +114,15 @@ a:hover {
 
 .homepage li {
   text-decoration: none;
+}
+
+.itsok p, h5 {
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
+.itsok h5 {
+  margin-right: 1rem;
 }
 
 @media (min-width: 400px) {

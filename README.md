@@ -5,8 +5,6 @@ Image and discussion boards, forums and the like have many problems:
 - Centralized
   - What if it gets shut down?
   - What if the servers are down?
-  - What if a phisical network link breaks and the data is on the other side?
-  - What if the owners of the board get eaten by aliens?
 
 - Fragile
   - what if there's a DoS attack?
@@ -14,13 +12,6 @@ Image and discussion boards, forums and the like have many problems:
   - what if the datacenter is flooded and data is lost?
 
 - Closed Down, limited in possibilities
-  - What if I want to write a custom client and there is no API?
-  - What if I want to change the user interface?
-  - What if I want to use it in a LAN with no Internet access?
-  - What if I want a name that someone else already has?
-  - What if I want to move my data to another service/subreddit/forum ?
-  - What if I want more control (think a private forum), or less control (think 4chan) ?
-  - What if I want <feature> ?
 
 This project was conceived to solve that. With the help of modern web technologies, the IPFS and IPNS protocols
 and some optional cache servers, we can solve these problems and create a true universal platform which can act as:
@@ -35,17 +26,14 @@ and some optional cache servers, we can solve these problems and create a true u
 With security, control, reliability, rock solid stability, fully distributed
 architecture or, optionally, none of these!
 
-## FAQ
+## Get Started
 
-See `FAQ.md`
+The App is not ready yet, but you're welcome to take a look at the prototype,
+even though it only has informational pages and very limited functionality.
 
-### How does it work?
+You can access it [here](http://ipfs.io/ipfs/QmSqHvZDxiZFEy1AY6BXmogSk6DZiVJRUU4HEm7DmXSqno)
 
-See `PROTOCOL.md`
-
-## Demo / Prototype
-
-You can find a working build [here](http://ipfs.io/ipfs/QmSqHvZDxiZFEy1AY6BXmogSk6DZiVJRUU4HEm7DmXSqno).
+### Prototype information
 
 You need a local instance of go-ipfs running for it to work. You also need to set
 CORS settings right or it won't work. However, in that case, it will complain to
@@ -69,6 +57,14 @@ Also, remember that __it doesn't have__:
 Ability to publish stuff in the browser won't be implemented until go-ipfs 0.4
 is ready. It will maybe be ready before the new year.
 You will be able to publish your boards/profile/posts using a CLI though.
+
+## FAQ
+
+See `FAQ.md`
+
+### How does it work?
+
+See `PROTOCOL.md`
 
 ### How do I set up a development environment?
 

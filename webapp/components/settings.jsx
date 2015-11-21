@@ -1,12 +1,18 @@
 var React = require('react')
 var Icon = require('icon.jsx')
 
-module.exports = function(boards){
+module.exports = function(boardsAPI){
   return React.createClass({
     getDefaults: function(){
-      return { addr: 'localhost', port: 5001 }
+      return { addr: 'localhost', port: 5001, api: false }
     },
     getInitialState: function(){
+      boardsAPI.use(boards => {
+        if(boards.isInit && this.isMounted()) this.setState({ api: true })
+        boards.getEventEmitter().on('init', err => {
+          if(!err && this.isMounted()) this.setState({ api: true })
+        })
+      })
       var s = localStorage.getItem('ipfs-boards-settings')
       var obj = this.getDefaults()
       try {
@@ -24,7 +30,7 @@ module.exports = function(boards){
           addr: this.state.addr,
           port: parseInt(this.state.port)
         }))
-        alert('Saved')
+        window.location.reload(false)
       }
     },
     setDefaults: function(){
@@ -35,6 +41,14 @@ module.exports = function(boards){
         this.setState({ addr: event.target.value })
       } else {
         this.setState({ port: event.target.value })
+      }
+    },
+    isOK: function(){
+      if(this.state.api){
+        return <div className="itsok light">
+          <h5><Icon name="check" /> It's OK</h5>
+          <p>You're connected to IPFS</p>
+        </div>
       }
     },
     render: function(){
@@ -54,6 +68,7 @@ module.exports = function(boards){
               <input className="u-full-width" type="text" id="nodePort" value={this.state.port} onChange={this.onChange} placeholder="5001" />
             </div>
           </div>
+          {this.isOK()}
           <div className="buttons">
             <button className="button button-primary" onClick={this.save}>Save</button>
             <button className="button not-first" onClick={this.setDefaults}>Defaults</button>

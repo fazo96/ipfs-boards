@@ -2,15 +2,29 @@ var React = require('react')
 var Icon = require('icon.jsx')
 var Link = require('react-router').Link
 
-module.exports = function(boards){
+module.exports = function(boardsAPI){
   return React.createClass({
     getInitialState: function(){
       return { }
     },
     componentDidMount: function(){
-      if(this.props.id) boards.getProfile(this.props.id, (err,res) => {
+      boardsAPI.use(boards => {
+        if(boards.isInit){
+          this.getProfile(boards)
+        }
+        boards.getEventEmitter().on('init',err => {
+          if(!err) this.getProfile(boards)
+          else console.log('ERR INIT',err)
+        })
+      })
+    },
+    getProfile: function(boards){
+      if(this.props.id === undefined) return
+      boards.getProfile(this.props.id, (err,res) => {
         if(!this.isMounted()) return true
-        if(!err) {
+        if(err){
+          console.log('Error while resolving user badge:',err)
+        } else {
           this.setState({ name: res.name || 'Unknown Name' })
         }
       })
@@ -23,15 +37,16 @@ module.exports = function(boards){
       }
     },
     render: function(){
-      if(this.props.id)
+      if(this.props.id === undefined || this.props.id === 'undefined')
+        return <div className="user-id">
+            <Icon name="ban" /> Unknown User
+          </div>
+      else
         return (<div className="user-id">
           <Link className="light nounderline" to={'/@'+this.props.id}>
             {this.getContent()}{this.state.name || this.props.id}
           </Link>
         </div>)
-      else return <div className="user-id">
-          <Icon name="ban" /> Unknown User
-        </div>
     }
   })
 }
