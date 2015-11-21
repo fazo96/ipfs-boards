@@ -50,17 +50,22 @@ it do something new?
 </div>
 </div>
 
+----
+
 ## How can we solve this?
 
-We found a solution. A new Social Platform that attempts to be the first to solve
-these problems: it has to allow people to express themselves, give power to control
-their content, their pages and their profiles but also the freedom to live without
-any rules. It has to work on all platforms, all networks, even without the
-Internet and become truly universal
+A new Social Platform needs to be built that attempts to be the first to solve
+these problems: it has to allow people to publish their thoughs, give them power
+to control their content, their pages and their profiles but also the freedom to
+live without any rules. It has to work on all platforms, all networks,
+even without the Internet.
+
+----
 
 ## Introducing Boards
 
-<h5 class="light">Yeah we totally need a better name</h5>
+<h5 class="light">Boards is a distributed social platform built for the browser
+using the <a href="https://ipfs.io">IPFS</a> protocol</h5>
 
 <div class="row">
 <div class="six columns">
@@ -70,7 +75,7 @@ Internet and become truly universal
 #### Distributed
 
 __Every user is responsible for his own content__, Profile and Boards, but your computer
-helps your friends and favourite creators (and only them) by sending their
+helps your friends and favorite creators (and only them) by sending their
 content to people that want to see it. __Only the original creator has control
 over his data__.
 
@@ -82,8 +87,8 @@ over his data__.
 #### Efficient
 
 There is no heavy __Blockchain__. This service is built to work everywhere from
-supercomputers to smartphones to the Internet of Things. __The more users see a page,
-the faster it travels to others__, making Denial of Service attack virtually impossible.
+supercomputers to smartphones to embedded devices. __The more users see a page,
+the faster it travels to others__, making Denial of Service attacks virtually impossible.
 
 </div>
 </div>
@@ -95,10 +100,11 @@ the faster it travels to others__, making Denial of Service attack virtually imp
 
 #### Free
 
-__Free, as in Freedom__. __We can't put ads on this__, because they'd be too easy
-to block: anyone can create his own App that connects to our service.
-__We can't control anything__, because the users control the content. There
-is no central service. There is only the users, their computers, and their content.
+__Free, as in Freedom__. __We can't control anything__, because the users
+control the content. There is no central database. There are only the users,
+their computers, and their content. __We can't put ads on this__, because
+they'd be too easy to block: anyone can create his own App that connects to
+our service.
 
 </div>
 <div class="six columns">
@@ -110,14 +116,18 @@ is no central service. There is only the users, their computers, and their conte
 __We're working on this in the open__. We already have a prototype, and all our
 code is _Free Software_. Got what it
 takes? [Join development on GitHub](https://github.com/fazo96/ipfs-boards) and
-help us build the social platform of tomorrow.
+help us build the first feature complete prototype.
 
 </div>
 </div>
 
-#### We're doing this because we believe that Social Platforms can become more than what they are now
+----
 
-<h5 class="light">Help us step into the next generation of the Internet</h5>
+#### We're just trying to build something nice
+
+<h5 class="light">Help us getting it to work</h5>
+
+<a href="https://github.com/fazo96/ipfs-boards"><i class="fa fa-github fa-3x"></i></a>
 
 ----
 

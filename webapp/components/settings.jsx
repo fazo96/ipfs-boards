@@ -41,9 +41,9 @@ module.exports = function(boards){
       return (
         <div className="settings">
           <h2><Icon name="cog"/> Settings</h2>
-          <h5>This page is still a little rough, but it works. Reload the page after saving to apply changes.</h5>
-          <p>Use this page to customize the application's behavior. For now, you can change how it connects to IPFS.</p>
-          <p>All settings are saved in your browser.</p>
+          <h5>Choose how the prototype connects to IPFS</h5>
+          <p>In the future, this won't be necessary because IPFS will run in your browser.</p>
+          <p>All settings are saved in your browser's localStorage.</p>
           <div className="row">
             <div className="six columns">
               <label htmlFor="nodeAddress">IPFS Node</label>
