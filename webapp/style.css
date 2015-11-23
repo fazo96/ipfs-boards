@@ -20,6 +20,10 @@ a {
   text-decoration: none;
 }
 
+.black {
+  color: black
+}
+
 .center-block {
   margin:auto;
   display:block;
@@ -75,12 +79,20 @@ a:hover {
   color: #707070;
 }
 
+.post .icons .a {
+  color: #707070;
+}
+
 .post .icons .user-id {
   display: inline-block;
 }
 
 .post .icons .not-first{
   margin-left: 1rem;
+}
+
+.post-page .user-id {
+  display: inline
 }
 
 .navbar {

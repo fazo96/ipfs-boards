@@ -1,4 +1,5 @@
 var React = require('react')
+var Link = require('react-router').Link
 
 module.exports = function(boardsAPI){
   var UserID = require('userID.jsx')(boardsAPI)
@@ -10,6 +11,7 @@ module.exports = function(boardsAPI){
     },
     componentDidMount: function(){
       boardsAPI.use(boards => {
+        boards.init()
         boards.getEventEmitter().on('init', err => {
           if(!err && this.isMounted()){
             this.init(boards)
@@ -31,9 +33,22 @@ module.exports = function(boardsAPI){
         }
       })
     },
+    getContext(){
+      if(this.props.params.userid){
+        if(this.props.params.boardname)
+          return <div>Posted by <UserID id={this.props.params.userid} /> in <Link to={'@/'+this.props.params.userid+'/'+this.props.params.boardname}>#{this.props.params.boardname}</Link></div>
+        else
+          return <div>Posted by <UserID id={this.props.params.userid} /></div>
+      } else return <div><h6 className="light">You are viewing a single post</h6></div>
+    },
     render: function(){
       if(this.state.api)
-        return <Post post={this.state.post} board={this.props.params.boardname} />
+        return <div className="post-page">
+          <div className="text-center">
+            {this.getContext()}
+          </div>
+          <Post post={this.state.post} board={this.props.params.boardname} />
+        </div>
       else return <GetIPFS />
     }
   })

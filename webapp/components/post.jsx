@@ -43,7 +43,7 @@ module.exports = function(boardsAPI){
           <div className="icons">
             <UserID id={this.props.post.op}></UserID>
             <Icon name="clock-o" className="not-first"/> {this.getDate()}
-            <Icon name="comments" className="not-first" /> <Link to={this.postLink()}>View</Link>
+            <Icon name="comments" className="not-first" /> <Link className="nounderline" to={this.postLink()}>View</Link>
           </div>
         </div>
       </div>
