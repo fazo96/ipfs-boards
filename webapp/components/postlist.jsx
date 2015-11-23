@@ -1,5 +1,6 @@
 var React = require('react')
 var sortedIndex = require('lodash.sortedindex')
+var Icon = require('icon.jsx')
 
 module.exports = function(boardsAPI){
   var Post = require('post.jsx')(boardsAPI)
@@ -39,7 +40,7 @@ module.exports = function(boardsAPI){
     getPosts: function(){
       if(this.state.posts.length > 0 || this.state.api){
         return this.state.posts.map(post => {
-          return <Post key={post.title+post.text} post={post} />
+          return <Post key={post.hash} board={this.props.board} admin={this.props.admin} post={post} />
         })
       } else return <div className="center-block text-center">
         <Icon name="refresh" className="fa-3x center-block light fa-spin" />
@@ -48,9 +49,7 @@ module.exports = function(boardsAPI){
     render: function(){
       return (
         <div className="postList">
-          {this.state.posts.map(post => {
-            return <Post key={post.title+post.text} post={post} />
-          })}
+          {this.getPosts()}
         </div>
       )
     }

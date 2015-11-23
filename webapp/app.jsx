@@ -82,11 +82,15 @@ ReactDOM.render(
       <IndexRoute component={Homepage} />
       <Route path="/@:userid">
         <IndexRoute component={Profile} />
+        <Route path="post">
+          <Route path=":posthash" component={PostPage} />
+        </Route>
         <Route path=":boardname">
           <IndexRoute component={Board} />
           <Route path=":posthash" component={PostPage} />
         </Route>
       </Route>
+      <Route path="/post/:posthash" component={PostPage} />
       <Route path="/users" component={Users} />
       <Route path="/settings" component={Settings} />
       <Route path="*" component={NotFound} />
