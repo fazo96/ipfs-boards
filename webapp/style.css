@@ -20,6 +20,10 @@ a {
   text-decoration: none;
 }
 
+.clock {
+  display: inline
+}
+
 .black {
   color: black
 }

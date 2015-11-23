@@ -1,4 +1,5 @@
 var React = require('react')
+require('font-awesome.min.css')
 
 module.exports = React.createClass({
   class: function(){

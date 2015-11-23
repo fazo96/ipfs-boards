@@ -11,7 +11,6 @@ require('normalize.css')
 require('skeleton.css')
 require('style.css')
 require('raleway.css')
-require('font-awesome.min.css')
 
 // Load Components
 
