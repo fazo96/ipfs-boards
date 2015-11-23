@@ -48,7 +48,11 @@ module.exports = {
     ]
   },
   externals: {
-    fs: '{}'
+    net: '{}',
+    fs: '{}',
+    tls: '{}',
+    console: '{}',
+    'require-dir': '{}'
   },
   plugins: [
     new HtmlWebpackPlugin({
