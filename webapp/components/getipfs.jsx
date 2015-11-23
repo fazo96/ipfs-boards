@@ -43,6 +43,7 @@ module.exports = function(boardsAPI){
             <li>Your node is not located at <code>{opt.addr}:{opt.port}</code>. Go to the <Link to="/settings">Settings Page</Link> to configure the connection.</li>
             <li>You edited your settings and saved them but didn't reload the page</li>
             <li>Your IPFS node doesn't allow requests from the domain you're running the app from (CORS issue). See <a href="https://github.com/fazo96/ipfs-board/blob/master/ipfs_daemon_set_cors.sh">here</a> for the fix.</li>
+            <li>You're downloading the app via `https`: at the moment, connecting to IPFS only works if you donwload the app via plain HTTP. If you're using `ipfs.io` please consider accessing the app via a local gateway like `localhost:8080`</li>
             <li>Some other networking or browser security issue is preventing the App from talking to your node.</li>
           </ul>
           <p>Still can't fix it? <a href="https://github.com/fazo96/ipfs-board/issues">File a issue on GitHub</a>, we'll be happy to help!</p>
