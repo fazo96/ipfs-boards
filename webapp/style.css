@@ -75,7 +75,7 @@ a:hover {
   margin: 2rem;
 }
 
-.post .icons .fa {
+.post .icons .fa, .comment .icons .fa {
   color: #707070;
 }
 
@@ -94,6 +94,15 @@ a:hover {
 .post-page .user-id {
   display: inline
 }
+
+.comment .icons {
+  margin-bottom: 1rem;
+}
+
+.comment .icons .user-id {
+  margin-right: 1rem;
+}
+
 
 .navbar {
   border-bottom: 1px solid #eee;

@@ -24,7 +24,6 @@ module.exports = function(boardsAPI){
       })
     },
     postLink: function(){
-      console.log('op',this.props.post.op,'board',this.props.board)
       if(this.props.post.op){
         if(this.props.board){
           return '/@'+this.props.post.op+'/'+this.props.board+'/'+this.props.post.hash
@@ -39,7 +38,7 @@ module.exports = function(boardsAPI){
       return <div key={this.props.post.title} className="post">
         <div className="content">
           <h5>{this.props.post.title}</h5><hr/>
-          <Markdown source={this.props.post.text} skipHtml={true} /><hr/>
+          <Markdown source={this.props.post.text} /><hr/>
           <div className="icons">
             <UserID id={this.props.post.op}></UserID>
             <Icon name="clock-o" className="not-first"/> {this.getDate()}
