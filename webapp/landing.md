@@ -123,8 +123,6 @@ help us build the first feature complete prototype.
 
 ----
 
-#### We're just trying to build something nice
-
 <h5 class="light">Help us getting it to work</h5>
 
 <a href="https://github.com/fazo96/ipfs-boards"><i class="fa fa-github fa-3x"></i></a>
