@@ -1,5 +1,10 @@
 # IPFS Boards
 
+The easy to use Discussion Board platform that runs in modern web browsers,
+and requires no servers.
+
+## Why
+
 Image and discussion boards, forums and the like have many problems:
 
 - Centralized
@@ -7,20 +12,29 @@ Image and discussion boards, forums and the like have many problems:
   - What if the servers are down?
 
 - Fragile
-  - what if there's a DoS attack?
-  - what if there is a usage explosion and the servers can't handle it?
-  - what if the datacenter is flooded and data is lost?
+  - What if there's a DoS attack?
+  - What if there is a usage explosion and the servers can't handle it?
+  - What if the datacenter is flooded and data is lost?
 
-- Closed Down, limited in possibilities
+- Limited
+  - What if you want new functionality or restore old features?
+  - What if you want to build custom clients or extensions to the service?
+  - What if you want to use it in a Local Network with no Internet access and no servers?
+  - What if you want to do more than what the service was designed for, or truly be in control of your data?
 
-This project was conceived to solve that. With the help of modern web technologies, the IPFS and IPNS protocols
-and some optional cache servers, we can solve these problems and create a true universal platform which can act as:
+This project was conceived to solve that. With the help of:
+
+- the [IPFS](https://github.com/ipfs/ipfs) and IPNS protocols for efficient distributed data storage
+- IPLD and [POST](https://github.com/ipfs/POST) protocols for a common, universal data structure
+- Modern browsers and web technologies for a portable, accessible user interface
+
+We can solve these problems and create a true universal platform which can act as:
 
 - Discussion board, like reddit or 4chan
 - Blog with dynamic comments
 - Wiki
 - File Sharing platform
-- (Maybe) Forum (not sure because it would require some changes, but maybe)
+- Forum
 - (Maybe) E-Learning platform
 
 With security, control, reliability, rock solid stability, fully distributed

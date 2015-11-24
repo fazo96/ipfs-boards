@@ -41,6 +41,8 @@ publication, containing:
 - profile.json - user's profile data, like name, email, etc
 - ipfs-boards-version.txt - used to store compatibility information
 
+In the future, the Data Storage will be changed to comply with IPLD and [POST](https://github.com/ipfs/POST)
+
 #### Board settings
 
     {

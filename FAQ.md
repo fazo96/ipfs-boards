@@ -10,7 +10,7 @@ See `PROTOCOL.md`
 
 That's why there are __Cache Servers__. See `PROTOCOL.md`
 
-### What about search engines? They can't index stuff that's not served over http
+### What about search engines? They can't index stuff that's not served over plain HTTP
 
 No problem! Cache servers will eventually be able to render pages on the backend
 so that content is readable even via HTTP, without Javascript or IPFS access.
