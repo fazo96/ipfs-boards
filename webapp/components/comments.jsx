@@ -21,10 +21,12 @@ module.exports = function(boardsAPI){
       })
     },
     getComments: function(){
-      return this.state.comments.map(cmnt => (<Comment key={cmnt.hash} comment={cmnt} />) )
+      if(this.state.comments.length > 0)
+        return this.state.comments.map(cmnt => (<Comment key={cmnt.hash} comment={cmnt} comments={this} adminID={this.props.adminID} board={this.props.board}/>) )
+      else return <div></div>
     },
     render: function(){
-      return <div>{this.getComments()}</div>
+      return <div className={this.props.className+' comments'} >{this.getComments()}</div>
     }
   })
 }

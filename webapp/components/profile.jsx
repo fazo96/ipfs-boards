@@ -71,7 +71,7 @@ module.exports = function(boardsAPI){
           <h1>{this.state.name}</h1>
           <Markdown source={this.state.description} skipHtml={true} />
           <hr/>
-          <h5 className="light">@{uid}</h5>
+          <div className="light breaker">@{uid}</div>
           {this.state.boards.map(n => {
             return <h6 className="light" key={uid+'/'+n.name}>
               <Link to={'/@'+uid+'/'+n.name}># {n.name}</Link>

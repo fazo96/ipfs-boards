@@ -58,6 +58,10 @@ a:hover {
   color: #707070
 }
 
+.breaker {
+  word-break: break-all;
+}
+
 .app {
   padding-top: 9rem
 }
@@ -107,6 +111,9 @@ a:hover {
   margin-right: 1rem;
 }
 
+.shifted {
+  margin-left: 2rem;
+}
 
 .navbar {
   border-bottom: 1px solid #eee;
