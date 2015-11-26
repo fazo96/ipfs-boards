@@ -30,6 +30,6 @@ module.exports = React.createClass({
       return <Icon name="refresh" className="fa-spin" />
   },
   render: function(){
-    return <div className="clock"><Icon name="clock-o" className={this.props.className} /> {this.getDate()}</div>
+    return <div className="inline"><Icon name="clock-o" className={this.props.className} /> {this.getDate()}</div>
   }
 })

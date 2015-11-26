@@ -28,6 +28,7 @@ var Settings = require('settings.jsx')(boards)
 var Profile = require('profile.jsx')(boards)
 var Board = require('board.jsx')(boards)
 var PostPage = require('postpage.jsx')(boards)
+var CommentPage = require('commentpage.jsx')(boards)
 
 // Define Main Components
 
@@ -81,12 +82,15 @@ ReactDOM.render(
       <IndexRoute component={Homepage} />
       <Route path="/@:userid">
         <IndexRoute component={Profile} />
-        <Route path="post">
-          <Route path=":posthash" component={PostPage} />
+        <Route path="post/:posthash" >
+          <IndexRoute component={PostPage} />
         </Route>
         <Route path=":boardname">
           <IndexRoute component={Board} />
-          <Route path=":posthash" component={PostPage} />
+          <Route path=":posthash">
+            <IndexRoute component={PostPage} />
+            <Route path=":commenthash" component={CommentPage} />
+          </Route>
         </Route>
       </Route>
       <Route path="/post/:posthash" component={PostPage} />

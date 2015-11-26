@@ -35,7 +35,7 @@ module.exports = function(boardsAPI){
         }
       })
     },
-    getContext(){
+    getContext: function(){
       if(this.props.params.userid){
         if(this.props.params.boardname)
           return <div>Posted by <UserID id={this.props.params.userid} /> in <Link to={'@'+this.props.params.userid+'/'+this.props.params.boardname}>#{this.props.params.boardname}</Link></div>
@@ -50,7 +50,7 @@ module.exports = function(boardsAPI){
             {this.getContext()}
           </div>
           <Post post={this.state.post} board={this.props.params.boardname} />
-          <Comments parent={this.props.params.posthash} board={this.props.params.boardname} adminID={this.props.params.userid}/>
+          <Comments parent={this.props.params.posthash} board={this.props.params.boardname} adminID={this.props.params.userid} post={this.props.params.posthash} />
         </div>
       else return <GetIPFS />
     }

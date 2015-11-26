@@ -22,7 +22,7 @@ module.exports = function(boardsAPI){
     },
     getComments: function(){
       if(this.state.comments.length > 0)
-        return this.state.comments.map(cmnt => (<Comment key={cmnt.hash} comment={cmnt} comments={this} adminID={this.props.adminID} board={this.props.board}/>) )
+        return this.state.comments.map(cmnt => (<Comment key={cmnt.hash} comment={cmnt} post={this.props.post} comments={this} adminID={this.props.adminID} board={this.props.board}/>) )
       else return <div></div>
     },
     render: function(){

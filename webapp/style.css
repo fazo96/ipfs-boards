@@ -20,7 +20,7 @@ a {
   text-decoration: none;
 }
 
-.clock {
+.inline {
   display: inline
 }
 
@@ -83,23 +83,27 @@ a:hover {
   margin: 2rem;
 }
 
-.post .icons .fa, .comment .icons .fa {
+.icons .fa, .comment .icons .fa {
   color: #707070;
 }
 
-.post .icons .a {
+.icons .a {
   color: #707070;
 }
 
-.post .icons .user-id {
-  display: inline-block;
+.icons .user-id {
+  display: inline;
 }
 
-.post .icons .not-first{
+.icons .not-first{
   margin-left: 1rem;
 }
 
 .post-page .user-id {
+  display: inline
+}
+
+.comment-page .user-id {
   display: inline
 }
 
