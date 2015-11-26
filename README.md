@@ -45,7 +45,7 @@ architecture or, optionally, none of these!
 The App is not ready yet, but you're welcome to take a look at the prototype,
 even though it only has informational pages and very limited functionality.
 
-You can access it [here](http://ipfs.io/ipfs/QmNQesLAdwxhKhopK9cgKYiHhs4QMToAXtZZByeaoxVVnV)
+You can access it [here](http://ipfs.io/ipfs/QmPmqUP5bYUme6V45n4BzPTp6BM1wwX2nGsh5ttpC5qg1C)
 
 ### Prototype information
 
