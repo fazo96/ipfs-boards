@@ -14,7 +14,7 @@ module.exports = function(boardsAPI){
     init: function(boards){
       this.setState({ api: true })
       boards.getPostsInBoard(this.props.admin,this.props.board)
-      .on('post in '+this.props.board+'@'+this.props.admin,(post,hash) => {
+      .on('post in '+this.props.board+(this.props.admin?'@'+this.props.admin:''),(post,hash) => {
         if(!this.isMounted()) return true
         var now = (new Date()).getTime()
         var posts = this.state.posts

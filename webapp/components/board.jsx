@@ -28,21 +28,24 @@ module.exports = function(boardsAPI){
             this.init(boards)
           }
         })
-        ee.on('settings for '+this.props.params.boardname+'@'+this.props.params.userid, (res) => {
-          if(!this.isMounted()) return true
-          console.log('Found name:',res.fullname)
-          this.setState({ name: res.fullname.trim(), description: res.description })
-        })
+        if(this.props.params.userid){
+          ee.on('settings for '+this.props.params.boardname+'@'+this.props.params.userid, (res) => {
+            if(!this.isMounted()) return true
+            if(res) this.setState({ name: res.fullname, description: res.description })
+          })
+        } else {
+          this.setState({ description: 'All the messages posted in __#'+this.props.params.boardname+'__' })
+        }
         if(boards.isInit || this.state.api){
           this.setState({api: true})
           this.init(boards)
-          boards.getBoardSettings(this.props.params.userid,this.props.params.boardname)
         }
       })
     },
     init: function(boards){
       if(!this.state.init){
-        boards.getBoardSettings(this.props.params.userid,this.props.params.boardname)
+        if(this.props.params.userid)
+          boards.getBoardSettings(this.props.params.userid,this.props.params.boardname)
         this.setState({ init: true })
       }
     },
@@ -51,7 +54,8 @@ module.exports = function(boardsAPI){
         return (<div className="board">
           <h2>{this.state.name}</h2>
           <Markdown source={this.state.description} skipHtml={true} />
-          <h5><UserID id={this.props.params.userid} /></h5>
+          {this.props.params.userid?<h5><UserID id={this.props.params.userid} /></h5>:<p></p>}
+          <hr />
           <PostList board={this.props.params.boardname} admin={this.props.params.userid}/>
         </div>)
       } else return <GetIPFS />

@@ -90,6 +90,7 @@ ReactDOM.render(
         </Route>
       </Route>
       <Route path="/post/:posthash" component={PostPage} />
+      <Route path="/board/:boardname" component={Board} />
       <Route path="/users" component={Users} />
       <Route path="/settings" component={Settings} />
       <Route path="*" component={NotFound} />
