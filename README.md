@@ -64,8 +64,6 @@ Also, remember that __it doesn't have__:
 - Advanced customization, control, user profile customization
 - Media support
 - Votes
-- Comments
-- Actually nice user interface
 - Ability to run without a full IPFS node. That would require either a backend or the (currently not done) js implementation of IPFS
 
 Ability to publish stuff in the browser won't be implemented until go-ipfs 0.4
