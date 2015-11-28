@@ -3,10 +3,10 @@ var Link = require('react-router').Link
 var Icon = require('icon.jsx')
 
 module.exports = function(boardsAPI){
-  var UserID = require('userID.jsx')(boardsAPI)
-  var GetIPFS = require('getipfs.jsx')(boardsAPI)
-  var Post = require('post.jsx')(boardsAPI)
-  var Comment = require('comment.jsx')(boardsAPI)
+  var UserID = require('userID.jsx')()
+  var GetIPFS = require('getipfs.jsx')()
+  var Post = require('post.jsx')()
+  var Comment = require('comment.jsx').Comment
 
   return React.createClass({
     getInitialState: function(){
@@ -27,7 +27,7 @@ module.exports = function(boardsAPI){
     },
     init: function(boards){
       if(this.state.init) return
-      this.setState({ api: true })
+      this.setState({ api: true, boards: boards })
       boards.downloadComment(this.props.params.commenthash,this.props.params.userid,this.props.params.boardname,(err,comment) => {
         if(err){
           this.setState({ comment: { title: 'Error', text: err.Message || err.Error }})
@@ -39,14 +39,14 @@ module.exports = function(boardsAPI){
     getContext: function(){
       if(this.props.params.userid){
         if(this.props.params.boardname)
-          return <div>Comment by <UserID id={this.props.params.userid} /> in <Link to={'@'+this.props.params.userid+'/'+this.props.params.boardname}>#{this.props.params.boardname}</Link> to <Link to={'/@'+this.props.params.userid+'/'+this.props.params.boardname+'/'+this.props.params.posthash }>{this.props.params.posthash}</Link></div>
+          return <div>Comment by <UserID id={this.props.params.userid} api={this.state.boards} /> in <Link to={'@'+this.props.params.userid+'/'+this.props.params.boardname}>#{this.props.params.boardname}</Link> to <Link to={'/@'+this.props.params.userid+'/'+this.props.params.boardname+'/'+this.props.params.posthash }>{this.props.params.posthash}</Link></div>
         else
-          return <div>Comment by <UserID id={this.props.params.userid} /></div>
+          return <div>Comment by <UserID id={this.props.params.userid} api={this.state.boards} /></div>
       } else return <div><h6 className="light">You are viewing a single comment</h6></div>
     },
     showComment: function(){
       if(this.state.comment){
-        return <Comment comment={this.state.comment} post={this.props.params.posthash} adminID={this.props.params.userid} board={this.props.params.boardname} showParent={true} />
+        return <Comment comment={this.state.comment} post={this.props.params.posthash} adminID={this.props.params.userid} board={this.props.params.boardname} showParent={true} api={this.state.boards} />
       } else {
         return <div className="center-block text-center">
           <Icon name="refresh" className="fa-3x center-block light fa-spin" />
@@ -62,7 +62,7 @@ module.exports = function(boardsAPI){
           </div>
           {this.showComment()}
         </div>
-      else return <GetIPFS />
+      else return <GetIPFS api={this.state.boards} />
     }
   })
 }

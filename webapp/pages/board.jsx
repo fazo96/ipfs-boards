@@ -4,9 +4,9 @@ var Link = require('react-router').Link
 var Icon = require('icon.jsx')
 
 module.exports = function(boardsAPI){
-  var UserID = require('userID.jsx')(boardsAPI)
-  var PostList = require('postlist.jsx')(boardsAPI)
-  var GetIPFS = require('getipfs.jsx')(boardsAPI)
+  var UserID = require('userID.jsx')()
+  var PostList = require('postlist.jsx')()
+  var GetIPFS = require('getipfs.jsx')()
   return React.createClass({
     getInitialState: function(){
       return { name: this.props.params.boardname, api: false }
@@ -24,7 +24,6 @@ module.exports = function(boardsAPI){
         var ee = boards.getEventEmitter()
         ee.on('init',err => {
           if(!err && this.isMounted()){
-            this.setState({ api: true })
             this.init(boards)
           }
         })
@@ -37,7 +36,6 @@ module.exports = function(boardsAPI){
           this.setState({ description: 'All the messages posted in __#'+this.props.params.boardname+'__' })
         }
         if(boards.isInit || this.state.api){
-          this.setState({api: true})
           this.init(boards)
         }
       })
@@ -46,7 +44,7 @@ module.exports = function(boardsAPI){
       if(!this.state.init){
         if(this.props.params.userid)
           boards.getBoardSettings(this.props.params.userid,this.props.params.boardname)
-        this.setState({ init: true })
+        this.setState({ init: true, api: true, boards: boards })
       }
     },
     render: function(){
@@ -54,11 +52,11 @@ module.exports = function(boardsAPI){
         return (<div className="board">
           <h2>{this.state.name}</h2>
           <Markdown source={this.state.description} skipHtml={true} />
-          {this.props.params.userid?<h5><UserID id={this.props.params.userid} /></h5>:<p></p>}
+          {this.props.params.userid?<h5><UserID id={this.props.params.userid} api={this.state.boards} /></h5>:<p></p>}
           <hr />
-          <PostList board={this.props.params.boardname} admin={this.props.params.userid}/>
+          <PostList board={this.props.params.boardname} admin={this.props.params.userid} api={this.state.boards} />
         </div>)
-      } else return <GetIPFS />
+      } else return <GetIPFS api={this.state.boards} />
     }
   })
 }

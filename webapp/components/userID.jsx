@@ -2,21 +2,22 @@ var React = require('react')
 var Icon = require('icon.jsx')
 var Link = require('react-router').Link
 
-module.exports = function(boardsAPI){
+module.exports = function(){
   return React.createClass({
     getInitialState: function(){
       return { }
     },
     componentDidMount: function(){
-      boardsAPI.use(boards => {
+      var boards = this.props.api
+      if(boards){
         if(boards.isInit){
           this.getProfile(boards)
         }
         boards.getEventEmitter().on('init',err => {
-          if(!err) this.getProfile(boards)
+          if(!err && this.isMounted()) this.getProfile(boards)
           else console.log('ERR INIT',err)
         })
-      })
+      }
     },
     getProfile: function(boards){
       if(this.props.id === undefined) return

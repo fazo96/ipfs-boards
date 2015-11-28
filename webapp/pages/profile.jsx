@@ -12,13 +12,13 @@ module.exports = function(boardsAPI){
     componentDidMount: function(){
       boardsAPI.use(boards => {
         if(boards.isInit){
-          this.setState({ api: true, id: boards.id })
+          this.setState({ api: boards, id: boards.id })
           this.init()
         }
         var ee = boards.getEventEmitter()
         ee.on('init',err => {
           if(!err && this.isMounted()){
-            this.setState({ api: true, id: boards.id })
+            this.setState({ api: boards, id: boards.id })
             this.init()
           }
         })
@@ -78,7 +78,7 @@ module.exports = function(boardsAPI){
             </h6>
           })}
         </div>)
-      } else return <GetIPFS />
+      } else return <GetIPFS api={this.state.api} />
     }
   })
 }

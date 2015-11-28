@@ -2,8 +2,8 @@ var React = require('react')
 var sortedIndex = require('lodash.sortedindex')
 var Icon = require('icon.jsx')
 
-module.exports = function(boardsAPI){
-  var Post = require('post.jsx')(boardsAPI)
+module.exports = function(){
+  var Post = require('post.jsx')()
   return React.createClass({
     getInitialState: function(){
       return { posts: [], api: false }
@@ -30,17 +30,18 @@ module.exports = function(boardsAPI){
       })
     },
     componentDidMount: function(){
-      boardsAPI.use(boards => {
+      var boards = this.props.api
+      if(boards){
         if(boards.isInit) this.init(boards)
         else boards.getEventEmitter().on('init',err => {
           if(!err && this.isMounted()) this.init(boards)
         })
-      })
+      }
     },
     getPosts: function(){
       if(this.state.posts.length > 0 || this.state.api){
         return this.state.posts.map(post => {
-          return <Post key={post.hash} board={this.props.board} admin={this.props.admin} post={post} />
+          return <Post key={post.hash} board={this.props.board} admin={this.props.admin} post={post} api={this.props.api} />
         })
       } else return <div className="center-block text-center">
         <Icon name="refresh" className="fa-3x center-block light fa-spin" />

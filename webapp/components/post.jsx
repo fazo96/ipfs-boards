@@ -4,8 +4,8 @@ var Icon = require('icon.jsx')
 var Link = require('react-router').Link
 var Clock = require('clock.jsx')
 
-module.exports = function(boardsAPI){
-  var UserID = require('userID.jsx')(boardsAPI)
+module.exports = function(){
+  var UserID = require('userID.jsx')()
   return React.createClass({
     getInitialState: function(){
       return { moment: false }
@@ -32,7 +32,7 @@ module.exports = function(boardsAPI){
           <h5>{this.props.post.title}</h5><hr/>
           <Markdown source={this.props.post.text} /><hr/>
           <div className="icons">
-            <UserID id={this.props.post.op}></UserID>
+            <UserID id={this.props.post.op} api={this.props.api} ></UserID>
             <Clock className="not-first" date={this.props.post.date} />
             <Icon name="comments" className="not-first" /> <Link className="nounderline" to={this.postLink()}>View</Link>
           </div>

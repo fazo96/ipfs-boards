@@ -2,8 +2,8 @@ var React = require('react')
 var Icon = require('icon.jsx')
 
 module.exports = function(boardsAPI){
-  var GetIPFS = require('getipfs.jsx')(boardsAPI)
-  var UserID = require('userID.jsx')(boardsAPI)
+  var GetIPFS = require('getipfs.jsx')()
+  var UserID = require('userID.jsx')()
   return React.createClass({
     getInitialState: function(){
       return { users: [], api: false }
@@ -13,7 +13,6 @@ module.exports = function(boardsAPI){
         boards.init()
         if(boards.isInit){
           if(this.isMounted()){
-            this.setState({ api: true })
             this.init(boards)
           }
         }
@@ -21,7 +20,6 @@ module.exports = function(boardsAPI){
         ee.on('init', e => {
           if(!e && this.isMounted()){
             this.init(boards)
-            this.setState({ api: true })
           }
         })
         ee.on('user',(id) => {
@@ -34,7 +32,7 @@ module.exports = function(boardsAPI){
     },
     init: function(boards){
       if(this.isMounted() && !this.state.init){
-        this.setState({ users: boards.getUsers(), init: true })
+        this.setState({ users: boards.getUsers(), api: true, init: true, boards: boards })
         boards.searchUsers()
       }
     },
@@ -45,11 +43,11 @@ module.exports = function(boardsAPI){
           <p>Found <b>{this.state.users.length}</b> users</p>
           <ul>
             {this.state.users.map(user => {
-              return <UserID key={user} id={user} />
+              return <UserID key={user} id={user} api={this.state.boards} />
             })}
           </ul>
         </div>
-      } else return <GetIPFS />
+      } else return <GetIPFS api={this.state.boards} />
     }
   })
 }

@@ -2,13 +2,14 @@ var React = require('react')
 var Link = require('react-router').Link
 var Icon = require('icon.jsx')
 
-module.exports = function(boardsAPI){
+module.exports = function(){
   return React.createClass({
     getInitialState: function(){
       return { connected: false, error: false, long: false }
     },
     componentDidMount: function(){
-      boardsAPI.use(boards => {
+      var boards = this.props.api
+      if(boards){
         if(!this.isMounted()) return
         if(boards.isInit){
           this.setState({ connected: true })
@@ -25,7 +26,7 @@ module.exports = function(boardsAPI){
             }
           })
         }
-      })
+      }
     },
     render: function(){
       var opt = require('options.jsx').get()

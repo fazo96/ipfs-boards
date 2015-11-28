@@ -2,10 +2,10 @@ var React = require('react')
 var Link = require('react-router').Link
 
 module.exports = function(boardsAPI){
-  var UserID = require('userID.jsx')(boardsAPI)
-  var GetIPFS = require('getipfs.jsx')(boardsAPI)
-  var Post = require('post.jsx')(boardsAPI)
-  var Comments = require('comments.jsx')(boardsAPI)
+  var UserID = require('userID.jsx')()
+  var GetIPFS = require('getipfs.jsx')()
+  var Post = require('post.jsx')()
+  var Comments = require('comment.jsx').Comments
 
   return React.createClass({
     getInitialState: function(){
@@ -26,7 +26,7 @@ module.exports = function(boardsAPI){
     },
     init: function(boards){
       if(this.state.init) return
-      this.setState({ api: true })
+      this.setState({ api: true, boards: boards })
       boards.downloadPost(this.props.params.posthash,this.props.params.userid,this.props.params.boardname,this.props.params.userid,(err,post) => {
         if(err){
           this.setState({ post: { title: 'Error', text: err.Message || err.Error }})
@@ -38,9 +38,9 @@ module.exports = function(boardsAPI){
     getContext: function(){
       if(this.props.params.userid){
         if(this.props.params.boardname)
-          return <div>Posted by <UserID id={this.props.params.userid} /> in <Link to={'@'+this.props.params.userid+'/'+this.props.params.boardname}>#{this.props.params.boardname}</Link></div>
+          return <div>Posted by <UserID id={this.props.params.userid} api={this.state.boards} /> in <Link to={'@'+this.props.params.userid+'/'+this.props.params.boardname}>#{this.props.params.boardname}</Link></div>
         else
-          return <div>Posted by <UserID id={this.props.params.userid} /></div>
+          return <div>Posted by <UserID id={this.props.params.userid} api={this.state.boards} /></div>
       } else return <div><h6 className="light">You are viewing a single post</h6></div>
     },
     render: function(){
@@ -49,10 +49,10 @@ module.exports = function(boardsAPI){
           <div className="text-center">
             {this.getContext()}
           </div>
-          <Post post={this.state.post} board={this.props.params.boardname} />
-          <Comments parent={this.props.params.posthash} board={this.props.params.boardname} adminID={this.props.params.userid} post={this.props.params.posthash} />
+          <Post post={this.state.post} board={this.props.params.boardname} api={this.state.boards} />
+          <Comments parent={this.props.params.posthash} board={this.props.params.boardname} adminID={this.props.params.userid} post={this.props.params.posthash} api={this.state.boards} />
         </div>
-      else return <GetIPFS />
+      else return <GetIPFS api={this.state.boards} />
     }
   })
 }
