@@ -1,13 +1,12 @@
 var React = require('react')
 var Link = require('react-router').Link
 var Icon = require('icon.jsx')
+var UserID = require('userID.jsx')
+var GetIPFS = require('getipfs.jsx')
+var Post = require('post.jsx')
+var Comment = require('comment.jsx').Comment
 
 module.exports = function(boardsAPI){
-  var UserID = require('userID.jsx')()
-  var GetIPFS = require('getipfs.jsx')()
-  var Post = require('post.jsx')()
-  var Comment = require('comment.jsx').Comment
-
   return React.createClass({
     getInitialState: function(){
       return { parent: false, api: false }
@@ -24,6 +23,11 @@ module.exports = function(boardsAPI){
           this.init(boards)
         }
       })
+    },
+    componentWillReceiveProps: function(nextProps) {
+      if(nextProps.params.commenthash !== this.props.params.commenthash){
+        location.reload() // cheap hack, should swap with something more efficient
+      }
     },
     init: function(boards){
       if(this.state.init) return

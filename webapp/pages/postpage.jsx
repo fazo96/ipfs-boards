@@ -1,12 +1,11 @@
 var React = require('react')
 var Link = require('react-router').Link
+var UserID = require('userID.jsx')
+var GetIPFS = require('getipfs.jsx')
+var Post = require('post.jsx')
+var Comments = require('comment.jsx').Comments
 
 module.exports = function(boardsAPI){
-  var UserID = require('userID.jsx')()
-  var GetIPFS = require('getipfs.jsx')()
-  var Post = require('post.jsx')()
-  var Comments = require('comment.jsx').Comments
-
   return React.createClass({
     getInitialState: function(){
       return { post: { title: '...', text: '...' }, api: false }

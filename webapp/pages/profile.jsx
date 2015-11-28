@@ -2,9 +2,9 @@ var React = require('react')
 var Markdown = require('markdown.jsx')
 var Link = require('react-router').Link
 var Icon = require('icon.jsx')
+var GetIPFS = require('getipfs.jsx')
 
 module.exports = function(boardsAPI){
-  var GetIPFS = require('getipfs.jsx')(boardsAPI)
   return React.createClass({
     getInitialState: function(){
       return { name: '...', boards: [], api: false }

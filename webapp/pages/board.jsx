@@ -2,11 +2,11 @@ var React = require('react')
 var Markdown = require('markdown.jsx')
 var Link = require('react-router').Link
 var Icon = require('icon.jsx')
+var UserID = require('userID.jsx')
+var PostList = require('postlist.jsx')
+var GetIPFS = require('getipfs.jsx')
 
 module.exports = function(boardsAPI){
-  var UserID = require('userID.jsx')()
-  var PostList = require('postlist.jsx')()
-  var GetIPFS = require('getipfs.jsx')()
   return React.createClass({
     getInitialState: function(){
       return { name: this.props.params.boardname, api: false }

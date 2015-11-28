@@ -1,9 +1,9 @@
 var React = require('react')
 var Icon = require('icon.jsx')
+var GetIPFS = require('getipfs.jsx')
+var UserID = require('userID.jsx')
 
 module.exports = function(boardsAPI){
-  var GetIPFS = require('getipfs.jsx')()
-  var UserID = require('userID.jsx')()
   return React.createClass({
     getInitialState: function(){
       return { users: [], api: false }

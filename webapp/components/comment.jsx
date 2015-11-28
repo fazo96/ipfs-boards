@@ -41,7 +41,7 @@ var Comment = React.createClass({
           {this.getParentlink()}
         </div>
         <Markdown source={this.props.comment.text} />
-      <hr/></div>
+      <hr/>{this.getComments()}</div>
     } else {
       return <div><hr/>Invalid Comment<hr/></div>
     }
