@@ -14,7 +14,7 @@ module.exports = {
   resolve: {
     modulesDirectories: [
       'node_modules', './webapp/', 'lib', './webapp/components/', './webapp/assets/',
-      'node_modules/font-awesome/css', 'node_modules/font-awesome/fonts'
+      './webapp/pages/', 'node_modules/font-awesome/css', 'node_modules/font-awesome/fonts'
     ],
     alias: {
       http: 'stream-http',
