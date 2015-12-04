@@ -3,6 +3,17 @@
 The easy to use Discussion Board platform that runs in modern web browsers,
 and requires no servers.
 
+![Board view screenshot](https://ipfs.pics/ipfs/QmezECALggzJLK89j4hhDVPwVv5gzmZMLbYi8zbjpXWvVH)
+
+This is how the Board view looks at the moment. You can see that markdown syntax is supported in all text bodies,
+and the administrator name `fazo96` and also the other allowed posters, in this case only one. Posts are shown in chronological order, but other sorting methods are planned.
+
+![Post view screenshot](https://ipfs.pics/ipfs/QmZntzNLyRgTPfaNhc4B23AWKQxPcwmjjBv3WPMh78ieeQ)
+
+This is the Post view with reddit style comments.
+
+All functionality shown in the screenshot is already implemented and content is downloaded from IPFS.
+
 ## Why
 
 Image and discussion boards, forums and the like have many problems:
