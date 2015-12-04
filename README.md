@@ -1,7 +1,7 @@
 # IPFS Boards
 
-The easy to use Discussion Board platform that runs in modern web browsers,
-and requires no servers.
+The easy to use Discussion Board platform that runs in modern web browsers but requires _no servers_ and
+_no external applications_ to work.
 
 ![Board view screenshot](https://ipfs.pics/ipfs/QmezECALggzJLK89j4hhDVPwVv5gzmZMLbYi8zbjpXWvVH)
 
@@ -69,6 +69,9 @@ If you want to really use the prototype, you can quickly set up your machine lik
 1. run this in a terminal `API_ORIGIN="localhost:8080" ipfs daemon`
 1. open [this](http://localhost:8080/ipfs/QmPmqUP5bYUme6V45n4BzPTp6BM1wwX2nGsh5ttpC5qg1C) in your browser
 1. You're all set!
+
+__Note:__ a javascript implementation of IPFS is in progress. As soon as it's done, you will not need
+go-ipfs anymore and this application will truly run in the browser without external dependencies.
 
 ### Additional information
 
