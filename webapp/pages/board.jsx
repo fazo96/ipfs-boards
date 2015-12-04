@@ -9,7 +9,7 @@ var GetIPFS = require('getipfs.jsx')
 module.exports = function(boardsAPI){
   return React.createClass({
     getInitialState: function(){
-      return { name: this.props.params.boardname, api: false }
+      return { name: this.props.params.boardname, api: false, whitelist: [] }
     },
     componentDidMount: function(){
       boardsAPI.use(boards => {
@@ -28,6 +28,9 @@ module.exports = function(boardsAPI){
           }
         })
         if(this.props.params.userid){
+          ee.on('whitelist for '+this.props.params.boardname+'@'+this.props.params.userid,(whitelist) => {
+            if(this.isMounted()) this.setState({ whitelist })
+          })
           ee.on('settings for '+this.props.params.boardname+'@'+this.props.params.userid, (res) => {
             if(!this.isMounted()) return true
             if(res) this.setState({ name: res.fullname, description: res.description })
@@ -53,6 +56,9 @@ module.exports = function(boardsAPI){
           <h2>{this.state.name}</h2>
           <Markdown source={this.state.description} skipHtml={true} />
           {this.props.params.userid?<h5><UserID id={this.props.params.userid} api={this.state.boards} /></h5>:<p></p>}
+          <div className="whitelist">
+            {this.state.whitelist.map(i => <UserID id={i} api={this.state.boards} />)}
+          </div>
           <hr />
           <PostList board={this.props.params.boardname} admin={this.props.params.userid} api={this.state.boards} />
         </div>)

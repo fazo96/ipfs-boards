@@ -11,6 +11,7 @@ module.exports = React.createClass({
     return (b.date || 0) - (a.date || 0)
   },
   init: function(boards){
+    if(this.state.init) return
     this.setState({ api: true })
     boards.getPostsInBoard(this.props.admin,this.props.board)
     .on('post in '+this.props.board+(this.props.admin?'@'+this.props.admin:''),(post,hash) => {
@@ -27,6 +28,7 @@ module.exports = React.createClass({
       }
       this.setState({ posts })
     })
+    this.setState({ init: true })
   },
   componentDidMount: function(){
     var boards = this.props.api
