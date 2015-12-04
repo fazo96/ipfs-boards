@@ -45,9 +45,21 @@ architecture or, optionally, none of these!
 The App is not ready yet, but you're welcome to take a look at the prototype,
 even though it only has informational pages and very limited functionality.
 
-You can access it [here](http://ipfs.io/ipfs/QmPmqUP5bYUme6V45n4BzPTp6BM1wwX2nGsh5ttpC5qg1C)
+Also keep in mind that due to issues with the current implementation of IPNS in
+go-ipfs, real world usage of the prototype is very limited. This will all be
+sorted out as soon as go-ipfs' next version, 0.4, is out.
 
-### Prototype information
+You can take a look at the prototype [here](http://ipfs.io/ipfs/QmPmqUP5bYUme6V45n4BzPTp6BM1wwX2nGsh5ttpC5qg1C)
+but you won't be able to actually use it.
+
+If you want to really use the prototype, you can quickly set up your machine like this:
+
+1. get `go-ipfs` installed on your OSX or GNU/Linux system
+1. run this in a terminal `API_ORIGIN="localhost:8080" ipfs daemon`
+1. open [this](http://localhost:8080/ipfs/QmPmqUP5bYUme6V45n4BzPTp6BM1wwX2nGsh5ttpC5qg1C) in your browser
+1. You're all set!
+
+### Additional information
 
 You need a local instance of go-ipfs running for it to work. You also need to set
 CORS settings right or it won't work. However, in that case, it will complain to
@@ -80,7 +92,7 @@ See `PROTOCOL.md`
 
 ### How do I set up a development environment?
 
-See `HACKING.md`
+See `CONTRIBUTING.md`
 
 ## Components
 

@@ -20,3 +20,7 @@ Now you can run:
 - `gulp serve` to start a webserver that will serve you the app and rebuild it if you change some files
 
 Have fun!
+
+### Contributing a pull request
+
+Make sure your code compiles fine :)
