@@ -29,7 +29,9 @@ module.exports = function(boardsAPI){
         })
         if(this.props.params.userid){
           ee.on('whitelist for '+this.props.params.boardname+'@'+this.props.params.userid,(whitelist) => {
-            if(this.isMounted()) this.setState({ whitelist })
+            if(this.isMounted())
+              this.setState({ whitelist })
+            else return true
           })
           ee.on('settings for '+this.props.params.boardname+'@'+this.props.params.userid, (res) => {
             if(!this.isMounted()) return true
