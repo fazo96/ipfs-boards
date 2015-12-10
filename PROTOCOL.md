@@ -87,26 +87,29 @@ __TODO__ implement the ability to manually hide content and to name moderators t
     {
       "title": "Title of the post",
       "date": "date of the post",
-      "op": "id_of_the_original_poster",
-      "preference": "id_of_the_preferred_administration",
-      "text": "Content of the post"
+      "preference": "optional_id_of_the_preferred_administration",
+      "text": "Content of the post",
+      "previous": "id_of_optional_previous_version",
+      "crossposting": "id_of_original_post"
     }
-
-__Note:__ `op` should only be used for crossposting. When possible, the client
-should figure out on his own where the post came from
-
-Optionally a post could have a `text-url` field so that crossposting is
-possible for lange texts without duplicating data.
 
 #### Comment
 
     {
       "parent": "id_of_the_parent_object",
       "date": "date of the comment"
-      "preference": "id_of_the_preferred_administration",
-      "op": "id_of_the_original_poster",
-      "text": "Content of the post"
+      "preference": "optional_id_of_the_preferred_administration",
+      "text": "Content of the post",
+      "previous": "id_of_optional_previous_version",
+      "crossposting": "id_of_original_comment"
     }
+
+__About Crossposting:__ when crossposting, a post or comment should omit title, text and even
+other attributes so that they will be fetched from the original post.
+
+__About Previous Versions:__ when a post or comment is edited, the user should
+remove the previous version from the lists in his published profile, but link it
+in the appropriate field so that comments to previous versions don't get lost.
 
 #### Vote
 
