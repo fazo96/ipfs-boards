@@ -32,7 +32,9 @@ module.exports = function(boardsAPI){
       var uid = props.params.userid
       if(uid === 'me') uid = boards.id
       ee.on('boards for '+uid,l => {
-        if(!this.isMounted() || props.params.userid !== uid) return true
+        var u2id = props.params.userid
+        if(u2id === 'me') u2id = boards.id
+        if(!this.isMounted() || u2id !== uid) return true
         this.setState({ boards: l })
       })
       boards.getProfile(uid,(err,res) => {
@@ -52,7 +54,6 @@ module.exports = function(boardsAPI){
       var ee = boards.getEventEmitter()
       if(boards.isInit || this.state.api){
         var uid = this.props.params.userid
-        if(uid === 'me') uid = boards.id
         this.downloadProfile(boards,this.props)
         this.setState({ init: true })
       }
