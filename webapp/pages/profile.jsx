@@ -13,43 +13,49 @@ module.exports = function(boardsAPI){
       boardsAPI.use(boards => {
         if(boards.isInit){
           this.setState({ api: boards, id: boards.id })
-          this.init()
+          this.init(boards)
         }
         var ee = boards.getEventEmitter()
         ee.on('init',err => {
           if(!err && this.isMounted()){
             this.setState({ api: boards, id: boards.id })
-            this.init()
+            this.init(boards)
           }
         })
       })
     },
-    init: function(){
-      if(this.state.init) return
-      boardsAPI.use(boards => {
-        var ee = boards.getEventEmitter()
-        if(boards.isInit || this.state.api){
-          var uid = this.props.params.userid
-          if(uid === 'me') uid = boards.id
-          console.log('About to ask for profile for',uid)
-          ee.on('boards for '+uid,l => {
-            if(!this.isMounted()) return true
-            this.setState({ boards: l })
+    componentWillReceiveProps: function(nextProps) {
+      boardsAPI.use(boards => this.downloadProfile(boards,nextProps))
+    },
+    downloadProfile: function(boards,props){
+      var ee = boards.getEventEmitter()
+      var uid = props.params.userid
+      if(uid === 'me') uid = boards.id
+      ee.on('boards for '+uid,l => {
+        if(!this.isMounted() || props.params.userid !== uid) return true
+        this.setState({ boards: l })
+      })
+      boards.getProfile(uid,(err,res) => {
+        if(!this.isMounted()) return true
+        if(err){
+          this.setState({
+            name: <Icon name="ban" />,
+            description: err
           })
-          boards.getProfile(uid,(err,res) => {
-            if(!this.isMounted()) return true
-            if(err){
-              this.setState({
-                name: <Icon name="ban" />,
-                description: err
-              })
-            } else {
-              this.setState({ name: res.name, description: res.description })
-            }
-          })
-          this.setState({ init: true })
+        } else {
+          this.setState({ name: res.name, description: res.description })
         }
       })
+    },
+    init: function(boards){
+      if(this.state.init) return
+      var ee = boards.getEventEmitter()
+      if(boards.isInit || this.state.api){
+        var uid = this.props.params.userid
+        if(uid === 'me') uid = boards.id
+        this.downloadProfile(boards,this.props)
+        this.setState({ init: true })
+      }
     },
     linkToEditor: function(){
       var uid = this.props.params.userid

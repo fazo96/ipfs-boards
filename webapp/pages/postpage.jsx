@@ -23,16 +23,22 @@ module.exports = function(boardsAPI){
         }
       })
     },
-    init: function(boards){
-      if(this.state.init) return
-      this.setState({ api: true, boards: boards })
-      boards.downloadPost(this.props.params.posthash,this.props.params.userid,this.props.params.boardname,this.props.params.userid,(err,post) => {
+    componentWillReceiveProps: function(nextProps) {
+      boardsAPI.use(boards => this.downloadPost(boards,nextProps))
+    },
+    downloadPost: function(boards,props){
+      boards.downloadPost(props.params.posthash,props.params.userid,props.params.boardname,props.params.userid,(err,post) => {
         if(err){
           this.setState({ post: { title: 'Error', text: err.Message || err.Error }})
         } else {
           this.setState({ post })
         }
       })
+    },
+    init: function(boards){
+      if(this.state.init) return
+      this.setState({ api: true, boards: boards })
+      this.downloadPost(boards,this.props)
     },
     getContext: function(){
       if(this.props.params.userid){

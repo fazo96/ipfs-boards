@@ -25,20 +25,22 @@ module.exports = function(boardsAPI){
       })
     },
     componentWillReceiveProps: function(nextProps) {
-      if(nextProps.params.commenthash !== this.props.params.commenthash){
-        location.reload() // cheap hack, should swap with something more efficient
-      }
+      boardsAPI.use(boards => this.downloadComment(boards,nextProps))
     },
-    init: function(boards){
-      if(this.state.init) return
-      this.setState({ api: true, boards: boards })
-      boards.downloadComment(this.props.params.commenthash,this.props.params.userid,this.props.params.boardname,(err,comment) => {
+    downloadComment: function(boards,props){
+      this.setState({ comment: false })
+      boards.downloadComment(props.params.commenthash,props.params.userid,props.params.boardname,(err,comment) => {
         if(err){
           this.setState({ comment: { title: 'Error', text: err.Message || err.Error }})
         } else {
           this.setState({ comment })
         }
       })
+    },
+    init: function(boards){
+      if(this.state.init) return
+      this.setState({ api: true, boards: boards })
+      this.downloadComment(boards,this.props)
     },
     getContext: function(){
       if(this.props.params.userid){
