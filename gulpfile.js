@@ -3,6 +3,7 @@ var webpack = require('webpack-stream')
 var clean = require('gulp-clean')
 var connect = require('gulp-connect')
 var ghPages = require('gulp-gh-pages')
+var ipfsd = require('ipfsd-ctl')
 
 var config = {
   files: {
@@ -13,6 +14,12 @@ var config = {
     jsLibs: 'lib/*.js'
   },
   dest: 'webapp/dist/'
+}
+
+var server = {
+  root: config.dest,
+  port: 9090,
+  livereload: true
 }
 
 gulp.task('watch',['clean'],function(){
@@ -36,11 +43,7 @@ gulp.task('clean',function(){
 })
 
 gulp.task('server',function(){
-  connect.server({
-    root: config.dest,
-    port: 9090,
-    livereload: true
-  })
+  connect.server(server)
 })
 
 gulp.task('gh-pages',[ 'build' ],function(){
@@ -48,6 +51,30 @@ gulp.task('gh-pages',[ 'build' ],function(){
     .pipe(ghPages())
 })
 
+gulp.task('ipfs', function(done){
+  console.log(server.port)
+  //'API.HTTPHeaders.Access-Control-Allow-Origin': '*'
+  var opt = {
+    'Addresses.API': '/ip4/127.0.0.1/tcp/5001',
+    'API': {
+      'HTTPHeaders': {
+        'Access-Control-Allow-Origin': [
+          '*'
+        ]
+      }
+    }
+  }
+  console.log(opt)
+  ipfsd.disposableApi(opt,(err, ipfs) => {
+    ipfs.id(function (err, id) {
+      if(err) return console.log('Failed to start IPFS:',err)
+      console.log('Started IPFS Daemon')
+      //done()
+    })
+  })
+})
+
 gulp.task('serve', [ 'watch', 'server' ])
+gulp.task('serve-with-ipfs', [ 'serve', 'ipfs' ])
 
 gulp.task('default', [ 'build' ])
