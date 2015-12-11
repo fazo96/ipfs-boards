@@ -86,11 +86,11 @@ very inefficient, slow, etc. You're welcome to help in any way though!
 Also, remember that __it doesn't have__:
 
 - Ability to post and create a profile from the web app (it's read only for now)
-- Aggregation (only the admin can post, for now)
+- Aggregation (it's quite limited for now)
 - Advanced customization, control, user profile customization
 - Media support
 - Votes
-- Ability to run without a full IPFS node. That would require either a backend or the (currently not done) js implementation of IPFS
+- Ability to run without a full IPFS node. That would require either a Backend or the (currently not done) js implementation of IPFS
 
 Ability to publish stuff in the browser won't be implemented until go-ipfs 0.4
 is ready. It will maybe be ready before the new year.
@@ -112,24 +112,24 @@ See `CONTRIBUTING.md`
 
 - __Client__
   - a static web application to access IPFS Boards
-  - maybe a desktop version (which would be a wrapped web application)
-  - will be able to do everything in a simple browser
-- __Server__
-  - __Completely Optional__ (not right now, but it will be)
-  - can cache content so that it doesn't get lost
-  - fully configurable
-  - can serve the Client
+  - work in progress, some features are already done, see above
+  - maybe a desktop version (which would be the wrapped web application, using Electron)
+  - will be able to do everything in any modern browser
+- __Cache Server and/or Backend__
+  - __Not started yet__: no code has been written yet!
+  - __Completely Optional__: you don't need this to be able to use the App
+  - automagically caches content 24/7 so that it's always available
+  - fully configurable, for example only cache content from users you want to support.
+  - can serve data via HTTP API
   - can render the client application so that search engines can index content
   - can provide content over an HTTP API or web sockets so that devices can save bandwidth
+- __[go-ipfs](https://github.com/ipfs/go-ipfs)__
+  - needed to use the app until [js-ipfs](https://github.com/ipfs/js-ipfs) is ready!
 
 __Note:__ until the __IPFS Javascript Implementation__ is done:
 
 - the client (a static web application) requires a full IPFS node because it needs to be able to discover content via the IPFS API.
-- the cache server (written in node) requires a full IPFS node.
-
-__Note:__ if you want to write data, your __IPNS__ needs to be taken over
-by the application. This problem will be solved after go-ipfs 0.4 with the files
-API is released.
+- the cache server (written in node) requires go-ipfs.
 
 ### License
 
