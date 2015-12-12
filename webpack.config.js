@@ -4,9 +4,8 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 
 // Most of the config was copied from js-ipfs-api's webpack configuration
 
-module.exports = {
-  entry: './webapp/app.jsx',
-  debug: true,
+var config = {
+  entry: path.join(__dirname,'webapp','app.jsx'),
   output: {
     path: path.join(__dirname,'webapp','dist'),
     filename: 'app.js'
@@ -70,3 +69,18 @@ module.exports = {
     new webpack.optimize.DedupePlugin()
   ]
 }
+
+config.devServer = {
+  // webpack-dev-server -w --progress --devtool eval --port 9090 --quiet --content-base ./webapp/dist
+  watch: true,
+  progress: true,
+  debug: true,
+  devtool: 'eval-source',
+  port: 9090,
+  noInfo: true,
+  colors: true,
+  inline: true,
+  contentBase: config.output.path
+},
+
+module.exports = config

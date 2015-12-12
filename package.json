@@ -3,11 +3,8 @@
   "version": "0.1.0",
   "description": "decentralized discussion board",
   "scripts": {
-    "serve": "gulp serve",
-    "build": "gulp"
-  },
-  "bin": {
-    "ipfs-board": "cli.js"
+    "serve": "webpack-dev-server --progress --no-info",
+    "build": "webpack --progress"
   },
   "repository": {
     "type": "git",
@@ -31,10 +28,6 @@
     "eslint-plugin-react": "~3.11.3",
     "file-loader": "~0.8.5",
     "font-awesome": "~4.5.0",
-    "gulp": "~3.9.0",
-    "gulp-clean": "~0.3.1",
-    "gulp-connect": "~2.2.0",
-    "gulp-gh-pages": "~0.5.4",
     "history": "~1.13.0",
     "html-loader": "^0.4.0",
     "html-webpack-plugin": "~1.7.0",
@@ -50,7 +43,7 @@
     "stream-http": "~2.0.2",
     "style-loader": "~0.13.0",
     "webpack": "~1.12.9",
-    "webpack-stream": "~3.0.1",
+    "webpack-dev-server": "^1.14.0",
     "wolfy87-eventemitter": "~4.3.0"
   }
 }
