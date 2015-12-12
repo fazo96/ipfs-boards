@@ -60,14 +60,14 @@ Also keep in mind that due to issues with the current implementation of IPNS in
 go-ipfs, real world usage of the prototype is very limited. This will all be
 sorted out as soon as go-ipfs' next version, 0.4, is out.
 
-You can take a look at the prototype [here](http://ipfs.io/ipfs/QmPmqUP5bYUme6V45n4BzPTp6BM1wwX2nGsh5ttpC5qg1C)
+You can take a look at the prototype [here](http://ipfs.io/ipfs/QmbkSd1RBsEtTLKTru3eRBsGaVKPpkmyA3SXXVZUNzmdQY)
 but you won't be able to actually use it.
 
 If you want to really use the prototype, you can quickly set up your machine like this:
 
 1. get `go-ipfs` installed on your OSX or GNU/Linux system
 1. run this in a terminal `API_ORIGIN="localhost:8080" ipfs daemon`
-1. open [this](http://localhost:8080/ipfs/QmPmqUP5bYUme6V45n4BzPTp6BM1wwX2nGsh5ttpC5qg1C) in your browser
+1. open [this](http://localhost:8080/ipfs/QmbkSd1RBsEtTLKTru3eRBsGaVKPpkmyA3SXXVZUNzmdQY) in your browser
 1. You're all set!
 
 __Note:__ a javascript implementation of IPFS is in progress. As soon as it's done, you will not need
