@@ -41,8 +41,8 @@ module.exports = function (boardsAPI) {
         if (!this.isMounted()) return true
         if (err) {
           this.setState({
-            name: <Icon name="ban" />,
-            description: err
+            name: <span><Icon name="ban" /> Error</span>,
+            error: err
           })
         } else {
           this.setState({ name: res.name, description: res.description })
@@ -56,12 +56,23 @@ module.exports = function (boardsAPI) {
         this.setState({ init: true })
       }
     },
+    newProfile: function () {
+      var boards = this.state.api
+      boards.createProfile({
+        name: 'Default Name',
+        description: 'Default Profile Description'
+      })
+    },
     linkToEditor: function () {
       var uid = this.props.params.userid
       if (uid === 'me' && this.state.id) uid = this.state.id
       if (uid === this.state.id) {
-        return <div>
+        return <div className="your-profile">
           <h6>This is your profile</h6>
+          {this.state.error ? <div>
+            <b>Oops</b>. Looks like your profile is not valid
+            <button className="new-profile button button-primary" onClick={this.newProfile}>New Profile</button>
+          </div> : <div></div>}
           <hr/>
         </div>
       }
@@ -74,7 +85,7 @@ module.exports = function (boardsAPI) {
         return (<div className="profile">
           {this.linkToEditor()}
           <h1>{this.state.name}</h1>
-          <Markdown source={this.state.description} skipHtml={true} />
+          <Markdown source={this.state.erro ? this.state.error : this.state.description} skipHtml={true} />
           <hr/>
           <div className="light breaker">@{uid}</div>
           {this.state.boards.map(n => {

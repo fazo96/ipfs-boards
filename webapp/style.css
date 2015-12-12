@@ -166,6 +166,15 @@ a:hover {
   margin-right: 1rem;
 }
 
+.your-profile {
+  text-align: center
+}
+
+.new-profile {
+  display: block;
+  margin: 3rem auto;
+}
+
 @media (min-width: 400px) {
   /* larger than mobile */
   .settings .buttons {

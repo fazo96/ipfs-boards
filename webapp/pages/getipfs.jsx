@@ -4,23 +4,35 @@ var Icon = require('icon.jsx')
 
 module.exports = React.createClass({
   getInitialState: function () {
-    return { connected: false, error: false, long: false }
+    return {}
+  },
+  componentWillReceiveProps: function (props) {
+    if (props.api) {
+      this.checkStatus(props.api)
+    }
   },
   componentDidMount: function () {
-    var boards = this.props.api
+    this.checkStatus(this.props.api)
+  },
+  checkStatus: function (boards) {
     if (boards) {
       if (!this.isMounted()) return
       if (boards.isInit) {
         this.setState({ connected: true })
       } else {
-        boards.getEventEmitter().on('init', err => {
-          if (!this.isMounted()) return
-          if (err) {
-            this.setState({ error: true })
-          } else {
-            this.setState({ connected: true })
-          }
-        })
+        if (boards.init_error) {
+          this.setState({ error: boards.init_error })
+        } else {
+          boards.getEventEmitter().on('init', error => {
+            if (!this.isMounted()) return
+            if (error) {
+              this.setState({ error })
+            } else {
+              this.setState({ connected: true })
+              clearTimeout(this.timer)
+            }
+          })
+        }
       }
     } else this.startTimer()
   },
@@ -29,8 +41,11 @@ module.exports = React.createClass({
   },
   startTimer: function () {
     this.timer = setTimeout(_ => {
-      console.log('Connection to go-ipfs has timed out (probably due to CORS)')
-      if (this.isMounted()) this.setState({ long: true })
+      if (this.isMounted()) {
+        console.log('Connection to go-ipfs has timed out (probably due to CORS)')
+        this.setState({ long: true })
+        this.checkStatus()
+      }
     }, 5000)
   },
   render: function () {
@@ -40,6 +55,10 @@ module.exports = React.createClass({
       <div className="">
         <h1><Icon name="ban"/> Connection to IPFS not available</h1>
         <h4 className="light">Sorry, but at the moment an external application is needed to try the Prototype</h4>
+        <hr/>
+        <h5>Error Message</h5>
+        <p>{this.state.error.Message || this.state.error || 'connection to go-ipfs failed'}</p>
+        <hr/>
         <p>You don't have an IPFS node running at <code>{opt.addr}:{opt.port}</code> or it is not reachable.
         The IPFS Boards prototype requires a full IPFS node. Please start one by following the
         <a href="https://github.com/ipfs/go-ipfs"><code>go-ipfs</code> documentation.</a></p>

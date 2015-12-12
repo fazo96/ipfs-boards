@@ -61,7 +61,7 @@ var config = {
   },
   externals: {
     net: '{}',
-    fs: '{}',
+    fs: '{ lstat: function(){} }',
     tls: '{}',
     console: '{}',
     'require-dir': '{}'
