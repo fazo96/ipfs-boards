@@ -29,7 +29,7 @@ module.exports = function(boardsAPI){
     },
     downloadComment: function(boards,props){
       this.setState({ comment: false })
-      boards.downloadComment(props.params.commenthash,props.params.userid,props.params.boardname,(err,comment) => {
+      boards.downloadComment(props.params.commenthash,props.params.userid,props.params.boardname, (err,comment) => {
         if(err){
           this.setState({ comment: { title: 'Error', text: err.Message || err.Error }})
         } else {
@@ -54,7 +54,7 @@ module.exports = function(boardsAPI){
       if(this.state.comment){
         return <Comment comment={this.state.comment} post={this.props.params.posthash} adminID={this.props.params.userid} board={this.props.params.boardname} showParent={true} api={this.state.boards} />
       } else {
-        return <div className="center-block text-center">
+        return <div className="center-block text-center find-content">
           <Icon name="refresh" className="fa-3x center-block light fa-spin" />
           <h4>Finding content...</h4>
         </div>
