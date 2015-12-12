@@ -59,7 +59,7 @@ module.exports = function(boardsAPI){
           <Markdown source={this.state.description} skipHtml={true} />
           {this.props.params.userid?<h5><UserID id={this.props.params.userid} api={this.state.boards} /></h5>:<p></p>}
           <div className="whitelist">
-            {this.state.whitelist.map(i => <UserID id={i} api={this.state.boards} />)}
+            {this.state.whitelist.map(i => <UserID id={i} key={i} api={this.state.boards} />)}
           </div>
           <hr />
           <PostList board={this.props.params.boardname} admin={this.props.params.userid} api={this.state.boards} />
