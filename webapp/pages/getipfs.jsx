@@ -13,9 +13,6 @@ module.exports = React.createClass({
       if(boards.isInit){
         this.setState({ connected: true })
       } else {
-        setTimeout(_ => {
-          if(this.isMounted()) this.setState({ long: true })
-        }, 5000)
         boards.getEventEmitter().on('init', err => {
           if(!this.isMounted()) return
           if(err){
@@ -25,11 +22,17 @@ module.exports = React.createClass({
           }
         })
       }
-    }
+    } else this.startTimer()
+  },
+  startTimer: function(){
+    setTimeout(_ => {
+      console.log('Connection to go-ipfs has timed out (probably due to CORS)')
+      if(this.isMounted()) this.setState({ long: true })
+    }, 5000)
   },
   render: function(){
     var opt = require('options.jsx').get()
-    if(this.state.error){
+    if(this.state.error || this.state.long){
       return (
       <div className="">
         <h1><Icon name="ban"/> Connection to IPFS not available</h1>
@@ -57,7 +60,6 @@ module.exports = React.createClass({
       return <div className="center-block text-center">
         <Icon name="refresh" className="fa-3x center-block light fa-spin" />
         <h4>Connecting to IPFS</h4>
-        {this.state.long?(<p>It's taking long... there's probably something wrong</p>):<p></p>}
       </div>
     }
   }
