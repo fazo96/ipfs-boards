@@ -2,17 +2,17 @@ var React = require('react')
 var Icon = require('icon.jsx')
 var Link = require('react-router').Link
 
-module.exports = function(boardsAPI){
+module.exports = function (boardsAPI) {
   return React.createClass({
-    getInitialState: function(){
+    getInitialState: function () {
       return { api: false, loading: true }
     },
-    componentDidMount(){
+    componentDidMount () {
       boardsAPI.use(boards => {
-        if(boards.isInit) this.setState({ api: true })
-        boards.getEventEmitter().on('init',err => {
-          if(!this.isMounted()) return
-          if(err){
+        if (boards.isInit) this.setState({ api: true })
+        boards.getEventEmitter().on('init', err => {
+          if (!this.isMounted()) return
+          if (err) {
             this.setState({ loading: false, api: false })
           } else {
             this.setState({ api: true })
@@ -20,19 +20,19 @@ module.exports = function(boardsAPI){
         })
       })
     },
-    extraButtons: function(){
-      if(this.state.api){
+    extraButtons: function () {
+      if (this.state.api) {
         return <span>
             <Link className="nounderline" to="/@me"><Icon name="user" className="fa-2x light"/></Link>
             <Link className="nounderline" to="/users"><Icon name="globe" className="fa-2x light"/></Link>
           </span>
-      } else if(this.state.loading){
+      } else if (this.state.loading) {
         return <Icon name="refresh" className="fa-2x fa-spin light"/>
       } else {
         return <Link className="nounderline" to="/users"><Icon name="ban" className="fa-2x light"/></Link>
       }
     },
-    render: function(){
+    render: function () {
       return (
         <div className="navbar">
           <div className="container">

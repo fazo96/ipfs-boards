@@ -5,9 +5,9 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 // Most of the config was copied from js-ipfs-api's webpack configuration
 
 var config = {
-  entry: path.join(__dirname,'webapp','app.jsx'),
+  entry: path.join(__dirname, 'webapp', 'app.jsx'),
   output: {
-    path: path.join(__dirname,'webapp','dist'),
+    path: path.join(__dirname, 'webapp', 'dist'),
     filename: 'app.js'
   },
   resolve: {
@@ -23,7 +23,8 @@ var config = {
   eslint: {
     configFile: './.eslintrc',
     failOnWarning: true,
-    failOnError: true
+    failOnError: true,
+    fix: true
   },
   module: {
     preLoaders: [
@@ -35,15 +36,15 @@ var config = {
     ],
     loaders: [
       { test: /\.(ttf|eot|svg|woff(2?))(\?v=\d+\.\d+\.\d+)?$/, loader: 'file' },
-      { test: /\.css$/, loaders: ['style','css'] },
-      { test: /\.md$/, loaders: ['html','markdown'] },
+      { test: /\.css$/, loaders: ['style', 'css'] },
+      { test: /\.md$/, loaders: ['html', 'markdown'] },
       { test: /\.json$/, loader: 'json' },
       {
         test: /\.jsx?$/,
         exclude: /(node_modules|bower_components)/,
         loader: 'babel',
         query: {
-          presets: ['es2015','react'],
+          presets: ['es2015', 'react'],
           plugins: addTransformRuntime([])
         }
       },
@@ -74,11 +75,11 @@ var config = {
     // Optimization
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.DedupePlugin(),
-	new webpack.optimize.UglifyJsPlugin({
-	  compress: {
-		warnings: false
-	  }
-	})
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      }
+    })
   ]
 }
 
@@ -95,15 +96,15 @@ config.devServer = {
   contentBase: config.output.path
 }
 
-function addTransformRuntime(l){
-	if(process.env.os != 'Windows_NT'){
-		// Workaround for babel6 bug on windows
-		// https://phabricator.babeljs.io/T6670
-		// https://phabricator.babeljs.io/T2954
-		// Disabling uglify on windows does the trick
-		return l.concat('transform-runtime')
-	}
-	return l
+function addTransformRuntime (l) {
+  if (process.env.os !== 'Windows_NT') {
+    // Workaround for babel6 bug on windows
+    // https://phabricator.babeljs.io/T6670
+    // https://phabricator.babeljs.io/T2954
+    // Disabling uglify on windows does the trick
+    return l.concat('transform-runtime')
+  }
+  return l
 }
 
 module.exports = config

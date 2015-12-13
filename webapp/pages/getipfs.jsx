@@ -3,19 +3,19 @@ var Link = require('react-router').Link
 var Icon = require('icon.jsx')
 
 module.exports = React.createClass({
-  getInitialState: function(){
+  getInitialState: function () {
     return { connected: false, error: false, long: false }
   },
-  componentDidMount: function(){
+  componentDidMount: function () {
     var boards = this.props.api
-    if(boards){
-      if(!this.isMounted()) return
-      if(boards.isInit){
+    if (boards) {
+      if (!this.isMounted()) return
+      if (boards.isInit) {
         this.setState({ connected: true })
       } else {
         boards.getEventEmitter().on('init', err => {
-          if(!this.isMounted()) return
-          if(err){
+          if (!this.isMounted()) return
+          if (err) {
             this.setState({ error: true })
           } else {
             this.setState({ connected: true })
@@ -24,15 +24,15 @@ module.exports = React.createClass({
       }
     } else this.startTimer()
   },
-  startTimer: function(){
+  startTimer: function () {
     setTimeout(_ => {
       console.log('Connection to go-ipfs has timed out (probably due to CORS)')
-      if(this.isMounted()) this.setState({ long: true })
+      if (this.isMounted()) this.setState({ long: true })
     }, 5000)
   },
-  render: function(){
+  render: function () {
     var opt = require('options.jsx').get()
-    if(this.state.error || this.state.long){
+    if (this.state.error || this.state.long) {
       return (
       <div className="">
         <h1><Icon name="ban"/> Connection to IPFS not available</h1>
@@ -51,7 +51,7 @@ module.exports = React.createClass({
         </ul>
         <p>Still can't fix it? <a href="https://github.com/fazo96/ipfs-board/issues">File a issue on GitHub</a>, we'll be happy to help!</p>
       </div>
-    )} else if(this.state.connected){
+    ) } else if (this.state.connected) {
       return <div class="text-center">
         <h1><Icon name="check" /></h1>
         <h5 class="light">You're connected!</h5>

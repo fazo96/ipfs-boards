@@ -6,26 +6,26 @@ var Clock = require('clock.jsx')
 var UserID = require('userID.jsx')
 
 module.exports = React.createClass({
-  getInitialState: function(){
+  getInitialState: function () {
     return { moment: false }
   },
-  componentDidMount: function(){
-    require.ensure(['moment'],_ => {
-      if(this.isMounted()) this.setState({ moment: require('moment') })
+  componentDidMount: function () {
+    require.ensure(['moment'], _ => {
+      if (this.isMounted()) this.setState({ moment: require('moment') })
     })
   },
-  postLink: function(){
-    if(this.props.post.op){
-      if(this.props.board){
-        return '/@'+this.props.post.op+'/'+this.props.board+'/'+this.props.post.hash
+  postLink: function () {
+    if (this.props.post.op) {
+      if (this.props.board) {
+        return '/@' + this.props.post.op + '/' + this.props.board + '/' + this.props.post.hash
       } else {
-        return '/@'+this.props.post.op+'/post/'+this.props.post.hash
+        return '/@' + this.props.post.op + '/post/' + this.props.post.hash
       }
     } else {
-      return '/post/'+this.props.post.hash
+      return '/post/' + this.props.post.hash
     }
   },
-  render: function(){
+  render: function () {
     return <div key={this.props.post.title} className="post">
       <div className="content">
         <h5>{this.props.post.title}</h5><hr/>

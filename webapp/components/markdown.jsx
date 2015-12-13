@@ -1,17 +1,17 @@
 var React = require('react')
 
 module.exports = React.createClass({
-  getInitialState: function(){
+  getInitialState: function () {
     return { lib: false }
   },
-  componentDidMount: function(){
-    require.ensure(['react-markdown'],_ => {
-      if(this.isMounted()) this.setState({ MarkdownLib: require('react-markdown') })
+  componentDidMount: function () {
+    require.ensure(['react-markdown'], _ => {
+      if (this.isMounted()) this.setState({ MarkdownLib: require('react-markdown') })
     })
   },
-  renderIfApplicable: function(){
-    if(this.props.source){
-      if(this.state.MarkdownLib){
+  renderIfApplicable: function () {
+    if (this.props.source) {
+      if (this.state.MarkdownLib) {
         var MarkdownLib = this.state.MarkdownLib
         return <MarkdownLib source={this.props.source} skipHtml={true} />
       } else {
@@ -19,7 +19,7 @@ module.exports = React.createClass({
       }
     } else return <p>...</p>
   },
-  render: function(){
+  render: function () {
     return this.renderIfApplicable()
   }
 })
