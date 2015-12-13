@@ -20,6 +20,13 @@ Now you can run:
 - `npm run build` to build the webapp inside `webapp/dist/`
 - `npm run serve` to start a webserver that will serve you the app locally and automagically rebuild it if you change some files
 
+__Note about writing code:__ webpack will refuse to compile your code if
+it doesn't comply with [standard](https://github.com/feross/standard)
+code guidelines, which were chosen for this project to have a consistent,
+proven useful standard for code style. If you want to have code linting in your
+text editor on IDE, look for a plugin that can run
+[eslint](https://github.com/eslint/eslint).
+
 Have fun!
 
 ### Contributing a pull request
