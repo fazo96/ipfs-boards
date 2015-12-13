@@ -32,7 +32,7 @@ var config = {
         loader: 'babel',
         query: {
           presets: ['es2015','react'],
-          plugins: ['transform-runtime']
+          plugins: addTransformRuntime([])
         }
       },
       {
@@ -41,7 +41,7 @@ var config = {
         loader: 'babel',
         query: {
           presets: ['es2015'],
-          plugins: ['transform-runtime']
+          plugins: addTransformRuntime([])
         }
       }
     ]
@@ -60,13 +60,13 @@ var config = {
       inject: 'body'
     }),
     // Optimization
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      }
-    }),
     new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.optimize.DedupePlugin()
+    new webpack.optimize.DedupePlugin(),
+	new webpack.optimize.UglifyJsPlugin({
+	  compress: {
+		warnings: false
+	  }
+	})
   ]
 }
 
@@ -81,6 +81,17 @@ config.devServer = {
   colors: true,
   inline: true,
   contentBase: config.output.path
-},
+}
+
+function addTransformRuntime(l){
+	if(process.env.os != 'Windows_NT'){
+		// Workaround for babel6 bug on windows
+		// https://phabricator.babeljs.io/T6670
+		// https://phabricator.babeljs.io/T2954
+		// Disabling uglify on windows does the trick
+		return l.concat('transform-runtime')
+	}
+	return l
+}
 
 module.exports = config
