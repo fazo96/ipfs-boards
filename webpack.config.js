@@ -37,7 +37,7 @@ var config = {
       },
       {
         test: /\.js$/,
-        include: /node_modules\/(ipfs-api|hoek|qs|boom|wreck)/,
+        include: /node_modules(\\|\/)(ipfs-api|hoek|qs|boom|wreck)/,
         loader: 'babel',
         query: {
           presets: ['es2015'],
