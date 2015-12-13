@@ -20,7 +20,19 @@ var config = {
       https: 'https-browserify'
     }
   },
+  eslint: {
+    configFile: './.eslintrc',
+    failOnWarning: true,
+    failOnError: true
+  },
   module: {
+    preLoaders: [
+      {
+        test: /\.jsx?$/,
+        loader: 'eslint-loader',
+        exclude: /node_modules/
+      }
+    ],
     loaders: [
       { test: /\.(ttf|eot|svg|woff(2?))(\?v=\d+\.\d+\.\d+)?$/, loader: 'file' },
       { test: /\.css$/, loaders: ['style','css'] },
