@@ -4,8 +4,20 @@
     <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{%= o.htmlWebpackPlugin.options.title %}</title>
-    <div id="root"></div>
   </head>
   <body>
+    <div id="root"></div>
+    <noscript>
+      <div class="container">
+        <h1>Oops</h1>
+        <p>This website is a full fledged web application that has no backend. It
+          is entirely a static website, just a bunch of files. All the logic that
+          makes it useful is on the client side. This makes Javascript a true
+          necessity to view this website.</p>
+        <h4 class="light">All is not lost!</h4>
+        <p>We are planning to support no-javascript clients in the future.</p>
+        <a href="https://github.com/fazo96/ipfs-boards">Check out the project page to learn more.</a>
+      </div>
+    </noscript>
   </body>
 </html>
