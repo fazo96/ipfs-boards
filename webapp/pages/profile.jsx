@@ -56,13 +56,6 @@ module.exports = function (boardsAPI) {
         this.setState({ init: true })
       }
     },
-    newProfile: function () {
-      var boards = this.state.api
-      boards.createProfile({
-        name: 'Default Name',
-        description: 'Default Profile Description'
-      })
-    },
     linkToEditor: function () {
       var uid = this.props.params.userid
       if (uid === 'me' && this.state.id) uid = this.state.id
@@ -72,7 +65,6 @@ module.exports = function (boardsAPI) {
           <div className="iconbar">
             <Link className="nounderline" to="/edit/profile"><Icon name="edit" className="fa-2x light"/></Link>
           </div>
-          <button className="new-profile button button-primary" onClick={this.newProfile}>New Profile</button>
           <hr/>
         </div>
       }
