@@ -2,20 +2,40 @@ var React = require('react')
 var Icon = require('icon.jsx')
 var Link = require('react-router').Link
 
+var Updater = React.createClass({
+  componentDidMount () {
+    if (this.props.api) this.checkForUpdates(this.props.api)
+  },
+  componentWillReceiveProps (props) {
+    this.checkForUpdates(props.api)
+  },
+  checkForUpdates (boards) {
+    var v = window.location.pathname
+    if (/\/ipfs\/./.test(v)) {
+      boards.getIPFS().path.resolve(v.substring(6), (err, res) => {
+        console.log('PATH RESOLVE', err, res)
+      })
+    }
+  },
+  render () {
+    return <div></div>
+  }
+})
+
 module.exports = function (boardsAPI) {
   return React.createClass({
     getInitialState: function () {
-      return { api: false, loading: true }
+      return { loading: true }
     },
     componentDidMount () {
       boardsAPI.use(boards => {
-        if (boards.isInit) this.setState({ api: true })
+        if (boards.isInit) this.setState({ api: boards })
         boards.getEventEmitter().on('init', err => {
           if (!this.isMounted()) return
           if (err) {
             this.setState({ loading: false, api: false })
           } else {
-            this.setState({ api: true })
+            this.setState({ api: boards })
           }
         })
       })
@@ -25,6 +45,7 @@ module.exports = function (boardsAPI) {
         return <span>
             <Link className="nounderline" to="/@me"><Icon name="user" className="fa-2x light"/></Link>
             <Link className="nounderline" to="/users"><Icon name="globe" className="fa-2x light"/></Link>
+            <Updater api={this.state.api} />
           </span>
       } else if (this.state.loading) {
         return <Icon name="refresh" className="fa-2x fa-spin light"/>
@@ -36,7 +57,7 @@ module.exports = function (boardsAPI) {
       return (
         <div className="navbar">
           <div className="container">
-            {this.props.children || <h4><Link to="/"><Icon name="comments" className="light"/> Boards</Link></h4>}
+            <h4><Link to="/"><Icon name="comments" className="light"/> Boards</Link></h4>
             <div className="u-pull-right iconbar">
               {this.extraButtons()}
               <Link className="nounderline" to="/settings"><Icon name="cog" className="fa-2x light"/></Link>
