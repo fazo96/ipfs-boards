@@ -88,6 +88,7 @@ config.devServer = {
   watch: true,
   progress: true,
   debug: true,
+  hot: true,
   devtool: 'eval-source',
   port: 9090,
   noInfo: true,

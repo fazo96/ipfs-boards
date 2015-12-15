@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "decentralized discussion board",
   "scripts": {
-    "serve": "webpack-dev-server --progress --no-info",
+    "serve": "webpack-dev-server --progress --hot --devtool eval-source --no-info",
     "build": "webpack --progress"
   },
   "repository": {
