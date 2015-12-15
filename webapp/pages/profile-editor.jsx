@@ -28,7 +28,7 @@ module.exports = function (boardsAPI) {
           // State isn't set to p directly to avoid XSS.
           // There is no knowing what's gonna be in a profile
           // Should also convert to string and check length etc.
-          this.setState({ p: p.name, description: p.description, loading: false })
+          this.setState({ name: p.name, description: p.description, loading: false })
         }
       })
     },
