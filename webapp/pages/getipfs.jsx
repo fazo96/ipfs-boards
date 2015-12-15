@@ -24,8 +24,11 @@ module.exports = React.createClass({
       }
     } else this.startTimer()
   },
+  componentWillUnmount: function () {
+    if (this.timer) clearTimeout(this.timer)
+  },
   startTimer: function () {
-    setTimeout(_ => {
+    this.timer = setTimeout(_ => {
       console.log('Connection to go-ipfs has timed out (probably due to CORS)')
       if (this.isMounted()) this.setState({ long: true })
     }, 5000)
