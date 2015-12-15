@@ -28,6 +28,10 @@ a {
   color: black
 }
 
+.top-half-em {
+  margin-top: .5em
+}
+
 .center-block {
   margin:auto;
   display:block;

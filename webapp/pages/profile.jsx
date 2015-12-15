@@ -69,10 +69,10 @@ module.exports = function (boardsAPI) {
       if (uid === this.state.id) {
         return <div className="your-profile">
           <h6>This is your profile</h6>
-          {this.state.error ? <div>
-            <b>Oops</b>. Looks like your profile is not valid
-            <button className="new-profile button button-primary" onClick={this.newProfile}>New Profile</button>
-          </div> : <div></div>}
+          <div className="iconbar">
+            <Link className="nounderline" to="/edit/profile"><Icon name="edit" className="fa-2x light"/></Link>
+          </div>
+          <button className="new-profile button button-primary" onClick={this.newProfile}>New Profile</button>
           <hr/>
         </div>
       }

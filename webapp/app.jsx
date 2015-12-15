@@ -25,6 +25,7 @@ var Profile = require('profile.jsx')(boards)
 var Board = require('board.jsx')(boards)
 var PostPage = require('postpage.jsx')(boards)
 var CommentPage = require('commentpage.jsx')(boards)
+var ProfileEditor = require('profile-editor.jsx')(boards)
 
 // Define Main Components
 
@@ -91,6 +92,7 @@ ReactDOM.render(
       </Route>
       <Route path="/post/:posthash" component={PostPage} />
       <Route path="/board/:boardname" component={Board} />
+      <Route path="/edit/profile" component={ProfileEditor} />
       <Route path="/users" component={Users} />
       <Route path="/settings" component={Settings} />
       <Route path="*" component={NotFound} />

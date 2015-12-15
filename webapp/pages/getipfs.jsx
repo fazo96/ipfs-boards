@@ -57,7 +57,7 @@ module.exports = React.createClass({
         <h4 className="light">Sorry, but at the moment an external application is needed to try the Prototype</h4>
         <hr/>
         <h5>Error Message</h5>
-        <p>{this.state.error.Message || this.state.error || 'connection to go-ipfs failed'}</p>
+        <p>{this.state.error || 'connection to go-ipfs failed'}</p>
         <hr/>
         <p>You don't have an IPFS node running at <code>{opt.addr}:{opt.port}</code> or it is not reachable.
         The IPFS Boards prototype requires a full IPFS node. Please start one by following the
