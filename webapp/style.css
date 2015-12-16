@@ -146,11 +146,6 @@ a:hover {
   margin-left: .5rem;
 }
 
-.settings .buttons .button {
-  display: block;
-  margin: 1rem auto;
-  width: 80%
-}
 .homepage {
   text-align: center;
   max-width: 70rem;
@@ -179,15 +174,27 @@ a:hover {
   margin: 3rem auto;
 }
 
-@media (min-width: 400px) {
+.buttons .button {
+  display: block;
+  margin: auto;
+  width: 80%
+}
+
+.buttons .not-first {
+  /* mobile only */
+  margin-top: 1rem;
+}
+
+@media (min-width: 500px) {
   /* larger than mobile */
-  .settings .buttons {
+  .buttons {
     text-align: inherit;
   }
-  .settings .buttons .not-first {
-    margin: 0 1rem;
+  .buttons .not-first {
+    margin-left: 1rem;
+    margin-top: auto;
   }
-  .settings .buttons .button {
+  .buttons .button {
     display: inline-block;
     width: auto;
   }
