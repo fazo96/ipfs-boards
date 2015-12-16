@@ -27,14 +27,14 @@ module.exports = function (boardsAPI) {
       this.getBoardSettings(boards)
     },
     getBoardSettings (boards) {
-      if (!this.props.params.board) return
+      if (!this.props.params.boardname) return
       this.setState({ loading: true })
-      boards.getBoardSettings(boards.getMyID(), this.props.params.board, (err, s) => {
+      boards.getBoardSettings(boards.getMyID(), this.props.params.boardname, (err, s) => {
         if (err) {
           this.setState({ error: err, loading: false })
-        } else {
+        } else if (this.state.loading) {
           this.setState({
-            id: this.props.params.board,
+            id: this.props.params.boardname,
             name: s.fullname,
             desc: s.description,
             loading: false
@@ -57,9 +57,9 @@ module.exports = function (boardsAPI) {
     save () {
       var boards = this.state.api
       var board = {
-        id: this.state.shortname,
+        id: this.state.shortname || this.props.params.boardname,
         fullname: this.state.name,
-        description: this.state.description
+        description: this.state.desc
       }
       this.setState({ updating: true })
       boards.createBoard(board, (err) => {
@@ -68,8 +68,8 @@ module.exports = function (boardsAPI) {
       })
     },
     additionalButtons () {
-      if (this.state.api && this.props.params.board) {
-        var url = '/@' + this.state.api.getMyID() + '/' + this.props.params.board
+      if (this.state.api && this.props.params.boardname) {
+        var url = '/@' + this.state.api.getMyID() + '/' + this.props.params.boardname
         return <span>
           <button onClick={this.refresh} className="button not-first">Refresh</button>
           <Link to={url} className="button not-first">View</Link>
@@ -85,7 +85,7 @@ module.exports = function (boardsAPI) {
             <div className="text-center">
               <Icon className="center-block fa-3x light" name="ban" />
               <h4 className="top-half-em">Ooops</h4>
-              <p>{this.state.error}</p>
+              <p>{'' + this.state.error}</p>
               <button className="button button-primary center-block" onClick={this.skip}>Continue</button>
             </div>
           </div>
@@ -93,7 +93,7 @@ module.exports = function (boardsAPI) {
           return <div>
             <div className="text-center">
               <Icon className="center-block fa-spin fa-3x light" name="refresh" />
-              <h4 className="top-half-em">Fetching your current profile...</h4>
+              <h4 className="top-half-em">Fetching your current Board Settings...</h4>
               <button className="button button-primary center-block" onClick={this.skip}>Skip</button>
             </div>
           </div>
@@ -117,18 +117,20 @@ module.exports = function (boardsAPI) {
               for your changes to be visibile. Your Boards will appear unchanged during
               this time.</p>
               <div className="row">
-                <div className="six columns">
-                  <label htmlFor="shortname">ID</label>
-                  <input className="u-full-width" type="text" id="shortname" value={this.state.name} onChange={this.handleChange} placeholder="Choose a short name that identifies your Board." />
-                </div>
-                <div className="six columns">
+                {this.props.params.boardname
+                  ? <div></div>
+                  : <div className="six columns">
+                    <label htmlFor="shortname">ID</label>
+                    <input className="u-full-width" type="text" id="shortname" value={this.state.id} onChange={this.handleChange} placeholder="Choose a short ID." />
+                  </div>}
+                <div className={(this.props.params.boardname ? 'twelve' : 'six') + ' columns'}>
                   <label htmlFor="name">Title</label>
-                  <input className="u-full-width" type="text" id="name" value={this.state.port} onChange={this.onChange} placeholder="Name your board" />
+                  <input className="u-full-width" type="text" id="name" value={this.state.name} onChange={this.handleChange} placeholder="Name your board" />
                 </div>
               </div>
               <div>
                 <label htmlFor="desc">Description</label>
-                <textarea className="u-full-width" id="desc" value={this.state.description} onChange={this.handleChange} placeholder="What's this Board about? Markdown is supported :)" />
+                <textarea className="u-full-width" id="desc" value={this.state.desc} onChange={this.handleChange} placeholder="What's this Board about? Markdown is supported :)" />
               </div>
               <div className="buttons">
                 <button className="button button-primary" onClick={this.save}>Publish</button>

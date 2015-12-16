@@ -71,7 +71,7 @@ module.exports = function (boardsAPI) {
             <div className="text-center">
               <Icon className="center-block fa-3x light" name="ban" />
               <h4 className="top-half-em">Ooops</h4>
-              <p>{this.state.error}</p>
+              <p>{'' + this.state.error}</p>
               <button className="button button-primary center-block" onClick={this.skip}>Continue</button>
             </div>
           </div>
