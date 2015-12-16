@@ -28,7 +28,19 @@ module.exports = function (boardsAPI) {
     },
     getBoardSettings (boards) {
       if (!this.props.params.board) return
-      boards.getBoardSettings(boards.getMyID(), this.props.params.board)
+      this.setState({ loading: true })
+      boards.getBoardSettings(boards.getMyID(), this.props.params.board, (err, s) => {
+        if (err) {
+          this.setState({ error: err, loading: false })
+        } else {
+          this.setState({
+            id: this.props.params.board,
+            name: s.fullname,
+            desc: s.description,
+            loading: false
+          })
+        }
+      })
     },
     handleChange (event) {
       var obj = {}
@@ -51,6 +63,7 @@ module.exports = function (boardsAPI) {
       }
       this.setState({ updating: true })
       boards.createBoard(board, (err) => {
+        this.setState({ updating: false })
         console.log('CREATE:', err)
       })
     },
