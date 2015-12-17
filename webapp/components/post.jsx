@@ -4,38 +4,58 @@ var Icon = require('icon.jsx')
 var Link = require('react-router').Link
 var Clock = require('clock.jsx')
 var UserID = require('userID.jsx')
+var { Error, Loading } = require('status-components.jsx')
 
 module.exports = React.createClass({
-  getInitialState: function () {
-    return { moment: false }
+  getInitialState () {
+    return { loading: true }
   },
-  componentDidMount: function () {
-    require.ensure(['moment'], _ => {
-      if (this.isMounted()) this.setState({ moment: require('moment') })
+  componentDidMount () {
+    this.init(this.props)
+  },
+  componentWillReceiveProps (props) {
+    this.init(props)
+  },
+  init (props) {
+    var boards = props.api
+    if (!boards) return this.setState({ error: 'Could not connect to IPFS' })
+    this.setState({ loading: true })
+    boards.downloadPost(props.hash, props.adminID, props.board, (err, hash, date, post) => {
+      this.setState({ error: err, post: post, loading: false })
     })
   },
-  postLink: function () {
-    if (this.props.post.op) {
+  postLink () {
+    if (this.state.post.op) {
       if (this.props.board) {
-        return '/@' + this.props.post.op + '/' + this.props.board + '/' + this.props.post.hash
+        return '/@' + this.state.post.op + '/' + this.props.board + '/' + this.props.hash
       } else {
-        return '/@' + this.props.post.op + '/post/' + this.props.post.hash
+        return '/@' + this.state.post.op + '/post/' + this.props.hash
       }
     } else {
-      return '/post/' + this.props.post.hash
+      return '/post/' + this.props.hash
     }
   },
-  render: function () {
-    return <div key={this.props.post.title} className="post">
-      <div className="content">
-        <h5>{this.props.post.title}</h5><hr/>
-        <Markdown source={this.props.post.text} /><hr/>
+  getContent () {
+    if (this.state.error) {
+      return <Error className="content" error={this.state.error} />
+    } else if (this.state.loading) {
+      return <Loading className="content" title="Downloading post"/>
+    } else {
+      return <div className="content">
+        { this.state.post.title
+          ? <div><h5>{this.state.post.title}</h5><hr/></div>
+          : <div />
+        }
+        <Markdown source={this.state.post.text} /><hr/>
         <div className="icons">
-          <UserID id={this.props.post.op} api={this.props.api} ></UserID>
-          <Clock className="not-first" date={this.props.post.date} />
+          <UserID id={this.state.post.op} api={this.props.api} ></UserID>
+          <Clock className="not-first" date={this.state.post.date} />
           <Icon name="comments" className="not-first" /> <Link className="nounderline" to={this.postLink()}>View</Link>
         </div>
       </div>
-    </div>
+    }
+  },
+  render () {
+    return <div className="post">{this.getContent()}</div>
   }
 })

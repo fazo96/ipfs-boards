@@ -13,18 +13,18 @@ module.exports = React.createClass({
   init: function (boards) {
     if (this.state.init) return
     this.setState({ api: true })
-    var onPost = (post, hash) => {
+    var onPost = (hash, date, post) => {
       if (!this.isMounted()) return true
       var now = (new Date()).getTime()
       var posts = this.state.posts
-      if (post.date === undefined || post.date <= 0) {
-        posts.push(post)
-      } else if (post.date <= now) {
-        var i = sortedIndex(posts, post, (p) => now - p.date || now)
-        posts.splice(i, 0, post)
-      } else {
-        console.log('Post discarded cause date in the future:', post)
-      }
+      if (date === undefined || date <= 0) {
+        posts.push(hash)
+      } else /* if (date <= now) */ {
+        var i = sortedIndex(posts, post, (p) => now - date || now)
+        posts.splice(i, 0, hash)
+      } /* else {
+        console.log('Post discarded cause date in the future:', hash)
+      }*/
       this.setState({ posts })
     }
     boards.getEventEmitter().on('post in ' + this.props.board + (this.props.admin ? '@' + this.props.admin : ''), onPost)
@@ -45,8 +45,8 @@ module.exports = React.createClass({
   },
   getPosts: function () {
     if (this.state.posts.length > 0 || this.state.api) {
-      return this.state.posts.map(post => {
-        return <Post key={post.hash} board={this.props.board} admin={this.props.admin} post={post} api={this.props.api} />
+      return this.state.posts.map(hash => {
+        return <Post key={hash} board={this.props.board} admin={this.props.admin} hash={hash} api={this.props.api} />
       })
     } else {
       return <div className="center-block text-center">
