@@ -25,7 +25,17 @@ module.exports = function (boardsAPI) {
     init (boards) {
       if (this.state.init) return
       this.setState({ api: boards, init: true })
-      // TODO: DOWNLOAD POST
+      if (this.props.params.posthash) this.downloadPost(boards)
+    },
+    downloadPost (boards) {
+      this.setState({ loading: true })
+      boards.downloadPost(this.props.params.posthash, (err, p) => {
+        if (err) {
+          this.setState({ error: err, loading: false })
+        } else {
+          this.setState({ loading: false, title: p.title, text: p.text })
+        }
+      })
     },
     handleChange (event) {
       var obj = {}
@@ -36,17 +46,24 @@ module.exports = function (boardsAPI) {
       this.setState({ loading: false, updating: false, error: false })
     },
     refresh () {
-      this.setState({ loading: true })
-      // boardsAPI.use(b => this.getBoardSettings(b))
-      // TODO: DOWNLOAD POST
+      boardsAPI.use(b => this.downloadPost(b))
     },
     save () {
       this.setState({ updating: true })
-      // TODO: SAVE POST IMPL
+      var post = {
+        title: this.state.title,
+        text: this.state.text
+      }
+      boardsAPI.use(boards => {
+        boards.createPost(post, this.props.params.boardname, err => {
+          this.setState({ error: err, updating: false })
+          // Should redirect to new post hash
+        })
+      })
     },
     additionalButtons () {
       if (this.state.api && this.props.params.posthash) {
-        var url = '/@' + this.state.api.getMyID() + '/' + this.props.params.boardname + '/post/' + this.props.params.posthash
+        var url = '/@' + this.state.api.getMyID() + '/' + this.props.params.boardname + '/' + this.props.params.posthash
         return <span>
           <button onClick={this.refresh} className="button not-first">Refresh</button>
           <Link to={url} className="button not-first">View</Link>
@@ -77,7 +94,7 @@ module.exports = function (boardsAPI) {
                 {this.props.params.posthash ? ' Edit Post' : ' New Post'}
               </h2>
               <p>This App uses IPFS to store your Posts. When you are offline,
-              other users or servers that viewed your content will serve it to
+              other users or servers that viewed your text will serve it to
               others.</p>
               <p><b>Warning:</b> due to a bug in go-ipfs, it may take up to a minute
               for your changes to be visibile. Your Post will not appear or appear
@@ -87,8 +104,8 @@ module.exports = function (boardsAPI) {
                 <input className="u-full-width" type="text" id="title" value={this.state.title} onChange={this.handleChange} placeholder="Choose a title" />
               </div>
               <div>
-                <label htmlFor="desc">Content</label>
-                <textarea className="u-full-width" id="desc" value={this.state.desc} onChange={this.handleChange} placeholder="Write your post. Markdown is supported :)" />
+                <label htmlFor="text">Content</label>
+                <textarea className="u-full-width" id="text" value={this.state.text} onChange={this.handleChange} placeholder="Write your post. Markdown is supported :)" />
               </div>
               <div className="buttons">
                 <button className="button button-primary" onClick={this.save}>Publish</button>
