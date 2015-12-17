@@ -2,6 +2,7 @@ var React = require('react')
 var GetIPFS = require('getipfs.jsx')
 var Icon = require('icon.jsx')
 var Link = require('react-router').Link
+var { Error, Loading, Saving } = require('status-components.jsx')
 
 module.exports = function (boardsAPI) {
   return React.createClass({
@@ -67,31 +68,18 @@ module.exports = function (boardsAPI) {
     render () {
       if (this.state.api) {
         if (this.state.error) {
-          return <div>
-            <div className="text-center">
-              <Icon className="center-block fa-3x light" name="ban" />
-              <h4 className="top-half-em">Ooops</h4>
-              <p>{'' + this.state.error}</p>
-              <button className="button button-primary center-block" onClick={this.skip}>Continue</button>
-            </div>
-          </div>
+          return <Error error={this.state.error} >
+            <button className="button button-primary center-block" onClick={this.skip}>Continue</button>
+          </Error>
         } else if (this.state.loading) {
-          return <div>
-            <div className="text-center">
-              <Icon className="center-block fa-spin fa-3x light" name="refresh" />
-              <h4 className="top-half-em">Fetching your current profile...</h4>
-              <button className="button button-primary center-block" onClick={this.skip}>Skip</button>
-            </div>
-          </div>
+          return <Loading title="Fetching your current Profile...">
+            <button className="button button-primary center-block" onClick={this.skip}>Skip</button>
+          </Loading>
         } else if (this.state.updating) {
-          return <div>
-            <div className="text-center">
-              <Icon className="center-block fa-spin fa-3x light" name="refresh" />
-              <h4 className="top-half-em">Publishing...</h4>
-              <p>Pressing the Skip button will not abort the publish operation.</p>
-              <button className="button button-primary center-block" onClick={this.skip}>Skip</button>
-            </div>
-          </div>
+          return <Saving>
+            <p>Pressing the Skip button will not abort the publish operation.</p>
+            <button className="button button-primary center-block" onClick={this.skip}>Skip</button>
+          </Saving>
         } else {
           return (
             <div className="editor">
