@@ -87,6 +87,7 @@ __TODO__ implement the ability to manually hide content and to name moderators t
     {
       "title": "Title of the post",
       "date": "date of the post",
+      "board": "optional_board_id",
       "preference": "optional_id_of_the_preferred_administration",
       "text": "Content of the post",
       "previous": "id_of_optional_previous_version",
