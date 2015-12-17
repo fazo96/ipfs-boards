@@ -66,8 +66,8 @@ var Homepage = React.createClass({
 var NotFound = React.createClass({
   render () {
     return (<div className="text-center">
-      <h1><Icon name="ban"/></h1>
-      <p>Sorry, there's nothing here!</p>
+      <h1><Icon name="ban" className="light"/></h1>
+      <h3>Sorry, there's nothing here!</h3>
     </div>)
   }
 })
@@ -93,7 +93,10 @@ ReactDOM.render(
       </Route>
       <Route path="edit">
         <Route path="profile" component={ProfileEditor} />
-        <Route path="board(/:boardname)" component={BoardEditor} />
+        <Route path="board" component={BoardEditor}>
+          <Route path=":boardname" component={BoardEditor}>
+          </Route>
+        </Route>
       </Route>
       <Route path="post/:posthash" component={PostPage} />
       <Route path="board/:boardname" component={Board} />

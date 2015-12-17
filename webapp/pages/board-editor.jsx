@@ -97,7 +97,9 @@ module.exports = function (boardsAPI) {
         } else {
           return (
             <div className="editor">
-              <h2><Icon name="inbox" className="light" /> Board Settings</h2>
+              <h2><Icon name="inbox" className="light" />
+                {this.props.params.boardname ? ' Board Settings' : ' New Board'}
+              </h2>
               <p>This App uses IPFS to store your Boards. When you are offline,
               other users or servers that viewed your content will serve it to
               others.</p>

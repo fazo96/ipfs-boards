@@ -3,13 +3,16 @@ var Markdown = require('markdown.jsx')
 var UserID = require('userID.jsx')
 var PostList = require('postlist.jsx')
 var GetIPFS = require('getipfs.jsx')
+var Link = require('react-router').Link
+var Icon = require('icon.jsx')
+var {Loading} = require('status-components.jsx')
 
 module.exports = function (boardsAPI) {
   return React.createClass({
-    getInitialState: function () {
-      return { name: this.props.params.boardname, api: false, whitelist: [] }
+    getInitialState () {
+      return { loading: true, whitelist: [] }
     },
-    componentDidMount: function () {
+    componentDidMount () {
       boardsAPI.use(boards => {
         /*
         When a component inside the component being rendered by the router also needs
@@ -33,17 +36,17 @@ module.exports = function (boardsAPI) {
           })
           ee.on('settings for ' + this.props.params.boardname + '@' + this.props.params.userid, (res) => {
             if (!this.isMounted()) return true
-            if (res) this.setState({ name: res.fullname, description: res.description })
+            if (res) this.setState({ loading: false, name: res.fullname, description: res.description })
           })
         } else {
-          this.setState({ description: 'All the messages posted in __#' + this.props.params.boardname + '__' })
+          this.setState({ loading: false, description: 'All the messages posted in __#' + this.props.params.boardname + '__' })
         }
         if (boards.isInit || this.state.api) {
           this.init(boards)
         }
       })
     },
-    init: function (boards) {
+    init (boards) {
       if (!this.state.init) {
         if (this.props.params.userid) {
           boards.getBoardSettings(this.props.params.userid, this.props.params.boardname)
@@ -51,18 +54,29 @@ module.exports = function (boardsAPI) {
         this.setState({ init: true, api: true, boards: boards })
       }
     },
-    render: function () {
+    toolbox () {
+      return <div className="iconbar text-center">
+        <Link to={'/edit/board/' + this.props.params.boardname} ><Icon name="edit" className="fa-2x light" /></Link>
+        <Link to={'/edit/board/' + this.props.params.boardname + '/post'} ><Icon name="plus" className="fa-2x light" /></Link>
+      </div>
+    },
+    render () {
       if (this.state.api) {
-        return (<div className="board">
-          <h2>{this.state.name}</h2>
-          <Markdown source={this.state.description} skipHtml={true} />
-          {this.props.params.userid ? <h5><UserID id={this.props.params.userid} api={this.state.boards} /></h5> : <p></p>}
-          <div className="whitelist">
-            {this.state.whitelist.map(i => <UserID id={i} key={i} api={this.state.boards} />)}
-          </div>
-          <hr />
-          <PostList board={this.props.params.boardname} admin={this.props.params.userid} api={this.state.boards} />
-        </div>)
+        if (this.state.loading) {
+          return <Loading title="Downloading Board data" />
+        } else {
+          return (<div className="board">
+            <h2>{this.state.name}</h2>
+            <Markdown source={this.state.description} skipHtml={true} />
+            {this.props.params.userid ? <h5><UserID id={this.props.params.userid} api={this.state.boards} /></h5> : <p></p>}
+            <div className="whitelist">
+              {this.state.whitelist.map(i => <UserID id={i} key={i} api={this.state.boards} />)}
+            </div>
+            <hr />
+            {this.toolbox()}
+            <PostList board={this.props.params.boardname} admin={this.props.params.userid} api={this.state.boards} />
+          </div>)
+        }
       } else return <GetIPFS api={this.state.boards} />
     }
   })
