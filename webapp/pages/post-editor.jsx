@@ -24,7 +24,7 @@ module.exports = function (boardsAPI) {
     },
     init (boards) {
       if (this.state.init) return
-      this.setState({ api: boards, init: true })
+      this.setState({ api: boards, userid: boards.getMyID(), init: true })
       if (this.props.params.posthash) this.downloadPost(boards)
     },
     downloadPost (boards) {
@@ -88,6 +88,9 @@ module.exports = function (boardsAPI) {
             <button className="button button-primary center-block" onClick={this.skip}>Skip</button>
           </Saving>
         } else {
+          if (this.state.userid && this.props.params.boardname) {
+            var boardurl = '/@' + this.state.userid + '/' + this.props.params.boardname
+          }
           return (
             <div className="editor">
               <h2><Icon name="pencil" className="light" />
@@ -109,6 +112,7 @@ module.exports = function (boardsAPI) {
               </div>
               <div className="buttons">
                 <button className="button button-primary" onClick={this.save}>Publish</button>
+                {boardurl ? <Link className="button not-first" to={boardurl}>View Board</Link> : <span></span> }
                 {this.additionalButtons()}
               </div>
             </div>

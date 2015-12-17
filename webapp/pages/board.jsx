@@ -46,13 +46,14 @@ module.exports = function (boardsAPI) {
         }
       })
     },
-    init (boards) {
-      if (!this.state.init) {
-        if (this.props.params.userid) {
-          boards.getBoardSettings(this.props.params.userid, this.props.params.boardname)
-        }
-        this.setState({ init: true, api: true, boards: boards })
-      }
+    componentWillReceiveProps (props) {
+      boardsAPI.use(b => this.init(b, props))
+    },
+    init (boards, newProps) {
+      var props = newProps || this.props
+      if (!props.params.userid) return
+      boards.getBoardSettings(props.params.userid, props.params.boardname)
+      this.setState({ loading: true, init: true, api: true, userid: boards.getMyID(), boards: boards })
     },
     toolbox () {
       return <div className="iconbar text-center">
@@ -63,7 +64,11 @@ module.exports = function (boardsAPI) {
     render () {
       if (this.state.api) {
         if (this.state.loading) {
-          return <Loading title="Downloading Board data" />
+          return <Loading title="Downloading Board data">
+            { this.props.params.userid === 'me' || this.props.params.userid === this.state.userid
+              ? <Link to={'/edit/board/' + this.props.params.boardname} className="button button-primary">Edit Board</Link>
+              : <span></span> }
+          </Loading>
         } else {
           return (<div className="board">
             <h2>{this.state.name}</h2>
