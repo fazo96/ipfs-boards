@@ -3,13 +3,14 @@ var Markdown = require('markdown.jsx')
 var Link = require('react-router').Link
 var Icon = require('icon.jsx')
 var GetIPFS = require('getipfs.jsx')
+var { Loading, Error } = require('status-components.jsx')
 
 module.exports = function (boardsAPI) {
   return React.createClass({
-    getInitialState: function () {
-      return { name: '...', boards: [], api: false }
+    getInitialState () {
+      return { loading: true, boards: [], api: false }
     },
-    componentDidMount: function () {
+    componentDidMount () {
       boardsAPI.use(boards => {
         if (boards.isInit) {
           this.setState({ api: boards, id: boards.id })
@@ -24,10 +25,11 @@ module.exports = function (boardsAPI) {
         })
       })
     },
-    componentWillReceiveProps: function (nextProps) {
+    componentWillReceiveProps (nextProps) {
       boardsAPI.use(boards => this.downloadProfile(boards, nextProps))
+      this.setState({ loading: true })
     },
-    downloadProfile: function (boards, props) {
+    downloadProfile (boards, props) {
       var ee = boards.getEventEmitter()
       var uid = props.params.userid
       if (uid === 'me') uid = boards.id
@@ -40,23 +42,20 @@ module.exports = function (boardsAPI) {
       boards.getProfile(uid, (err, res) => {
         if (!this.isMounted()) return true
         if (err) {
-          this.setState({
-            name: <span><Icon name="ban" /> Error</span>,
-            error: err
-          })
+          this.setState({ loading: false, error: err })
         } else {
-          this.setState({ name: res.name, description: res.description })
+          this.setState({ loading: false, name: res.name, description: res.description })
         }
       })
     },
-    init: function (boards) {
+    init (boards) {
       if (this.state.init) return
       if (boards.isInit || this.state.api) {
         this.downloadProfile(boards, this.props)
         this.setState({ init: true })
       }
     },
-    linkToEditor: function () {
+    linkToEditor () {
       var uid = this.props.params.userid
       if (uid === 'me' && this.state.id) uid = this.state.id
       if (uid === this.state.id) {
@@ -70,22 +69,31 @@ module.exports = function (boardsAPI) {
       }
       return ''
     },
-    render: function () {
+    getEditButton () {
+      return <Link className="button button-primary" to="/edit/profile">Edit Profile</Link>
+    },
+    render () {
       if (this.state.api) {
-        var uid = this.props.params.userid
-        if (uid === 'me') uid = this.state.id
-        return (<div className="profile">
-          {this.linkToEditor()}
-          <h1>{this.state.name}</h1>
-          <Markdown source={this.state.erro ? this.state.error : this.state.description} skipHtml={true} />
-          <hr/>
-          <div className="light breaker">@{uid}</div>
-          {this.state.boards.map(n => {
-            return <h6 className="light" key={uid + '/' + n.name}>
-              <Link to={'/@' + uid + '/' + n.name}># {n.name}</Link>
-            </h6>
-          })}
-        </div>)
+        if (this.state.error) {
+          return <Error error={this.state.error}>{this.getEditButton()}</Error>
+        } else if (this.state.loading) {
+          return <Loading title="Downloading Profile">{this.getEditButton()}</Loading>
+        } else {
+          var uid = this.props.params.userid
+          if (uid === 'me') uid = this.state.id
+          return (<div className="profile">
+            {this.linkToEditor()}
+            <h1>{this.state.name}</h1>
+            <Markdown source={this.state.description} skipHtml={true} />
+            <hr/>
+            <div className="light breaker">@{uid}</div>
+            {this.state.boards.map(n => {
+              return <h6 className="light" key={uid + '/' + n.name}>
+                <Link to={'/@' + uid + '/' + n.name}># {n.name}</Link>
+              </h6>
+            })}
+          </div>)
+        }
       } else return <GetIPFS api={this.state.api} />
     }
   })
