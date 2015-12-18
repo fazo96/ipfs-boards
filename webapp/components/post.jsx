@@ -4,14 +4,19 @@ var Icon = require('icon.jsx')
 var Link = require('react-router').Link
 var Clock = require('clock.jsx')
 var UserID = require('userID.jsx')
-var { Error, Loading } = require('status-components.jsx')
+var { Error } = require('status-components.jsx')
 
 module.exports = React.createClass({
   getInitialState () {
     return { loading: true }
   },
   componentDidMount () {
-    this.init(this.props)
+    if (this.props.api) {
+      this.props.api.getEventEmitter().on('init', err => {
+        if (!err) this.init(this.props)
+      })
+      if (this.props.api.isInit) this.init(this.props)
+    }
   },
   componentWillReceiveProps (props) {
     this.init(props)
@@ -52,7 +57,12 @@ module.exports = React.createClass({
     if (this.state.error) {
       return <Error className="content" error={this.state.error} />
     } else if (this.state.loading) {
-      return <Loading className="content" title="Downloading post"/>
+      return <div className="text-center">
+        <div className="center-block" style={{marginTop: '1em'}}>
+          <Icon className="center-block fa-spin fa-2x light" name="refresh" />
+        </div>
+        <h5>Downloading Post</h5>
+      </div>
     } else {
       return <div className="content">
         { this.state.post.title

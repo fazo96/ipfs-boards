@@ -4,14 +4,20 @@ var Icon = require('icon.jsx')
 var Post = require('post.jsx')
 
 module.exports = React.createClass({
-  getInitialState: function () {
+  getInitialState () {
     return { posts: [], api: false }
   },
-  sortFn: function (a, b) {
+  sortFn (a, b) {
     return (b.date || 0) - (a.date || 0)
   },
-  init: function (boards) {
+  componentWillReceiveProps (props) {
+    if (props.api) {
+      this.init(props.api, props)
+    }
+  },
+  init (boards, props) {
     if (this.state.init) return
+    props = props || this.props
     this.setState({ api: true })
     var onPost = (hash, date, post) => {
       if (!this.isMounted()) return true
@@ -27,11 +33,11 @@ module.exports = React.createClass({
       }*/
       this.setState({ posts })
     }
-    boards.getEventEmitter().on('post in ' + this.props.board + (this.props.admin ? '@' + this.props.admin : ''), onPost)
-    boards.getPostsInBoard(this.props.admin, this.props.board)
+    boards.getEventEmitter().on('post in ' + props.board + (props.admin ? '@' + props.admin : ''), onPost)
+    boards.getPostsInBoard(props.admin, props.board)
     this.setState({ init: true })
   },
-  componentDidMount: function () {
+  componentDidMount () {
     var boards = this.props.api
     if (boards) {
       if (boards.isInit) {
@@ -43,7 +49,7 @@ module.exports = React.createClass({
       }
     }
   },
-  getPosts: function () {
+  getPosts () {
     if (this.state.posts.length > 0 || this.state.api) {
       return this.state.posts.map(hash => {
         return <Post key={hash} board={this.props.board} admin={this.props.admin} hash={hash} api={this.props.api} />
@@ -54,7 +60,7 @@ module.exports = React.createClass({
       </div>
     }
   },
-  render: function () {
+  render () {
     return (
       <div className="postList">
         {this.getPosts()}

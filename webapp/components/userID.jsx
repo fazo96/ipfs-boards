@@ -3,22 +3,28 @@ var Icon = require('icon.jsx')
 var Link = require('react-router').Link
 
 module.exports = React.createClass({
-  getInitialState: function () {
+  getInitialState () {
     return { }
   },
-  componentDidMount: function () {
-    var boards = this.props.api
+  componentWillReceiveProps (props) {
+    this.init(props)
+  },
+  componentDidMount () {
+    this.init()
+  },
+  init (props) {
+    props = props || this.props
+    var boards = props.api
     if (boards) {
+      boards.getEventEmitter().on('init', err => {
+        if (!err && this.isMounted()) this.getProfile(boards)
+      })
       if (boards.isInit) {
         this.getProfile(boards)
       }
-      boards.getEventEmitter().on('init', err => {
-        if (!err && this.isMounted()) this.getProfile(boards)
-        else console.log('ERR INIT', err)
-      })
     }
   },
-  getProfile: function (boards) {
+  getProfile (boards) {
     if (this.props.id === undefined) return
     boards.getProfile(this.props.id, (err, res) => {
       if (!this.isMounted()) return true
@@ -29,14 +35,14 @@ module.exports = React.createClass({
       }
     })
   },
-  getContent: function () {
+  getContent () {
     if (this.state.name) {
       return (<Icon name="user" />)
     } else {
       return '@'
     }
   },
-  render: function () {
+  render () {
     if (this.props.id === undefined || this.props.id === 'undefined') {
       return <div className="user-id">
           <Icon name="ban" /> Unknown User

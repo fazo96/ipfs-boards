@@ -12,27 +12,15 @@ module.exports = function (boardsAPI) {
     },
     componentDidMount: function () {
       boardsAPI.use(boards => {
-        boards.getEventEmitter().on('init', err => {
-          if (!err && this.isMounted()) {
-            this.init(boards)
-          }
-        })
-        if (this.isMounted() && boards.isInit) {
-          this.init(boards)
-        }
-        boards.init()
+        this.setState({ api: boards })
       })
-    },
-    init: function (boards) {
-      if (this.state.init) return
-      this.setState({ api: boards })
     },
     getContext: function () {
       if (this.props.params.userid) {
         if (this.props.params.boardname) {
-          return <div>Posted by <UserID id={this.props.params.userid} api={this.state.boards} /> in <Link to={'@' + this.props.params.userid + '/' + this.props.params.boardname}>#{this.props.params.boardname}</Link></div>
+          return <div>Posted by <UserID id={this.props.params.userid} api={this.state.api} /> in <Link to={'@' + this.props.params.userid + '/' + this.props.params.boardname}>#{this.props.params.boardname}</Link></div>
         } else {
-          return <div>Posted by <UserID id={this.props.params.userid} api={this.state.boards} /></div>
+          return <div>Posted by <UserID id={this.props.params.userid} api={this.state.api} /></div>
         }
       } else return <div><h6 className="light">You are viewing a single post</h6></div>
     },

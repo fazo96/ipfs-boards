@@ -14,13 +14,6 @@ module.exports = function (boardsAPI) {
     },
     componentDidMount () {
       boardsAPI.use(boards => {
-        /*
-        When a component inside the component being rendered by the router also needs
-        access to the boards api, it appears unitialized and never initializes to it
-        for no apparent reason. Calling init twice (one automgically and one
-        when the root component mounts) works as a cheap, horrible workaround
-        */
-        boards.init()
         if (!this.isMounted()) return
         var ee = boards.getEventEmitter()
         ee.on('init', err => {
