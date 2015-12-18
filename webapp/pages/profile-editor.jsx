@@ -36,7 +36,7 @@ module.exports = function (boardsAPI) {
     },
     init (boards) {
       if (this.state.init) return
-      this.setState({ api: boards })
+      this.setState({ api: boards, userid: boards.getMyID() })
       this.getProfile(boards)
     },
     handleChange (event) {
@@ -101,7 +101,7 @@ module.exports = function (boardsAPI) {
               <div className="buttons">
                 <button className="button button-primary" onClick={this.save}>Publish</button>
                 <button onClick={this.refresh} className="button not-first">Refresh</button>
-                <Link to='/@me' className="button not-first">View</Link>
+                <Link to={'/@' + this.state.userid} className="button not-first">View</Link>
               </div>
             </div>
           )

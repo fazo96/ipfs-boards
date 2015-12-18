@@ -19,7 +19,7 @@ module.exports = React.createClass({
   init (props) {
     var boards = props.api
     if (!boards) return this.setState({ error: 'Could not connect to IPFS' })
-    this.setState({ loading: true })
+    this.setState({ loading: true, userid: boards.getMyID() })
     boards.downloadPost(props.hash, props.adminID, props.board, (err, hash, date, post) => {
       this.setState({ error: err, post: post, loading: false })
     })
@@ -34,6 +34,19 @@ module.exports = React.createClass({
     } else {
       return '/post/' + this.props.hash
     }
+  },
+  editorLink () {
+    if (this.state.post.op === this.state.userid) {
+      var board = this.props.board || this.state.post.board
+      if (board) {
+        var url = '/edit/board/' + board + '/post/' + this.props.hash
+        return <Link to={url} className="nounderline">
+          <Icon name="edit" className="not-first"/> Edit
+        </Link>
+      } else {
+        return <span/>
+      }
+    } else return <span/>
   },
   getContent () {
     if (this.state.error) {
@@ -51,6 +64,7 @@ module.exports = React.createClass({
           <UserID id={this.state.post.op} api={this.props.api} ></UserID>
           <Clock className="not-first" date={this.state.post.date} />
           <Icon name="comments" className="not-first" /> <Link className="nounderline" to={this.postLink()}>View</Link>
+          {this.editorLink()}
         </div>
       </div>
     }

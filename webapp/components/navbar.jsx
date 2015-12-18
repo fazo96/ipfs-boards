@@ -9,13 +9,13 @@ module.exports = function (boardsAPI) {
     },
     componentDidMount () {
       boardsAPI.use(boards => {
-        if (boards.isInit) this.setState({ api: true })
+        if (boards.isInit) this.setState({ api: true, userid: boards.getMyID() })
         boards.getEventEmitter().on('init', err => {
           if (!this.isMounted()) return
           if (err) {
             this.setState({ loading: false, api: false })
           } else {
-            this.setState({ api: true })
+            this.setState({ api: true, userid: boards.getMyID() })
           }
         })
       })
@@ -23,7 +23,7 @@ module.exports = function (boardsAPI) {
     extraButtons: function () {
       if (this.state.api) {
         return <span>
-            <Link className="nounderline" to="/@me"><Icon name="user" className="fa-2x light"/></Link>
+            <Link className="nounderline" to={'/@' + this.state.userid}><Icon name="user" className="fa-2x light"/></Link>
             <Link className="nounderline" to="/users"><Icon name="globe" className="fa-2x light"/></Link>
           </span>
       } else if (this.state.loading) {

@@ -13,13 +13,11 @@ module.exports = function (boardsAPI) {
     componentDidMount () {
       boardsAPI.use(boards => {
         if (boards.isInit) {
-          this.setState({ api: boards, id: boards.id })
           this.init(boards)
         }
         var ee = boards.getEventEmitter()
         ee.on('init', err => {
           if (!err && this.isMounted()) {
-            this.setState({ api: boards, id: boards.id })
             this.init(boards)
           }
         })
@@ -50,10 +48,8 @@ module.exports = function (boardsAPI) {
     },
     init (boards) {
       if (this.state.init) return
-      if (boards.isInit || this.state.api) {
-        this.downloadProfile(boards, this.props)
-        this.setState({ init: true })
-      }
+      this.setState({ init: true, api: boards, id: boards.id })
+      this.downloadProfile(boards, this.props)
     },
     linkToEditor () {
       var uid = this.props.params.userid

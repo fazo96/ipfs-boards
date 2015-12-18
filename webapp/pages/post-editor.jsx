@@ -2,7 +2,7 @@ var React = require('react')
 var GetIPFS = require('getipfs.jsx')
 var Icon = require('icon.jsx')
 var Link = require('react-router').Link
-var { Error, Loading, Saving } = require('status-components.jsx')
+var { Error, Loading, Saving, Success } = require('status-components.jsx')
 
 module.exports = function (boardsAPI) {
   return React.createClass({
@@ -29,11 +29,12 @@ module.exports = function (boardsAPI) {
     },
     downloadPost (boards) {
       this.setState({ loading: true })
-      boards.downloadPost(this.props.params.posthash, (err, p) => {
+      boards.downloadPost(this.props.params.posthash, (err, hash, date, post) => {
         if (err) {
           this.setState({ error: err, loading: false })
         } else {
-          this.setState({ loading: false, title: p.title, text: p.text })
+          console.log(post)
+          this.setState({ loading: false, title: post.title, text: post.text })
         }
       })
     },
@@ -43,7 +44,7 @@ module.exports = function (boardsAPI) {
       this.setState(obj)
     },
     skip () {
-      this.setState({ loading: false, updating: false, error: false })
+      this.setState({ loading: false, updating: false, error: false, success: false })
     },
     refresh () {
       boardsAPI.use(b => this.downloadPost(b))
@@ -61,12 +62,22 @@ module.exports = function (boardsAPI) {
         })
       })
     },
+    delete () {
+      this.setState({ deleting: true })
+      boardsAPI.use(boards => {
+        boards.deletePost(this.props.params.posthash, this.props.params.boardname, err => {
+          if (!err) console.log('Post deleted')
+          this.setState({ deleting: false, error: err, success: true })
+        })
+      })
+    },
     additionalButtons () {
       if (this.state.api && this.props.params.posthash) {
         var url = '/@' + this.state.api.getMyID() + '/' + this.props.params.boardname + '/' + this.props.params.posthash
         return <span>
           <button onClick={this.refresh} className="button not-first">Refresh</button>
           <Link to={url} className="button not-first">View</Link>
+          <button onClick={this.delete} className="button not-first">Delete</button>
         </span>
       } else {
         return <span></span>
@@ -78,6 +89,11 @@ module.exports = function (boardsAPI) {
           return <Error error={this.state.error} >
             <button className="button button-primary center-block" onClick={this.skip}>Continue</button>
           </Error>
+        } else if (this.state.deleting) {
+          return <Loading title="Deleting Post">
+            <p>Pressing the Skip button will not abort the Delete operation.</p>
+            <button className="button button-primary center-block" onClick={this.skip}>Skip</button>
+          </Loading>
         } else if (this.state.loading) {
           return <Loading title="Downloading Post">
             <button className="button button-primary center-block" onClick={this.skip}>Skip</button>
@@ -87,10 +103,11 @@ module.exports = function (boardsAPI) {
             <p>Pressing the Skip button will not abort the publish operation.</p>
             <button className="button button-primary center-block" onClick={this.skip}>Skip</button>
           </Saving>
+        } else if (this.state.success) {
+          return <Success title="Post Deleted">
+            <p><b>Note:</b> due to a bug in go-ipfs, you may need to wait up to a minute for changes to appear.</p>
+          </Success>
         } else {
-          if (this.state.userid && this.props.params.boardname) {
-            var boardurl = '/@' + this.state.userid + '/' + this.props.params.boardname
-          }
           return (
             <div className="editor">
               <h2><Icon name="pencil" className="light" />
@@ -112,7 +129,6 @@ module.exports = function (boardsAPI) {
               </div>
               <div className="buttons">
                 <button className="button button-primary" onClick={this.save}>Publish</button>
-                {boardurl ? <Link className="button not-first" to={boardurl}>View Board</Link> : <span></span> }
                 {this.additionalButtons()}
               </div>
             </div>
