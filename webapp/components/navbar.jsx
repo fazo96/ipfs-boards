@@ -10,12 +10,12 @@ module.exports = function (boardsAPI) {
     componentDidMount () {
       boardsAPI.use(boards => {
         if (boards.isInit) this.setState({ api: true, userid: boards.getMyID() })
-        boards.getEventEmitter().on('init', err => {
+        boards.getEventEmitter().on('init', (err, limited) => {
           if (!this.isMounted()) return
           if (err) {
-            this.setState({ loading: false, api: false })
+            this.setState({ loading: false, api: false, limited })
           } else {
-            this.setState({ api: true, userid: boards.getMyID() })
+            this.setState({ api: true, userid: boards.getMyID(), limited })
           }
         })
       })
@@ -28,6 +28,8 @@ module.exports = function (boardsAPI) {
           </span>
       } else if (this.state.loading) {
         return <Icon name="refresh" className="fa-2x fa-spin light"/>
+      } else if (this.state.limited) {
+        return <Link className="nounderline" to="/status"><Icon name="exclamation-triangle" className="fa-2x light"/></Link>
       } else {
         return <Link className="nounderline" to="/status"><Icon name="ban" className="fa-2x light"/></Link>
       }

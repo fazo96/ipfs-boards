@@ -5,7 +5,7 @@ var Post = require('post.jsx')
 
 module.exports = React.createClass({
   getInitialState () {
-    return { posts: [], api: false }
+    return { posts: [] }
   },
   sortFn (a, b) {
     return (b.date || 0) - (a.date || 0)
@@ -16,9 +16,6 @@ module.exports = React.createClass({
     }
   },
   init (boards, props) {
-    if (this.state.init) return
-    props = props || this.props
-    this.setState({ api: true })
     var onPost = (hash, date, post) => {
       if (!this.isMounted()) return true
       var now = (new Date()).getTime()
@@ -33,18 +30,29 @@ module.exports = React.createClass({
       }*/
       this.setState({ posts })
     }
+    props = props || this.props
     boards.getEventEmitter().on('post in ' + props.board + (props.admin ? '@' + props.admin : ''), onPost)
-    boards.getPostsInBoard(props.admin, props.board)
-    this.setState({ init: true })
+    this.setState({ api: boards, limited: boards.limited })
+    if (boards.isInit) {
+      boards.getPostsInBoard(props.admin, props.board)
+    } else {
+      boards.getEventEmitter().on('init', (err, limited) => {
+        if (!err) {
+          boards.getPostsInBoard(props.admin, props.board)
+        } else {
+          this.setState({ limited })
+        }
+      })
+    }
   },
   componentDidMount () {
     var boards = this.props.api
     if (boards) {
-      if (boards.isInit) {
+      if (boards.isInit || boards.limited) {
         this.init(boards)
       } else {
-        boards.getEventEmitter().on('init', err => {
-          if (!err && this.isMounted()) this.init(boards)
+        boards.getEventEmitter().on('init', (err, limited) => {
+          if ((!err || limited) && this.isMounted()) this.init(boards)
         })
       }
     }
@@ -61,10 +69,15 @@ module.exports = React.createClass({
     }
   },
   render () {
-    return (
-      <div className="postList">
+    if (this.state.limited) {
+      return <div className="text-center">
+        <h5 className="light"><Icon name="ban" /></h5>
+        <p>Posts in a board can't be shown in limited mode. Sorry!</p>
+      </div>
+    } else {
+      return <div className="postList">
         {this.getPosts()}
       </div>
-    )
+    }
   }
 })

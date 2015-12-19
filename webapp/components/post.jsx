@@ -5,6 +5,7 @@ var Link = require('react-router').Link
 var Clock = require('clock.jsx')
 var UserID = require('userID.jsx')
 var { Error } = require('status-components.jsx')
+var Comments = require('comment.jsx').Comments
 
 module.exports = React.createClass({
   getInitialState () {
@@ -12,10 +13,10 @@ module.exports = React.createClass({
   },
   componentDidMount () {
     if (this.props.api) {
-      this.props.api.getEventEmitter().on('init', err => {
-        if (!err) this.init(this.props)
+      this.props.api.getEventEmitter().on('init', (err, limited) => {
+        if (!err || limited) this.init(this.props)
       })
-      if (this.props.api.isInit) this.init(this.props)
+      if (this.props.api.isInit || this.props.api.limited) this.init(this.props)
     }
   },
   componentWillReceiveProps (props) {
@@ -80,6 +81,9 @@ module.exports = React.createClass({
     }
   },
   render () {
-    return <div className="post">{this.getContent()}</div>
+    return <div>
+      <div className="post">{this.getContent()}</div>
+      <Comments parent={this.props.hash} post={this.props.hash} api={this.props.api} adminID={this.props.adminID} board={this.props.board} />
+    </div>
   }
 })

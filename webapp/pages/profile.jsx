@@ -12,12 +12,12 @@ module.exports = function (boardsAPI) {
     },
     componentDidMount () {
       boardsAPI.use(boards => {
-        if (boards.isInit) {
+        if (boards.isInit || boards.limited) {
           this.init(boards)
         }
         var ee = boards.getEventEmitter()
-        ee.on('init', err => {
-          if (!err && this.isMounted()) {
+        ee.on('init', (err, limited) => {
+          if ((!err || limited) && this.isMounted()) {
             this.init(boards)
           }
         })
@@ -30,10 +30,8 @@ module.exports = function (boardsAPI) {
     downloadProfile (boards, props) {
       var ee = boards.getEventEmitter()
       var uid = props.params.userid
-      if (uid === 'me') uid = boards.id
       ee.on('boards for ' + uid, l => {
         var u2id = props.params.userid
-        if (u2id === 'me') u2id = boards.id
         if (!this.isMounted() || u2id !== uid) return true
         this.setState({ boards: l })
       })
@@ -48,12 +46,11 @@ module.exports = function (boardsAPI) {
     },
     init (boards) {
       if (this.state.init) return
-      this.setState({ init: true, api: boards, id: boards.id })
+      this.setState({ init: true, api: boards, id: boards.id, limited: boards.limited })
       this.downloadProfile(boards, this.props)
     },
     linkToEditor () {
       var uid = this.props.params.userid
-      if (uid === 'me' && this.state.id) uid = this.state.id
       if (uid === this.state.id) {
         return <div className="your-profile">
           <h6>This is your profile</h6>
@@ -76,7 +73,6 @@ module.exports = function (boardsAPI) {
           return <Loading title="Downloading Profile">{this.getEditButton()}</Loading>
         } else {
           var uid = this.props.params.userid
-          if (uid === 'me') uid = this.state.id
           return (<div className="profile">
             {this.linkToEditor()}
             <h1>{this.state.name}</h1>

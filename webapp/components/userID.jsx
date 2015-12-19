@@ -16,10 +16,12 @@ module.exports = React.createClass({
     props = props || this.props
     var boards = props.api
     if (boards) {
-      boards.getEventEmitter().on('init', err => {
-        if (!err && this.isMounted()) this.getProfile(boards)
+      boards.getEventEmitter().on('init', (err, limited) => {
+        if ((!err || limited) && this.isMounted()) {
+          this.getProfile(boards)
+        }
       })
-      if (boards.isInit) {
+      if (boards.isInit || boards.limited) {
         this.getProfile(boards)
       }
     }

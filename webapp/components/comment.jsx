@@ -53,29 +53,40 @@ var Comments = React.createClass({
     return { comments: [] }
   },
   componentDidMount () {
-    var boards = this.props.api
-    if (boards) {
-      boards.getEventEmitter().on('comment for ' + this.props.parent, cmnt => {
-        if (this.isMounted()) this.setState({ comments: this.state.comments.concat(cmnt) })
-      })
-      if (boards.isInit && this.isMounted()) {
+    if (this.props.api) this.init(this.props.api)
+  },
+  componentWillReceiveProps (props) {
+    if (props.api) this.init(props.api)
+  },
+  init (boards) {
+    boards.getEventEmitter().on('comment for ' + this.props.parent, cmnt => {
+      if (this.isMounted()) this.setState({ comments: this.state.comments.concat(cmnt) })
+    })
+    boards.getEventEmitter().on('init', (err, limited) => {
+      if (!this.isMounted()) return
+      if (!err) {
         boards.getCommentsFor(this.props.parent, this.props.board, this.props.adminID)
       }
-      boards.getEventEmitter().on('init', err => {
-        if (!err && this.isMounted()) {
-          boards.getCommentsFor(this.props.parent, this.props.board, this.props.adminID)
-        }
-      })
+      if (limited) this.setState({ limited })
+    })
+    if (boards.isInit) {
+      boards.getCommentsFor(this.props.parent, this.props.board, this.props.adminID)
     }
+    if (boards.limited) this.setState({ limited: true })
   },
   getComments () {
     if (this.state.comments.length > 0) {
       return this.state.comments.map(cmnt => (<Comment key={cmnt.hash} comment={cmnt} post={this.props.post} adminID={this.props.adminID} board={this.props.board} api={this.props.api} />))
-    }
-    else return <div></div>
+    } else return <div></div>
   },
   render () {
-    return <div className={this.props.className + ' comments'} >{this.getComments()}</div>
+    if (this.state.limited) {
+      return <div className="text-center">
+        <p>Comments can't be displayed in limited mode</p>
+      </div>
+    } else {
+      return <div className={this.props.className + ' comments'} >{this.getComments()}</div>
+    }
   }
 })
 

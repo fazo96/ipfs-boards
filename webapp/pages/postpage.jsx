@@ -3,7 +3,6 @@ var Link = require('react-router').Link
 var UserID = require('userID.jsx')
 var GetIPFS = require('getipfs.jsx')
 var Post = require('post.jsx')
-var Comments = require('comment.jsx').Comments
 
 module.exports = function (boardsAPI) {
   return React.createClass({
@@ -31,7 +30,6 @@ module.exports = function (boardsAPI) {
             {this.getContext()}
           </div>
           <Post hash={this.props.params.posthash} board={this.props.params.boardname} api={this.state.api} />
-          <Comments parent={this.props.params.posthash} board={this.props.params.boardname} adminID={this.props.params.userid} post={this.props.params.posthash} api={this.state.boards} />
         </div>
       } else {
         return <GetIPFS api={this.state.boards} />

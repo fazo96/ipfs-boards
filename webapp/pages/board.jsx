@@ -16,8 +16,8 @@ module.exports = function (boardsAPI) {
       boardsAPI.use(boards => {
         if (!this.isMounted()) return
         var ee = boards.getEventEmitter()
-        ee.on('init', err => {
-          if (!err && this.isMounted()) {
+        ee.on('init', (err, limited) => {
+          if ((!err || limited) && this.isMounted()) {
             this.init(boards)
           }
         })
@@ -46,13 +46,17 @@ module.exports = function (boardsAPI) {
       var props = newProps || this.props
       if (!props.params.userid) return
       boards.getBoardSettings(props.params.userid, props.params.boardname)
-      this.setState({ loading: true, init: true, api: true, userid: boards.getMyID(), boards: boards })
+      this.setState({ loading: true, init: true, api: boards, userid: boards.getMyID(), limited: boards.limited })
     },
     toolbox () {
-      return <div className="iconbar text-center">
-        <Link to={'/edit/board/' + this.props.params.boardname} ><Icon name="edit" className="fa-2x light" /></Link>
-        <Link to={'/edit/board/' + this.props.params.boardname + '/post'} ><Icon name="plus" className="fa-2x light" /></Link>
-      </div>
+      if (this.state.limited) {
+        return <div className="text-center">Toolbox not available in limited mode<hr/></div>
+      } else {
+        return <div className="iconbar text-center">
+          <Link to={'/edit/board/' + this.props.params.boardname} ><Icon name="edit" className="fa-2x light" /></Link>
+          <Link to={'/edit/board/' + this.props.params.boardname + '/post'} ><Icon name="plus" className="fa-2x light" /></Link>
+        </div>
+      }
     },
     render () {
       if (this.state.api) {
@@ -66,16 +70,16 @@ module.exports = function (boardsAPI) {
           return (<div className="board">
             <h2>{this.state.name}</h2>
             <Markdown source={this.state.description} skipHtml={true} />
-            {this.props.params.userid ? <h5><UserID id={this.props.params.userid} api={this.state.boards} /></h5> : <p></p>}
+            {this.props.params.userid ? <h5><UserID id={this.props.params.userid} api={this.state.api} /></h5> : <p></p>}
             <div className="whitelist">
-              {this.state.whitelist.map(i => <UserID id={i} key={i} api={this.state.boards} />)}
+              {this.state.whitelist.map(i => <UserID id={i} key={i} api={this.state.api} />)}
             </div>
             <hr />
             {this.toolbox()}
-            <PostList board={this.props.params.boardname} admin={this.props.params.userid} api={this.state.boards} />
+            <PostList board={this.props.params.boardname} admin={this.props.params.userid} api={this.state.api} />
           </div>)
         }
-      } else return <GetIPFS api={this.state.boards} />
+      } else return <GetIPFS api={this.state.api} />
     }
   })
 }
