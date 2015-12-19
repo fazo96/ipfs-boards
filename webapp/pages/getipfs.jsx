@@ -3,62 +3,69 @@ var Link = require('react-router').Link
 var Icon = require('icon.jsx')
 
 module.exports = React.createClass({
-  getInitialState: function () {
+  getInitialState () {
     return {}
   },
-  componentWillReceiveProps: function (props) {
-    if (props.api) {
-      this.checkStatus(props.api)
-    }
-  },
-  componentDidMount: function () {
-    this.checkStatus(this.props.api)
-  },
-  checkStatus: function (boards) {
-    if (boards) {
-      if (!this.isMounted()) return
-      if (boards.isInit) {
-        this.setState({ connected: true })
-      } else {
-        if (boards.init_error) {
-          this.setState({ error: boards.init_error })
-        } else {
-          boards.getEventEmitter().on('init', error => {
-            if (!this.isMounted()) return
-            if (error) {
-              this.setState({ error })
-            } else {
-              this.setState({ connected: true })
-              clearTimeout(this.timer)
-            }
-          })
-        }
-      }
-    } else this.startTimer()
-  },
-  componentWillUnmount: function () {
+  componentWillUnmount () {
     if (this.timer) clearTimeout(this.timer)
   },
-  startTimer: function () {
+  componentWillReceiveProps (props) {
+    this.init(props)
+  },
+  componentDidMount () {
+    this.init(this.props)
+  },
+  init (props) {
+    var boards = props.api
+    if (this.timer) clearTimeout(this.timer)
+    if (boards) {
+      boards.getEventEmitter().on('init', (err, limited) => {
+        if (!this.isMounted()) return
+        if (err) {
+          this.setState({ error: true, limited })
+        } else {
+          this.setState({ connected: true })
+        }
+      })
+      if (boards.isInit) {
+        this.setState({ connected: true })
+      } else if (boards.limited) {
+        this.setState({ error: true, limited: true })
+      } else this.startTimer()
+    } else this.startTimer()
+  },
+  startTimer () {
+    console.log('start timer')
     this.timer = setTimeout(_ => {
-      if (this.isMounted()) {
-        console.log('Connection to go-ipfs has timed out (probably due to CORS)')
+      console.log('Connection to go-ipfs has timed out (probably due to CORS)')
+      if (this.isMounted() && !this.state.connected && !this.state.limited) {
         this.setState({ long: true })
-        this.checkStatus()
+        this.init(this.props)
       }
     }, 5000)
   },
-  render: function () {
+  getContent () {
+    if (this.state.limited) {
+      return <div>
+        <h1><Icon name="ban"/> You're running in limited mode</h1>
+        <h4 className="light">Sorry, but at the moment an external application is needed to fully take advantage of the app</h4>
+        <p>Only a few features are available in limited mode.</p>
+        <h5>Why am I running in limited mode?</h5>
+      </div>
+    } else {
+      return <div>
+        <h1><Icon name="ban"/> Connection to IPFS not available</h1>
+        <h4 className="light">Sorry, but at the moment an external application is needed to try the Prototype</h4>
+        <p><b>Tip:</b> you can also run in limited mode by loading the app from an IPFS Gateway.</p>
+      </div>
+    }
+  },
+  render () {
     var opt = require('options.jsx').get()
     if (this.state.error || this.state.long) {
       return (
-      <div className="">
-        <h1><Icon name="ban"/> Connection to IPFS not available</h1>
-        <h4 className="light">Sorry, but at the moment an external application is needed to try the Prototype</h4>
-        <hr/>
-        <h5>Error Message</h5>
-        <p>{this.state.error || 'connection to go-ipfs failed'}</p>
-        <hr/>
+      <div>
+        {this.getContent()}
         <p>You don't have an IPFS node running at <code>{opt.addr}:{opt.port}</code> or it is not reachable.
         The IPFS Boards prototype requires a full IPFS node. Please start one by following the
         <a href="https://github.com/ipfs/go-ipfs"><code>go-ipfs</code> documentation.</a></p>

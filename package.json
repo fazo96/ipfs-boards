@@ -38,6 +38,7 @@
     "html-webpack-plugin": "~1.7.0",
     "https-browserify": "0.0.1",
     "ipfs-api": "github:ipfs/js-ipfs-api#ba85b3b",
+    "glob-stream": "5.2.0",
     "json-loader": "~0.5.4",
     "lodash.sortedindex": "~3.1.1",
     "markdown-loader": "^0.1.7",

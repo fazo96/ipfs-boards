@@ -29,7 +29,7 @@ module.exports = function (boardsAPI) {
       } else if (this.state.loading) {
         return <Icon name="refresh" className="fa-2x fa-spin light"/>
       } else {
-        return <Link className="nounderline" to="/users"><Icon name="ban" className="fa-2x light"/></Link>
+        return <Link className="nounderline" to="/status"><Icon name="ban" className="fa-2x light"/></Link>
       }
     },
     render: function () {

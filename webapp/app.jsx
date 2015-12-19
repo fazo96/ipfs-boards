@@ -28,6 +28,7 @@ var CommentPage = require('commentpage.jsx')(boards)
 var ProfileEditor = require('profile-editor.jsx')(boards)
 var BoardEditor = require('board-editor.jsx')(boards)
 var PostEditor = require('post-editor.jsx')(boards)
+var Status = require('status.jsx')(boards)
 
 // Define Main Components
 
@@ -103,6 +104,7 @@ ReactDOM.render(
       <Route path="board/:boardname" component={Board} />
       <Route path="users" component={Users} />
       <Route path="settings" component={Settings} />
+      <Route path="status" component={Status} />
       <Route path="*" component={NotFound} />
     </Route>
   </Router>, document.getElementById('root')
