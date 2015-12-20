@@ -9,8 +9,10 @@ module.exports = function (boardsAPI) {
     getInitialState: function () {
       boardsAPI.use(boards => {
         if (boards.isInit && this.isMounted()) this.setState({ api: true })
-        boards.getEventEmitter().on('init', err => {
-          if (!err && this.isMounted()) this.setState({ api: true })
+        boards.getEventEmitter().on('init', (err, limited) => {
+          if ((!err || limited) && this.isMounted()) {
+            this.setState({ api: true, limited })
+          }
         })
       })
       var s = window.localStorage.getItem('ipfs-boards-settings')
@@ -44,12 +46,17 @@ module.exports = function (boardsAPI) {
       }
     },
     isOK: function () {
-      if (this.state.api) {
+      if (this.state.limited) {
+        return <div className="itsok light">
+          <h5><Icon name="exclamation-triangle" /> Limited Mode</h5>
+          <p>Some features may not be available.</p>
+        </div>
+      } else if (this.state.api) {
         return <div className="itsok light">
           <h5><Icon name="check" /> It's OK</h5>
           <p>You're connected to IPFS</p>
         </div>
-      }
+      } else return <div></div>
     },
     render: function () {
       return (
