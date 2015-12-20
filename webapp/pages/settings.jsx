@@ -7,14 +7,6 @@ module.exports = function (boardsAPI) {
       return { addr: 'localhost', port: 5001, api: false }
     },
     getInitialState: function () {
-      boardsAPI.use(boards => {
-        if (boards.isInit && this.isMounted()) this.setState({ api: true })
-        boards.getEventEmitter().on('init', (err, limited) => {
-          if ((!err || limited) && this.isMounted()) {
-            this.setState({ api: true, limited })
-          }
-        })
-      })
       var s = window.localStorage.getItem('ipfs-boards-settings')
       var obj = this.getDefaults()
       try {
@@ -23,6 +15,20 @@ module.exports = function (boardsAPI) {
         window.localStorage.removeItem('ipfs-boards-settings')
       }
       return obj || this.getDefaults()
+    },
+    componentDidMount () {
+      boardsAPI.use(boards => {
+        if (boards.isInit || boards.limited) {
+          this.setState({ api: true, limited: boards.limited })
+        } else {
+          this.setState({ error: boards.init_error || 'neither limited mode nor the API is available.' })
+        }
+        boards.getEventEmitter().on('init', (err, limited) => {
+          if (this.isMounted()) {
+            this.setState({ error: err, api: (!err || limited), limited })
+          }
+        })
+      })
     },
     save: function () {
       if (isNaN(this.state.port) || parseInt(this.state.port, 10) > 65535 || parseInt(this.state.port, 10) < 1) {
@@ -46,7 +52,13 @@ module.exports = function (boardsAPI) {
       }
     },
     isOK: function () {
-      if (this.state.limited) {
+      if (this.state.error) {
+        console.log('Error', this.state.error)
+        return <div className="itsok light">
+          <h5><Icon name="ban" /> Error</h5>
+          <p>{this.state.error}</p>
+        </div>
+      } else if (this.state.limited) {
         return <div className="itsok light">
           <h5><Icon name="exclamation-triangle" /> Limited Mode</h5>
           <p>Some features may not be available.</p>

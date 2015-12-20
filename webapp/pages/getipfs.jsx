@@ -40,21 +40,20 @@ module.exports = React.createClass({
       console.log('Connection to go-ipfs has timed out (probably due to CORS)')
       if (this.isMounted() && !this.state.connected && !this.state.limited) {
         this.setState({ long: true })
-        this.init(this.props)
       }
     }, 5000)
   },
   getContent () {
     if (this.state.limited) {
       return <div>
-        <h1><Icon name="ban"/> You're running in limited mode</h1>
+        <h1><Icon name="exclamation-triangle" className="light" /> You're running in limited mode</h1>
         <h4 className="light">Sorry, but at the moment an external application is needed to fully take advantage of the app</h4>
         <p>Only a few features are available in limited mode.</p>
         <h5>Why am I running in limited mode?</h5>
       </div>
     } else {
       return <div>
-        <h1><Icon name="ban"/> Connection to IPFS not available</h1>
+        <h1><Icon name="ban" className="light" /> Connection to IPFS not available</h1>
         <h4 className="light">Sorry, but at the moment an external application is needed to try the Prototype</h4>
         <p><b>Tip:</b> you can also run in limited mode by loading the app from an IPFS Gateway.</p>
       </div>
