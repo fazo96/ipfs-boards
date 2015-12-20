@@ -1,33 +1,45 @@
 # IPFS Boards
 
-The easy to use Discussion Board platform that runs in modern web browsers but requires _no servers_ and
+The easy to use Social Platform that runs in modern web browsers but requires _no servers_ and
 _no external applications_ to work.
+
+This Application aims to allow users to:
+
+- __Share Data__ with the world, in a distributed and permanent way, whether it is documents, media, posts or files and folders
+- __Discover__ other user's content by visiting a link to their profiles, and then seeding the content they like the most
+- __Connect__ with other people, building communities and merging boards.
+
+All of these in a fully distributed way: servers help by seeding content, but they are not necessary for the application to work.
+
+The App is being developed to be versatile: it will run in web browsers, and it will bundle a viewer that will understand and display
+_any file or folder_ already hosted via IPFS, with a nice user interface and optionally social features on top.
 
 ![Board view screenshot](https://ipfs.pics/ipfs/QmezECALggzJLK89j4hhDVPwVv5gzmZMLbYi8zbjpXWvVH)
 
-This is how the Board view looks at the moment. You can see that markdown syntax is supported in all text bodies,
-and the administrator name `fazo96` and also the other allowed posters, in this case only one. Posts are shown in chronological order, but other sorting methods are planned.
+This is how the Board view looks in the current prototype. You can see that markdown syntax is supported in all text bodies,
+and the administrator name `fazo96` and also the other allowed posters,
+in this case only one. Posts are shown in chronological order, but other sorting methods are planned.
 
 ![Post view screenshot](https://ipfs.pics/ipfs/QmZntzNLyRgTPfaNhc4B23AWKQxPcwmjjBv3WPMh78ieeQ)
 
 This is the Post view with reddit style comments.
 
-All functionality shown in the screenshot is already implemented and content is downloaded from IPFS.
+__Most mentioned functionality is already implemented and a lot more is coming :)__
 
 ## Why
 
-Image and discussion boards, forums and the like have many problems:
+Discussion boards, forums and other social platforms have many problems:
 
-- Centralized
+- __Centralized__
   - What if it gets shut down?
   - What if the servers are down?
 
-- Fragile
+- __Fragile__
   - What if there's a DoS attack?
   - What if there is a usage explosion and the servers can't handle it?
   - What if the datacenter is flooded and data is lost?
 
-- Limited
+- __Limited__
   - What if you want new functionality or restore old features?
   - What if you want to build custom clients or extensions to the service?
   - What if you want to use it in a Local Network with no Internet access and no servers?
@@ -39,72 +51,53 @@ This project was conceived to solve that. With the help of:
 - IPLD and [POST](https://github.com/ipfs/POST) protocols for a common, universal data structure
 - Modern browsers and web technologies for a portable, accessible user interface
 
-We can solve these problems and create a true universal platform which can act as:
+We can solve these problems and create a _truly universal social platform_ which can act as:
 
 - Discussion board, like reddit or 4chan
 - Blog with dynamic comments
 - Wiki
-- File Sharing platform
+- File Sharing platform, like dropbox.
 - Forum
 - (Maybe) E-Learning platform
 
 With security, control, reliability, rock solid stability, fully distributed
-architecture or, optionally, none of these!
+architecture or, _optionally_, none of these!
 
 ## Get Started
 
-The App is not ready yet, but you're welcome to take a look at the prototype,
-even though it only has informational pages and very limited functionality.
+__The App is not ready yet__, but you're welcome to take a look at the prototype,
+even though it has limited functionality and is cumbersome to set up at the
+moment.
 
 Also keep in mind that due to issues with the current implementation of IPNS in
 go-ipfs, real world usage of the prototype is very limited. This will all be
 sorted out as soon as go-ipfs' next version, 0.4, is out.
 
-You can take a look at the prototype [here](http://ipfs.io/ipfs/QmYa82UfaidkpdpWQCq8WdeiB9vLSn78i2JHJsqzki31MV)
-but you won't be able to actually use it.
+If you want to really use the prototype, you can take a look at `CONTRIBUTING.md`
+to set up a developer environment and try it out.
 
-If you want to really use the prototype, you can quickly set up your machine like this:
+__Note about current status:__ almost every feature is _not_ optimized, _not_
+efficient, but almost all solutions to current problems are already well defined,
+frozen, and being developed, _expecially_ regarding __IPFS__.
 
-1. get `go-ipfs` installed on your OSX or GNU/Linux system
-1. run this in a terminal `API_ORIGIN="localhost:8080" ipfs daemon`
-1. open [this](http://localhost:8080/ipfs/QmYa82UfaidkpdpWQCq8WdeiB9vLSn78i2JHJsqzki31MV) in your browser
-1. You're all set!
+__Note about short term future:__ after `go-iofs 0.4` comes out, a public demo will be available and you'll
+just have to open a link to try the app!
 
-__Note:__ a javascript implementation of IPFS is in progress. As soon as it's done, you will not need
+__Note about long term future:__ a javascript implementation of IPFS is in progress. As soon as it's done, you will not need
 go-ipfs anymore and this application will truly run in the browser without external dependencies.
-
-### Additional information
-
-You need a local instance of go-ipfs running for it to work. You also need to set
-CORS settings right or it won't work. However, in that case, it will complain to
-you and provide instructions.
-
-Keep in mind that it's a _very early_ prototype, nothing is finished, nothing
-is polished, but something works. It's also probably full of security holes,
-very inefficient, slow, etc. You're welcome to help in any way though!
-
-Also, remember that __it doesn't have__:
-
-- Ability to post and create a profile from the web app (it's read only for now)
-- Aggregation (it's quite limited for now)
-- Advanced customization, control, user profile customization
-- Media support
-- Votes
-- Ability to run without a full IPFS node. That would require either a Backend or the (currently not done) js implementation of IPFS
-
-Ability to publish stuff in the browser won't be implemented until go-ipfs 0.4
-is ready. It will maybe be ready before the new year.
-You will be able to publish your boards/profile/posts using a CLI though.
 
 ## FAQ
 
 See `FAQ.md`
 
+If you have any questions not already answered, please open an issue and
+consider contributing to the documentation and FAQs.
+
 ### How does it work?
 
 See `PROTOCOL.md`
 
-### How do I set up a development environment?
+### How do I set up a development environment and contribute?
 
 See `CONTRIBUTING.md`
 

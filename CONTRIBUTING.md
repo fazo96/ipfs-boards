@@ -6,6 +6,7 @@ You'll need:
 - __git__: you can get it just like node and npm
 - __webpack and webpack-dev-server__: you can get them by running `npm install -g webpack webpack-dev-server`. It might require super user privileges
 - __go-ipfs__: you can get it like git and node, but not always, you may need to follow its istructions on its repo
+  - make sure you use __go-ipfs 0.4.0 or higher__. `0.4.0-dev` is fine of course.
 
 1. Clone this repository and `cd` to its directory
 1. run `npm install` to get dependences (there are many)
