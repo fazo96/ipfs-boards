@@ -73,6 +73,11 @@ Also keep in mind that due to issues with the current implementation of IPNS in
 go-ipfs, real world usage of the prototype is very limited. This will all be
 sorted out as soon as go-ipfs' next version, 0.4, is out.
 
+__Check it out here:__ http://ipfs.ydns.eu
+
+__Tip:__ http://ipfs.ydns.eu is also a full IPFS gateway for IPFS 0.4. You can
+also use it to access the 0.3.x network by visiting http://ipfs-0.3.ydns.eu
+
 If you want to really use the prototype, you can take a look at `CONTRIBUTING.md`
 to set up a developer environment and try it out.
 

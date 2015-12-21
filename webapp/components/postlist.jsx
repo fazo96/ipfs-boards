@@ -28,6 +28,7 @@ module.exports = React.createClass({
       } /* else {
         console.log('Post discarded cause date in the future:', hash)
       }*/
+      // Don't drop posts in the future due to date sync problems!
       this.setState({ posts })
     }
     props = props || this.props
