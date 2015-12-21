@@ -18,7 +18,7 @@ module.exports = React.createClass({
   init (boards, props) {
     var onPost = (hash, date, post) => {
       if (!this.isMounted()) return true
-      var now = (new Date()).getTime()
+      var now = parseInt((new Date()).getTime() / 1000, 10)
       var posts = this.state.posts
       if (date === undefined || date <= 0) {
         posts.push(hash)

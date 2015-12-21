@@ -92,6 +92,11 @@ a:hover {
   margin: 2rem;
 }
 
+.post .content img {
+  margin: auto;
+  max-width: 60rem;
+}
+
 .icons .fa, .comment .icons .fa {
   color: #707070;
 }

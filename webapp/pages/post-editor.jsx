@@ -52,8 +52,10 @@ module.exports = function (boardsAPI) {
     save () {
       this.setState({ updating: true })
       var post = {
-        title: this.state.title,
         text: this.state.text
+      }
+      if (this.state.title && this.state.title.length > 0) {
+        post.title = this.state.title
       }
       boardsAPI.use(boards => {
         boards.createPost(post, this.props.params.boardname, err => {
