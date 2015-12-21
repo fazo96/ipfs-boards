@@ -11,7 +11,7 @@ module.exports = React.createClass({
     return (b.date || 0) - (a.date || 0)
   },
   componentWillReceiveProps (props) {
-    if (props.api) {
+    if (props.api && (this.props.board !== props.board || this.props.admin !== props.admin)) {
       this.init(props.api, props)
     }
   },

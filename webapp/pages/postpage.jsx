@@ -29,7 +29,7 @@ module.exports = function (boardsAPI) {
           <div className="text-center">
             {this.getContext()}
           </div>
-          <Post hash={this.props.params.posthash} board={this.props.params.boardname} api={this.state.api} />
+          <Post hash={this.props.params.posthash} board={this.props.params.boardname} api={this.state.api} adminID={this.props.params.userid} />
         </div>
       } else {
         return <GetIPFS api={this.state.boards} />
