@@ -27,7 +27,7 @@ module.exports = function (boardsAPI) {
             <Link className="nounderline" to="/users"><Icon name="globe" className="fa-2x light"/></Link>
           </span>
       } else if (this.state.loading) {
-        return <Icon name="refresh" className="fa-2x fa-spin light"/>
+        return <Link className="nounderline" to="/status"><Icon name="refresh" className="fa-2x fa-spin light"/></Link>
       } else if (this.state.limited) {
         return <Link className="nounderline" to="/status"><Icon name="exclamation-triangle" className="fa-2x light"/></Link>
       } else {
