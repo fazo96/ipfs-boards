@@ -3,20 +3,25 @@ var Icon = require('icon.jsx')
 var Link = require('react-router').Link
 
 var Updater = React.createClass({
+  getInitialState () {
+    return {}
+  },
   componentDidMount () {
-    if (this.props.api) this.checkForUpdates(this.props.api)
+    this.checkForUpdates()
   },
-  componentWillReceiveProps (props) {
-    this.checkForUpdates(props.api)
-  },
-  checkForUpdates (boards) {
+  checkForUpdates () {
     var v = window.location.pathname
-    if (/\/ip(f|n)s\/./.test(v)) {
-      // Advise user to run from another URL
+    var gateway = window.location.pathname.indexOf('/ipfs/') === 0 || window.location.pathname.indexOf('/ipns/') === 0
+    if (v !== '/ipns/boards.ydns.eu' || !gateway) {
+      this.setState({ update: true })
     }
   },
   render () {
-    return <div></div>
+    if (this.state.update) {
+      return <Link className="nounderline" to='/version' >
+        <Icon name="history" className="fa-2x light" />
+      </Link>
+    } else return <div></div>
   }
 })
 
@@ -43,7 +48,6 @@ module.exports = function (boardsAPI) {
         return <span>
             <Link className="nounderline" to={'/@' + this.state.userid}><Icon name="user" className="fa-2x light"/></Link>
             <Link className="nounderline" to="/users"><Icon name="globe" className="fa-2x light"/></Link>
-            <Updater api={this.state.api} />
           </span>
       } else if (this.state.loading) {
         return <Link className="nounderline" to="/status"><Icon name="refresh" className="fa-2x fa-spin light"/></Link>
@@ -59,6 +63,7 @@ module.exports = function (boardsAPI) {
           <div className="container">
             <h4><Link to="/"><Icon name="comments" className="light"/> Boards</Link></h4>
             <div className="u-pull-right iconbar">
+              <Updater/>
               {this.extraButtons()}
               <Link className="nounderline" to="/settings"><Icon name="cog" className="fa-2x light"/></Link>
               <a className="nounderline" href="https://github.com/fazo96/ipfs-boards"><Icon name="github" className="fa-2x light"/></a>
