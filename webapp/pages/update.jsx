@@ -4,7 +4,7 @@ var Icon = require('icon.jsx')
 module.exports = React.createClass({
   render () {
     var gateway = window.location.pathname.indexOf('/ipfs/') === 0 || window.location.pathname.indexOf('/ipns/') === 0
-    return <div>
+    return <div className="thin center-block">
       <div className="text-center">
         <h1><Icon name="history" className="light" /></h1>
         <h3 className="light">Version Center</h3>

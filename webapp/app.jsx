@@ -35,6 +35,7 @@ require.ensure('react', _ => {
   var PostEditor = require('post-editor.jsx')(boards)
   var Status = require('status.jsx')(boards)
   var Update = require('update.jsx')
+  var Backup = require('backup.jsx')
 
   // Define Main Components
 
@@ -123,6 +124,8 @@ require.ensure('react', _ => {
             <Route path="settings" component={Settings} />
             <Route path="status" component={Status} />
             <Route path="version" component={Update} />
+            <Route path="backup" component={Backup} />
+            <Route path="restore" component={Backup} />
             <Route path="*" component={NotFound} />
           </Route>
         </Router>

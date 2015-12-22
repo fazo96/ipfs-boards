@@ -102,6 +102,7 @@ module.exports = function (boardsAPI) {
                 <button className="button button-primary" onClick={this.save}>Publish</button>
                 <button onClick={this.refresh} className="button not-first">Refresh</button>
                 <Link to={'/@' + this.state.userid} className="button not-first">View</Link>
+                <Link to="/backup" className="button not-first">Backup and Restore</Link>
               </div>
             </div>
           )

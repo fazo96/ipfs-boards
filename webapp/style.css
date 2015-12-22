@@ -32,6 +32,10 @@ a {
   margin-top: .5em
 }
 
+.thin {
+  max-width: 60rem
+}
+
 .center-block {
   margin:auto;
   display:block;
