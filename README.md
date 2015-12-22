@@ -85,7 +85,7 @@ __Note about current status:__ almost every feature is _not_ optimized, _not_
 efficient, but almost all solutions to current problems are already well defined,
 frozen, and being developed, _expecially_ regarding __IPFS__.
 
-__Note about short term future:__ after `go-iofs 0.4` comes out, a public demo will be available and you'll
+__Note about short term future:__ after `go-ipfs 0.4` comes out, a public demo will be available and you'll
 just have to open a link to try the app!
 
 __Note about long term future:__ a javascript implementation of IPFS is in progress. As soon as it's done, you will not need
