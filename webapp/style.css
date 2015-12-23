@@ -141,7 +141,7 @@ a:hover {
 .navbar {
   border-bottom: 1px solid #eee;
   display: block;
-  height: 4.5em
+  height: 4em
 }
 
 .navbar .container {
@@ -193,6 +193,13 @@ a:hover {
 .buttons .not-first {
   /* mobile only */
   margin-top: 1rem;
+}
+
+@media (min-width: 550px) {
+  /* larger than mobile */
+  .navbar {
+    height: 4.5em
+  }
 }
 
 @media (min-width: 500px) {

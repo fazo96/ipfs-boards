@@ -7,7 +7,7 @@ require('raleway.css')
 // Start
 
 document.getElementById('root').innerHTML = `
-  <div style="text-align:center">
+  <div style="text-align:center;margin-top:2rem">
     <h1>Loading</h1>
     <p>Gathering components</p>
   </div>
@@ -130,7 +130,7 @@ require.ensure('react', _ => {
           </Route>
         </Router>
       } else {
-        return <div className="loading" >
+        return <div className="loading" style={{ marginTop: '2rem' }} >
           <div className="text-center">
             <Icon className="center-block fa-spin fa-3x light" name="refresh" />
             <h4 className="top-half-em">Downloading Components</h4>
