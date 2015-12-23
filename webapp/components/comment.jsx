@@ -78,7 +78,7 @@ var Comment = React.createClass({
     }
   },
   getParentlink () {
-    if (this.props.showParent && this.props.comment.parent && this.props.comment.parent !== this.props.post) {
+    if (this.props.showParent && this.props.comment.parent) {
       return <div className="inline not-first">
         <Icon name="level-up" /> <Link to={'/@' + this.props.adminID + '/' + this.props.board + '/' + this.props.post + '/' + this.props.comment.parent}>Parent</Link>
       </div>

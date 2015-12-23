@@ -12,23 +12,22 @@ module.exports = function (boardsAPI) {
     },
     componentDidMount: function () {
       boardsAPI.use(boards => {
-        boards.getEventEmitter().on('init', err => {
-          if (!err && this.isMounted()) {
+        boards.getEventEmitter().on('init', (err, limited) => {
+          if ((!err || limited) && this.isMounted()) {
             this.init(boards)
           }
         })
-        if (this.isMounted() && boards.isInit) {
+        if (boards.isInit || boards.limited) {
           this.init(boards)
         }
       })
     },
     componentWillReceiveProps: function (nextProps) {
       if (this.props.params !== nextProps.params) {
-        boardsAPI.use(boards => this.downloadComment(boards, nextProps))
+        boardsAPI.use(boards => this.init(boards, nextProps))
       }
     },
     downloadComment: function (boards, props) {
-      this.setState({ comment: false })
       boards.downloadComment(props.params.commenthash, props.params.userid, props.params.boardname, (err, comment) => {
         if (err) {
           this.setState({
@@ -44,10 +43,9 @@ module.exports = function (boardsAPI) {
         }
       })
     },
-    init: function (boards) {
-      if (this.state.init) return
-      this.setState({ api: true, boards, canReply: boards.isInit && !boards.limited })
-      this.downloadComment(boards, this.props)
+    init: function (boards, props) {
+      this.setState({ comment: false, boards, api: true, allowReply: boards.isInit && !boards.limited })
+      this.downloadComment(boards, props || this.props)
     },
     getContext: function () {
       if (this.props.params.userid) {
@@ -60,7 +58,8 @@ module.exports = function (boardsAPI) {
     },
     showComment: function () {
       if (this.state.comment) {
-        return <Comment canReply={this.state.canReply} comment={this.state.comment} post={this.props.params.posthash} adminID={this.props.params.userid} board={this.props.params.boardname} showParent={true} api={this.state.boards} />
+        console.log('allowReply', this.state.allowReply)
+        return <Comment allowReply={this.state.allowReply} comment={this.state.comment} post={this.props.params.posthash} adminID={this.props.params.userid} board={this.props.params.boardname} showParent={true} api={this.state.boards} />
       } else {
         return <div className="center-block text-center find-content">
           <Icon name="refresh" className="fa-3x center-block light fa-spin" />
