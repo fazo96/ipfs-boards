@@ -12,7 +12,7 @@ var Updater = React.createClass({
   checkForUpdates () {
     var v = window.location.pathname
     var gateway = window.location.pathname.indexOf('/ipfs/') === 0 || window.location.pathname.indexOf('/ipns/') === 0
-    if (v !== '/ipns/boards.ydns.eu' || !gateway) {
+    if (v !== '/ipns/boards.ydns.eu/' || !gateway) {
       this.setState({ update: true })
     }
   },
