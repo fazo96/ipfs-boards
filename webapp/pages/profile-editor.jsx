@@ -90,7 +90,7 @@ module.exports = function (boardsAPI) {
             <p><b>Warning:</b> due to a bug in go-ipfs, it may take up to a minute
             for your changes to be visibile. Your profile will appear unchanged during
             this time.</p>
-              <div className="center-block thin">
+              <div className="center-block">
                 <label htmlFor="name">Name</label>
                 <input className="u-full-width" type="text" id="name" value={this.state.name} onChange={this.handleChange} placeholder="Who are you on the interwebs?" />
               </div>
