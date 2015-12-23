@@ -12,7 +12,6 @@ module.exports = function (boardsAPI) {
     },
     componentDidMount: function () {
       boardsAPI.use(boards => {
-        boards.init()
         boards.getEventEmitter().on('init', err => {
           if (!err && this.isMounted()) {
             this.init(boards)
@@ -24,7 +23,9 @@ module.exports = function (boardsAPI) {
       })
     },
     componentWillReceiveProps: function (nextProps) {
-      boardsAPI.use(boards => this.downloadComment(boards, nextProps))
+      if (this.props.params !== nextProps.params) {
+        boardsAPI.use(boards => this.downloadComment(boards, nextProps))
+      }
     },
     downloadComment: function (boards, props) {
       this.setState({ comment: false })
@@ -34,13 +35,18 @@ module.exports = function (boardsAPI) {
             comment: { title: 'Error', text: err.Message || err.Error }
           })
         } else {
-          this.setState({ comment })
+          if (!comment.parent && comment.text) {
+            // Redirect to post page
+            this.props.history.push('/@' + this.props.params.userid + '/' + this.props.params.boardname + '/' + this.props.params.commenthash)
+          } else {
+            this.setState({ comment })
+          }
         }
       })
     },
     init: function (boards) {
       if (this.state.init) return
-      this.setState({ api: true, boards: boards })
+      this.setState({ api: true, boards, canReply: boards.isInit && !boards.limited })
       this.downloadComment(boards, this.props)
     },
     getContext: function () {
@@ -54,7 +60,7 @@ module.exports = function (boardsAPI) {
     },
     showComment: function () {
       if (this.state.comment) {
-        return <Comment comment={this.state.comment} post={this.props.params.posthash} adminID={this.props.params.userid} board={this.props.params.boardname} showParent={true} api={this.state.boards} />
+        return <Comment canReply={this.state.canReply} comment={this.state.comment} post={this.props.params.posthash} adminID={this.props.params.userid} board={this.props.params.boardname} showParent={true} api={this.state.boards} />
       } else {
         return <div className="center-block text-center find-content">
           <Icon name="refresh" className="fa-3x center-block light fa-spin" />

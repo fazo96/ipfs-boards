@@ -11,7 +11,10 @@ module.exports = function (boardsAPI) {
     },
     componentDidMount: function () {
       boardsAPI.use(boards => {
-        this.setState({ api: boards })
+        this.setState({ api: boards, allowReply: boards.isInit && !boards.limited })
+        boards.getEventEmitter().on('init', (err, limited) => {
+          this.setState({ api: boards, allowReply: !err && !limited })
+        })
       })
     },
     getContext: function () {
@@ -29,7 +32,7 @@ module.exports = function (boardsAPI) {
           <div className="text-center">
             {this.getContext()}
           </div>
-          <Post hash={this.props.params.posthash} board={this.props.params.boardname} api={this.state.api} adminID={this.props.params.userid} />
+          <Post allowReply={true} hash={this.props.params.posthash} board={this.props.params.boardname} api={this.state.api} adminID={this.props.params.userid} />
         </div>
       } else {
         return <GetIPFS api={this.state.boards} />

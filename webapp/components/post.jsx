@@ -5,7 +5,7 @@ var Link = require('react-router').Link
 var Clock = require('clock.jsx')
 var UserID = require('userID.jsx')
 var { Error } = require('status-components.jsx')
-var Comments = require('comment.jsx').Comments
+var { Comments, CommentEditor } = require('comment.jsx')
 
 module.exports = React.createClass({
   getInitialState () {
@@ -54,6 +54,9 @@ module.exports = React.createClass({
       }
     } else return <span/>
   },
+  toggleReply () {
+    this.setState({ reply: !this.state.reply })
+  },
   getContent () {
     if (this.state.error) {
       return <Error className="content" error={this.state.error} />
@@ -75,6 +78,9 @@ module.exports = React.createClass({
           <UserID id={this.state.post.op} api={this.props.api} ></UserID>
           <Clock className="not-first" date={this.state.post.date} />
           <Icon name="comments" className="not-first" /> <Link className="nounderline" to={this.postLink()}>View</Link>
+          { this.props.allowReply
+          ? <a className="nounderline" onClick={this.toggleReply}><Icon className="not-first" name="reply" /> Reply</a>
+          : <span/>}
           {this.editorLink()}
         </div>
       </div>
@@ -83,7 +89,10 @@ module.exports = React.createClass({
   render () {
     return <div>
       <div className="post">{this.getContent()}</div>
-      <Comments parent={this.props.hash} post={this.props.hash} api={this.props.api} adminID={this.props.adminID} board={this.props.board} />
+      { this.state.reply
+      ? <CommentEditor parent={this.props.hash} api={this.props.api} adminID={this.props.adminID} board={this.props.board} />
+      : <div/>}
+      <Comments allowReply={this.props.allowReply} parent={this.props.hash} post={this.props.hash} api={this.props.api} adminID={this.props.adminID} board={this.props.board} />
     </div>
   }
 })
