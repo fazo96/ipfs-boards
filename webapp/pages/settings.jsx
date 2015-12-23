@@ -4,7 +4,7 @@ var Icon = require('icon.jsx')
 module.exports = function (boardsAPI) {
   return React.createClass({
     getDefaults: function () {
-      return { addr: 'localhost', port: 5001, api: false }
+      return { addr: window.location.hostname, port: window.location.port, api: false }
     },
     getInitialState: function () {
       var s = window.localStorage.getItem('ipfs-boards-settings')

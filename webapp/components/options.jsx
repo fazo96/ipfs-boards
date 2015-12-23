@@ -7,7 +7,9 @@ module.exports = {
     } catch (e) {
       // Do nothing
     }
-    if (opt === null || opt === undefined) opt = { addr: 'localhost', port: 5001 }
+    if (opt === null || opt === undefined) {
+      opt = { addr: window.location.hostname, port: window.location.port }
+    }
     return opt
   }
 }
