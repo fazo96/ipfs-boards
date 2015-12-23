@@ -22,19 +22,23 @@ module.exports = function (boardsAPI) {
         }
       })
     },
+    componentWillReceiveProps (props) {
+      if (this.props.params.posthash !== props.params.posthash) {
+        boardsAPI.use(this.init)
+      }
+    },
     init (boards) {
-      if (this.state.init) return
-      this.setState({ api: boards, userid: boards.getMyID(), init: true })
+      this.setState({ api: boards, userid: boards.getMyID(), downloaded: false, title: undefined, text: undefined })
       if (this.props.params.posthash) this.downloadPost(boards)
     },
     downloadPost (boards) {
       this.setState({ loading: true })
       boards.downloadPost(this.props.params.posthash, (err, hash, date, post) => {
         if (err) {
-          this.setState({ error: err, loading: false })
+          this.setState({ error: err, loading: false, downloaded: false })
         } else {
           console.log(post)
-          this.setState({ loading: false, title: post.title, text: post.text })
+          this.setState({ loading: false, title: post.title, text: post.text, downloaded: true })
         }
       })
     },
@@ -57,10 +61,17 @@ module.exports = function (boardsAPI) {
       if (this.state.title && this.state.title.length > 0) {
         post.title = this.state.title
       }
+      if (this.props.params.posthash) {
+        // TODO: maybe check if downloaded? But then what if the user skipped the prev version download?
+        post.previous = this.props.params.posthash
+      }
       boardsAPI.use(boards => {
-        boards.createPost(post, this.props.params.boardname, err => {
+        boards.createPost(post, this.props.params.boardname, (err, hash) => {
           this.setState({ error: err, updating: false })
-          // Should redirect to new post hash
+          if (!err) {
+            var url = '/edit/board/' + this.props.params.boardname + '/post/' + hash
+            this.props.history.push(url)
+          }
         })
       })
     },
