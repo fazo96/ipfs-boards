@@ -11,7 +11,7 @@ var Updater = React.createClass({
   },
   checkForUpdates () {
     var v = window.location.pathname
-    var gateway = /^\/ip[fn]s\/Qm[1-9A-HJ-NP-Za-km-z]{44}/.test(
+    var gateway = /^\/ip[fn]s\/(?:Qm[1-9A-HJ-NP-Za-km-z]{44}|[^.]+\.[^.]+)/.test(
       window.location.pathname
     )
     if (v !== '/ipns/boards.ydns.eu/' || !gateway) {
