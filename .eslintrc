@@ -3,5 +3,9 @@
     "extends": "standard",
     "plugins": [
         "react"
-    ]
+    ],
+    "rules": {
+      "arrow-parens": 0,
+      "no-unused-vars": 0
+    }
 }
