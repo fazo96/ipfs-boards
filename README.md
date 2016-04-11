@@ -30,13 +30,10 @@ __Most mentioned functionality is already implemented and a lot more is coming__
 a few months now. This is due to me studying for university and dedicating to simpler, smaller projects (mostly related to
 my exams). _This does not mean this is dead_. I'll probably resume development, meanwhile the IPFS ecosystem stabilizes
 and matures, because this project is mostly based on alpha quality software and libraries that while being
-a pleasure to work with, they make building something more than a prototype harder. Also go-ipfs 0.4 was
-supposed to be around by January, it's almost April now and it's not out yet, but when it will be out that's gonna be a
-good motivator for sure.
+a pleasure to work with, they make building something more than a prototype harder, at least for a not very experienced developer like me.
 
 Anyway, this project already accomplished many things, like having a working prototype and being a great proof of
-concept. I hope to resume development soon, but __pull requests are still very welcome, as I'd probably review them
-with pleasure.__
+concept. I hope to resume development soon and update it, but __pull requests are still very welcome, as I'd probably review them with pleasure.__
 
 ## Why this project?
 
