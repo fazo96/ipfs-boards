@@ -1,13 +1,16 @@
 var React = require('react')
 var GetIPFS = require('getipfs.jsx')
 var Icon = require('icon.jsx')
-var Link = require('react-router').Link
+var { Link, withRouter } = require('react-router')
 var { Error, Loading, Saving } = require('status-components.jsx')
 
 module.exports = function (boardsAPI) {
-  return React.createClass({
+  return withRouter(React.createClass({
     getInitialState () {
       return { }
+    },
+    componentWillReceiveProps (props) {
+      this.getBoardSettings(this.state.api)
     },
     componentDidMount () {
       boardsAPI.use(boards => {
@@ -63,9 +66,13 @@ module.exports = function (boardsAPI) {
         description: this.state.desc
       }
       this.setState({ updating: true })
-      boards.createBoard(board, (err) => {
-        this.setState({ updating: false })
-        console.log('CREATE:', err)
+      boards.createBoard(board, err => {
+        if (err) {
+          this.setState({ updating: false, error: err })
+        } else {
+          this.setState({ updating: false })
+          this.props.router.go('/edit/board/' + board.id)
+        }
       })
     },
     additionalButtons () {
@@ -131,5 +138,5 @@ module.exports = function (boardsAPI) {
         }
       } else return <GetIPFS api={this.state.api} />
     }
-  })
+  }))
 }

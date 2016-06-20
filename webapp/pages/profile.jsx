@@ -56,6 +56,7 @@ module.exports = function (boardsAPI) {
           <h6>This is your profile</h6>
           <div className='iconbar'>
             <Link className='nounderline' to='/edit/profile'><Icon name='edit' className='fa-2x light'/></Link>
+            <Link className='nounderline' to='/edit/board'><Icon name='plus-circle' className='fa-2x light'/></Link>
           </div>
           <hr/>
         </div>

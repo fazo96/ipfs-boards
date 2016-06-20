@@ -35,7 +35,6 @@ module.exports = React.createClass({
     } else this.startTimer()
   },
   startTimer () {
-    console.log('start timer')
     this.timer = setTimeout(_ => {
       console.log('Connection to go-ipfs has timed out (probably due to CORS)')
       if (this.isMounted() && !this.state.connected && !this.state.limited) {
