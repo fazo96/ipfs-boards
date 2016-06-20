@@ -95,7 +95,7 @@ require.ensure('react', _ => {
         var Router = this.state.Router
         var IndexRoute = this.state.IndexRoute
         var Route = this.state.Route
-        return <Router>
+        return <Router history={this.state.hashHistory} >
           <Route path='/' component={App}>
             <IndexRoute component={Homepage} />
             <Route path='/@:userid'>

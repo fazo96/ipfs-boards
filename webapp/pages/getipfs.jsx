@@ -80,9 +80,9 @@ module.exports = React.createClass({
         <p>Still can't fix it? <a href='https://github.com/fazo96/ipfs-board/issues'>File a issue on GitHub</a>, we'll be happy to help!</p>
       </div>
     ) } else if (this.state.connected) {
-      return <div class='text-center'>
+      return <div className='text-center'>
         <h1><Icon name='check' /></h1>
-        <h5 class='light'>You're connected!</h5>
+        <h5 className='light'>You're connected!</h5>
       </div>
     } else {
       return <div className='center-block text-center'>

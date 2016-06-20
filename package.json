@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "decentralized discussion board",
   "scripts": {
-    "serve": "webpack-dev-server --progress --no-info --hot --watch --devtool eval-source",
+    "serve": "webpack-dev-server --progress --hot --watch --devtool eval-source",
     "build": "webpack --progress"
   },
   "repository": {
@@ -40,7 +40,7 @@
     "html-loader": "^0.4.3",
     "html-webpack-plugin": "^2.14.0",
     "https-browserify": "^0.0.1",
-    "ipfs-api": "github:ipfs/js-ipfs-api#1fd9749",
+    "ipfs-api": "3.0.3",
     "json-loader": "^0.5.4",
     "lodash.sortedindex": "^4.0.1",
     "markdown-loader": "^0.1.7",
