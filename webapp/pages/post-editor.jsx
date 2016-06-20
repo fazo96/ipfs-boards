@@ -88,9 +88,9 @@ module.exports = function (boardsAPI) {
       if (this.state.api && this.props.params.posthash) {
         var url = '/@' + this.state.api.getMyID() + '/' + this.props.params.boardname + '/' + this.props.params.posthash
         return <span>
-          <button onClick={this.refresh} className="button not-first">Refresh</button>
-          <Link to={url} className="button not-first">View</Link>
-          <button onClick={this.delete} className="button not-first">Delete</button>
+          <button onClick={this.refresh} className='button not-first'>Refresh</button>
+          <Link to={url} className='button not-first'>View</Link>
+          <button onClick={this.delete} className='button not-first'>Delete</button>
         </span>
       } else {
         return <span></span>
@@ -100,30 +100,30 @@ module.exports = function (boardsAPI) {
       if (this.state.api) {
         if (this.state.error) {
           return <Error error={this.state.error} >
-            <button className="button button-primary center-block" onClick={this.skip}>Continue</button>
+            <button className='button button-primary center-block' onClick={this.skip}>Continue</button>
           </Error>
         } else if (this.state.deleting) {
-          return <Loading title="Deleting Post">
+          return <Loading title='Deleting Post'>
             <p>Pressing the Skip button will not abort the Delete operation.</p>
-            <button className="button button-primary center-block" onClick={this.skip}>Skip</button>
+            <button className='button button-primary center-block' onClick={this.skip}>Skip</button>
           </Loading>
         } else if (this.state.loading) {
-          return <Loading title="Downloading Post">
-            <button className="button button-primary center-block" onClick={this.skip}>Skip</button>
+          return <Loading title='Downloading Post'>
+            <button className='button button-primary center-block' onClick={this.skip}>Skip</button>
           </Loading>
         } else if (this.state.updating) {
           return <Saving>
             <p>Pressing the Skip button will not abort the publish operation.</p>
-            <button className="button button-primary center-block" onClick={this.skip}>Skip</button>
+            <button className='button button-primary center-block' onClick={this.skip}>Skip</button>
           </Saving>
         } else if (this.state.success) {
-          return <Success title="Post Deleted">
+          return <Success title='Post Deleted'>
             <p><b>Note:</b> due to a bug in go-ipfs, you may need to wait up to a minute for changes to appear.</p>
           </Success>
         } else {
           return (
-            <div className="editor">
-              <h2><Icon name="pencil" className="light" />
+            <div className='editor'>
+              <h2><Icon name='pencil' className='light' />
                 {this.props.params.posthash ? ' Edit Post' : ' New Post'}
               </h2>
               <p>This App uses IPFS to store your Posts. When you are offline,
@@ -133,15 +133,15 @@ module.exports = function (boardsAPI) {
               for your changes to be visibile. Your Post will not appear or appear
               unchanged during this time.</p>
               <div>
-                <label htmlFor="title">Title</label>
-                <input className="u-full-width" type="text" id="title" value={this.state.title} onChange={this.handleChange} placeholder="Choose a title" />
+                <label htmlFor='title'>Title</label>
+                <input className='u-full-width' type='text' id='title' value={this.state.title} onChange={this.handleChange} placeholder='Choose a title' />
               </div>
               <div>
-                <label htmlFor="text">Content</label>
-                <textarea className="u-full-width" id="text" value={this.state.text} onChange={this.handleChange} placeholder="Write your post. Markdown is supported :)" />
+                <label htmlFor='text'>Content</label>
+                <textarea className='u-full-width' id='text' value={this.state.text} onChange={this.handleChange} placeholder='Write your post. Markdown is supported :)' />
               </div>
-              <div className="buttons">
-                <button className="button button-primary" onClick={this.save}>Publish</button>
+              <div className='buttons'>
+                <button className='button button-primary' onClick={this.save}>Publish</button>
                 {this.additionalButtons()}
               </div>
             </div>

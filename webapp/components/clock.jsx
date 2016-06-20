@@ -28,10 +28,10 @@ module.exports = React.createClass({
     if (this.state.moment) {
       return this.state.text
     } else {
-      return <Icon name="refresh" className="fa-spin" />
+      return <Icon name='refresh' className='fa-spin' />
     }
   },
   render: function () {
-    return <div className="inline"><Icon name="clock-o" className={this.props.className} /> {this.getDate()}</div>
+    return <div className='inline'><Icon name='clock-o' className={this.props.className} /> {this.getDate()}</div>
   }
 })

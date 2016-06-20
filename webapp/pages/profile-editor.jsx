@@ -69,40 +69,40 @@ module.exports = function (boardsAPI) {
       if (this.state.api) {
         if (this.state.error) {
           return <Error error={this.state.error} >
-            <button className="button button-primary center-block" onClick={this.skip}>Continue</button>
+            <button className='button button-primary center-block' onClick={this.skip}>Continue</button>
           </Error>
         } else if (this.state.loading) {
-          return <Loading title="Fetching your current Profile...">
-            <button className="button button-primary center-block" onClick={this.skip}>Skip</button>
+          return <Loading title='Fetching your current Profile...'>
+            <button className='button button-primary center-block' onClick={this.skip}>Skip</button>
           </Loading>
         } else if (this.state.updating) {
           return <Saving>
             <p>Pressing the Skip button will not abort the publish operation.</p>
-            <button className="button button-primary center-block" onClick={this.skip}>Skip</button>
+            <button className='button button-primary center-block' onClick={this.skip}>Skip</button>
           </Saving>
         } else {
           return (
-            <div className="editor">
-              <h2><Icon name="user" className="light" /> Edit Profile</h2>
+            <div className='editor'>
+              <h2><Icon name='user' className='light' /> Edit Profile</h2>
               <p>This App uses IPFS to store your profile. When you are offline,
               other users or servers that viewed your profile will serve it to
               others.</p>
             <p><b>Warning:</b> due to a bug in go-ipfs, it may take up to a minute
             for your changes to be visibile. Your profile will appear unchanged during
             this time.</p>
-              <div className="center-block">
-                <label htmlFor="name">Name</label>
-                <input className="u-full-width" type="text" id="name" value={this.state.name} onChange={this.handleChange} placeholder="Who are you on the interwebs?" />
+              <div className='center-block'>
+                <label htmlFor='name'>Name</label>
+                <input className='u-full-width' type='text' id='name' value={this.state.name} onChange={this.handleChange} placeholder='Who are you on the interwebs?' />
               </div>
               <div>
-                <label htmlFor="desc">Caption</label>
-                <textarea className="u-full-width" id="desc" value={this.state.description} onChange={this.handleChange} placeholder="Say something about yourself." />
+                <label htmlFor='desc'>Caption</label>
+                <textarea className='u-full-width' id='desc' value={this.state.description} onChange={this.handleChange} placeholder='Say something about yourself.' />
               </div>
-              <div className="buttons">
-                <button className="button button-primary" onClick={this.save}>Publish</button>
-                <button onClick={this.refresh} className="button not-first">Refresh</button>
-                <Link to={'/@' + this.state.userid} className="button not-first">View</Link>
-                <Link to="/backup" className="button not-first">Backup and Restore</Link>
+              <div className='buttons'>
+                <button className='button button-primary' onClick={this.save}>Publish</button>
+                <button onClick={this.refresh} className='button not-first'>Refresh</button>
+                <Link to={'/@' + this.state.userid} className='button not-first'>View</Link>
+                <Link to='/backup' className='button not-first'>Backup and Restore</Link>
               </div>
             </div>
           )

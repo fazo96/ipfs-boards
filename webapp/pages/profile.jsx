@@ -52,10 +52,10 @@ module.exports = function (boardsAPI) {
     linkToEditor () {
       var uid = this.props.params.userid
       if (uid === this.state.id) {
-        return <div className="your-profile">
+        return <div className='your-profile'>
           <h6>This is your profile</h6>
-          <div className="iconbar">
-            <Link className="nounderline" to="/edit/profile"><Icon name="edit" className="fa-2x light"/></Link>
+          <div className='iconbar'>
+            <Link className='nounderline' to='/edit/profile'><Icon name='edit' className='fa-2x light'/></Link>
           </div>
           <hr/>
         </div>
@@ -63,24 +63,24 @@ module.exports = function (boardsAPI) {
       return ''
     },
     getEditButton () {
-      return <Link className="button button-primary" to="/edit/profile">Edit Profile</Link>
+      return <Link className='button button-primary' to='/edit/profile'>Edit Profile</Link>
     },
     render () {
       if (this.state.api) {
         if (this.state.error) {
           return <Error error={this.state.error}>{this.getEditButton()}</Error>
         } else if (this.state.loading) {
-          return <Loading title="Downloading Profile">{this.getEditButton()}</Loading>
+          return <Loading title='Downloading Profile'>{this.getEditButton()}</Loading>
         } else {
           var uid = this.props.params.userid
-          return (<div className="profile">
+          return (<div className='profile'>
             {this.linkToEditor()}
             <h1>{this.state.name}</h1>
             <Markdown source={this.state.description} skipHtml={true} />
             <hr/>
-            <div className="light breaker">@{uid}</div>
+            <div className='light breaker'>@{uid}</div>
             {this.state.boards.map(n => {
-              return <h6 className="light" key={uid + '/' + n.name}>
+              return <h6 className='light' key={uid + '/' + n.name}>
                 <Link to={'/@' + uid + '/' + n.name}># {n.name}</Link>
               </h6>
             })}

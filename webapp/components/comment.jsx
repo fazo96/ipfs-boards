@@ -40,21 +40,21 @@ var CommentEditor = React.createClass({
     if (this.state.error) {
       return <Error error={this.state.error} />
     } else if (this.state.loading) {
-      return <div className="center-block text-center find-content">
-        <Icon name="refresh" className="fa-3x center-block light fa-spin" />
+      return <div className='center-block text-center find-content'>
+        <Icon name='refresh' className='fa-3x center-block light fa-spin' />
         <h4>Publishing Comment</h4>
       </div>
     } else if (this.state.success) {
       var url = '/@' + this.props.adminID + '/' + this.props.board + '/' + (this.props.post || this.props.parent) + '/' + this.state.hash
-      return <Success title="Comment Published">
-        <Link className="button button-primary" to={url}>View</Link>
+      return <Success title='Comment Published'>
+        <Link className='button button-primary' to={url}>View</Link>
       </Success>
     } else {
       return <div>
-        <textarea className="u-full-width" id="text" value={this.state.text} onChange={this.handleChange} placeholder="Speak your mind! Markdown is supported." />
+        <textarea className='u-full-width' id='text' value={this.state.text} onChange={this.handleChange} placeholder='Speak your mind! Markdown is supported.' />
         <p><b>Note</b>: this version of the app doesn't check wether you are allowed to post on this board, so there are no guarantees that your post will be visible.</p>
-        <div className="buttons">
-          <button className="button button-primary" onClick={this.save}>Send</button>
+        <div className='buttons'>
+          <button className='button button-primary' onClick={this.save}>Send</button>
         </div>
       </div>
     }
@@ -72,33 +72,33 @@ var Comment = React.createClass({
   },
   getPermalink () {
     if (this.props.adminID && this.props.board && this.props.post && this.props.comment.hash) {
-      return <div className="inline not-first">
-        <Icon name="code" /> <Link to={'/@' + this.props.adminID + '/' + this.props.board + '/' + this.props.post + '/' + this.props.comment.hash}>Permalink</Link>
+      return <div className='inline not-first'>
+        <Icon name='code' /> <Link to={'/@' + this.props.adminID + '/' + this.props.board + '/' + this.props.post + '/' + this.props.comment.hash}>Permalink</Link>
       </div>
     }
   },
   getParentlink () {
     if (this.props.showParent && this.props.comment.parent) {
-      return <div className="inline not-first">
-        <Icon name="level-up" /> <Link to={'/@' + this.props.adminID + '/' + this.props.board + '/' + this.props.post + '/' + this.props.comment.parent}>Parent</Link>
+      return <div className='inline not-first'>
+        <Icon name='level-up' /> <Link to={'/@' + this.props.adminID + '/' + this.props.board + '/' + this.props.post + '/' + this.props.comment.parent}>Parent</Link>
       </div>
     }
   },
   getComments () {
-    return <Comments className="shifted" allowReply={this.props.allowReply} parent={this.props.comment.hash} post={this.props.post} adminID={this.props.adminID} board={this.props.board} api={this.props.api} />
+    return <Comments className='shifted' allowReply={this.props.allowReply} parent={this.props.comment.hash} post={this.props.post} adminID={this.props.adminID} board={this.props.board} api={this.props.api} />
   },
   toggleReply () {
     this.setState({ reply: !this.state.reply })
   },
   render () {
     if (this.props.comment) {
-      return <div className="comment"><hr/>
-        <div className="icons">
+      return <div className='comment'><hr/>
+        <div className='icons'>
           <UserID id={this.props.comment.op} api={this.props.api} />
           <Clock date={this.props.comment.date} />
           {this.getPermalink()}
           { this.props.allowReply
-          ? <a className="nounderline" onClick={this.toggleReply}><Icon className="not-first" name="reply" /> Reply</a>
+          ? <a className='nounderline' onClick={this.toggleReply}><Icon className='not-first' name='reply' /> Reply</a>
           : <a/> }
           {this.getParentlink()}
         </div>
@@ -146,7 +146,7 @@ var Comments = React.createClass({
   },
   render () {
     if (this.state.limited) {
-      return <div className="text-center">
+      return <div className='text-center'>
         <p>Comments can't be displayed in limited mode</p>
       </div>
     } else {

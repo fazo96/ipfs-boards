@@ -54,23 +54,23 @@ module.exports = function (boardsAPI) {
         } else {
           return <div>Comment by <UserID id={this.props.params.userid} api={this.state.boards} /></div>
         }
-      } else return <div><h6 className="light">You are viewing a single comment</h6></div>
+      } else return <div><h6 className='light'>You are viewing a single comment</h6></div>
     },
     showComment: function () {
       if (this.state.comment) {
         console.log('allowReply', this.state.allowReply)
         return <Comment allowReply={this.state.allowReply} comment={this.state.comment} post={this.props.params.posthash} adminID={this.props.params.userid} board={this.props.params.boardname} showParent={true} api={this.state.boards} />
       } else {
-        return <div className="center-block text-center find-content">
-          <Icon name="refresh" className="fa-3x center-block light fa-spin" />
+        return <div className='center-block text-center find-content'>
+          <Icon name='refresh' className='fa-3x center-block light fa-spin' />
           <h4>Finding content...</h4>
         </div>
       }
     },
     render: function () {
       if (this.state.api) {
-        return <div className="comment-page">
-          <div className="text-center">
+        return <div className='comment-page'>
+          <div className='text-center'>
             {this.getContext()}
           </div>
           {this.showComment()}

@@ -64,19 +64,19 @@ module.exports = React.createClass({
         return <Post key={hash} board={this.props.board} admin={this.props.admin} hash={hash} api={this.props.api} />
       })
     } else {
-      return <div className="center-block text-center">
-        <Icon name="refresh" className="fa-3x center-block light fa-spin" />
+      return <div className='center-block text-center'>
+        <Icon name='refresh' className='fa-3x center-block light fa-spin' />
       </div>
     }
   },
   render () {
     if (this.state.limited) {
-      return <div className="text-center">
-        <h5 className="light"><Icon name="ban" /></h5>
+      return <div className='text-center'>
+        <h5 className='light'><Icon name='ban' /></h5>
         <p>Posts in a board can't be shown in limited mode. Sorry!</p>
       </div>
     } else {
-      return <div className="postList">
+      return <div className='postList'>
         {this.getPosts()}
       </div>
     }

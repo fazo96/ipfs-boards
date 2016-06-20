@@ -46,8 +46,8 @@ module.exports = React.createClass({
       var board = this.props.board || this.state.post.board
       if (board) {
         var url = '/edit/board/' + board + '/post/' + this.props.hash
-        return <Link to={url} className="nounderline">
-          <Icon name="edit" className="not-first"/> Edit
+        return <Link to={url} className='nounderline'>
+          <Icon name='edit' className='not-first'/> Edit
         </Link>
       } else {
         return <span/>
@@ -59,27 +59,27 @@ module.exports = React.createClass({
   },
   getContent () {
     if (this.state.error) {
-      return <Error className="content" error={this.state.error} />
+      return <Error className='content' error={this.state.error} />
     } else if (this.state.loading) {
-      return <div className="text-center">
-        <div className="center-block" style={{marginTop: '1em'}}>
-          <Icon className="center-block fa-spin fa-2x light" name="refresh" />
+      return <div className='text-center'>
+        <div className='center-block' style={{marginTop: '1em'}}>
+          <Icon className='center-block fa-spin fa-2x light' name='refresh' />
         </div>
         <h5>Downloading Post</h5>
       </div>
     } else {
-      return <div className="content">
+      return <div className='content'>
         { this.state.post.title
           ? <div><h5>{this.state.post.title}</h5><hr/></div>
           : <div />
         }
         <Markdown source={this.state.post.text} /><hr/>
-        <div className="icons">
+        <div className='icons'>
           <UserID id={this.state.post.op} api={this.props.api} ></UserID>
-          <Clock className="not-first" date={this.state.post.date} />
-          <Icon name="comments" className="not-first" /> <Link className="nounderline" to={this.postLink()}>View</Link>
+          <Clock className='not-first' date={this.state.post.date} />
+          <Icon name='comments' className='not-first' /> <Link className='nounderline' to={this.postLink()}>View</Link>
           { this.props.allowReply
-          ? <a className="nounderline" onClick={this.toggleReply}><Icon className="not-first" name="reply" /> Reply</a>
+          ? <a className='nounderline' onClick={this.toggleReply}><Icon className='not-first' name='reply' /> Reply</a>
           : <span/>}
           {this.editorLink()}
         </div>
@@ -88,7 +88,7 @@ module.exports = React.createClass({
   },
   render () {
     return <div>
-      <div className="post">{this.getContent()}</div>
+      <div className='post'>{this.getContent()}</div>
       { this.state.reply
       ? <CommentEditor parent={this.props.hash} api={this.props.api} adminID={this.props.adminID} board={this.props.board} />
       : <div/>}

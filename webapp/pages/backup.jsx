@@ -3,10 +3,10 @@ var Icon = require('icon.jsx')
 
 module.exports = React.createClass({
   render () {
-    return <div className="thin center-block">
-      <div className="text-center">
-        <h1><Icon name="database" className="light" /></h1>
-        <h3 className="">Backup and Restore</h3>
+    return <div className='thin center-block'>
+      <div className='text-center'>
+        <h1><Icon name='database' className='light' /></h1>
+        <h3 className=''>Backup and Restore</h3>
       </div>
       <p>A user's profile is just a folder with a bunch of other files and
       folders. This makes it very easy to create backups of anyone's profile,
@@ -15,18 +15,18 @@ module.exports = React.createClass({
       add it to IPFS and then use the resulting hash to restore your profile.
       Only restoring manually is possible, because <b>I haven't implemented
       assisted restore yet</b> but that's coming soon.</p>
-      <div className="text-center">
-        <h1><Icon name="download" className="light" /></h1>
-        <h3 className="">Backing Up</h3>
+      <div className='text-center'>
+        <h1><Icon name='download' className='light' /></h1>
+        <h3 className=''>Backing Up</h3>
       </div>
       <p>Get the IPNS address of the user you want to back up. For example, while visiting
       <code>/@userid</code>, <code>userid</code> would be what you're looking for.</p>
-      <p>If you have a profile, click on the <Icon name="user"/> icon in the top bar to view your address.</p>
+      <p>If you have a profile, click on the <Icon name='user'/> icon in the top bar to view your address.</p>
       <p>Make sure you are running a full <code>go-ipfs</code> node on your machine. Then, run this command: <code>ipfs get /ipns/userid/ipfs-boards-profile/</code> where <code>userid</code> is the target user's IPNS address.</p>
       <p>A folder named <code>ipfs-boards-profile</code> will be created in the current working directory, containing the <b>full profile</b> with everything that is being published by the user. <b>It's that simple</b>.</p>
-      <div className="text-center">
-        <h1><Icon name="upload" className="light" /></h1>
-        <h3 className="">Restoring</h3>
+      <div className='text-center'>
+        <h1><Icon name='upload' className='light' /></h1>
+        <h3 className=''>Restoring</h3>
       </div>
       <p>Start the IPFS node you want to use to publish your profile.</p>
       <p>Get the IPFS hash of the <code>ipfs-boards-profile</code> folder that you want to use.</p>

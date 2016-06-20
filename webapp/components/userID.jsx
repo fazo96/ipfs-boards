@@ -39,19 +39,19 @@ module.exports = React.createClass({
   },
   getContent () {
     if (this.state.name) {
-      return (<Icon name="user" />)
+      return (<Icon name='user' />)
     } else {
       return '@'
     }
   },
   render () {
     if (this.props.id === undefined || this.props.id === 'undefined') {
-      return <div className="user-id">
-          <Icon name="ban" /> Unknown User
+      return <div className='user-id'>
+          <Icon name='ban' /> Unknown User
         </div>
     } else {
-      return (<div className="user-id">
-        <Link className="light nounderline" to={'/@' + this.props.id}>
+      return (<div className='user-id'>
+        <Link className='light nounderline' to={'/@' + this.props.id}>
           {this.getContent()}{this.state.name || this.props.id}
         </Link>
       </div>)

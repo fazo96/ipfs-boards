@@ -26,7 +26,7 @@ module.exports = function (boardsAPI) {
     render () {
       if (this.state.api) {
         return <div>
-          <h1><Icon name="users" className="light" /> Users</h1>
+          <h1><Icon name='users' className='light' /> Users</h1>
           <p>Found <b>{this.state.users.length}</b> users</p>
           <ul>
             {this.state.users.map(user => {

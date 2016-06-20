@@ -24,12 +24,12 @@ module.exports = function (boardsAPI) {
         } else {
           return <div>Posted by <UserID id={this.props.params.userid} api={this.state.api} /></div>
         }
-      } else return <div><h6 className="light">You are viewing a single post</h6></div>
+      } else return <div><h6 className='light'>You are viewing a single post</h6></div>
     },
     render: function () {
       if (this.state.api) {
-        return <div className="post-page">
-          <div className="text-center">
+        return <div className='post-page'>
+          <div className='text-center'>
             {this.getContext()}
           </div>
           <Post allowReply={true} hash={this.props.params.posthash} board={this.props.params.boardname} api={this.state.api} adminID={this.props.params.userid} />

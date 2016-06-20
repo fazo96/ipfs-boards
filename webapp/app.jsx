@@ -41,7 +41,7 @@ require.ensure('react', _ => {
 
   var Container = React.createClass({
     render () {
-      return (<div className="container app">{this.props.children}</div>)
+      return (<div className='container app'>{this.props.children}</div>)
     }
   })
 
@@ -68,14 +68,14 @@ require.ensure('react', _ => {
 
   var Homepage = React.createClass({
     render () {
-      return <Static className="homepage" content={require('landing.md')} />
+      return <Static className='homepage' content={require('landing.md')} />
     }
   })
 
   var NotFound = React.createClass({
     render () {
-      return (<div className="text-center">
-        <h1><Icon name="ban" className="light"/></h1>
+      return (<div className='text-center'>
+        <h1><Icon name='ban' className='light'/></h1>
         <h3>Sorry, there's nothing here!</h3>
       </div>)
     }
@@ -96,44 +96,44 @@ require.ensure('react', _ => {
         var IndexRoute = this.state.IndexRoute
         var Route = this.state.Route
         return <Router>
-          <Route path="/" component={App}>
+          <Route path='/' component={App}>
             <IndexRoute component={Homepage} />
-            <Route path="/@:userid">
+            <Route path='/@:userid'>
               <IndexRoute component={Profile} />
-              <Route path="post/:posthash" >
+              <Route path='post/:posthash' >
                 <IndexRoute component={PostPage} />
               </Route>
-              <Route path=":boardname">
+              <Route path=':boardname'>
                 <IndexRoute component={Board} />
-                <Route path=":posthash">
+                <Route path=':posthash'>
                   <IndexRoute component={PostPage} />
-                  <Route path=":commenthash" component={CommentPage} />
+                  <Route path=':commenthash' component={CommentPage} />
                 </Route>
               </Route>
             </Route>
-            <Route path="edit">
-              <Route path="profile" component={ProfileEditor} />
-              <Route path="board(/:boardname)">
+            <Route path='edit'>
+              <Route path='profile' component={ProfileEditor} />
+              <Route path='board(/:boardname)'>
                 <IndexRoute component={BoardEditor} />
-                <Route path="post(/:posthash)" component={PostEditor} />
+                <Route path='post(/:posthash)' component={PostEditor} />
               </Route>
             </Route>
-            <Route path="post/:posthash" component={PostPage} />
-            <Route path="board/:boardname" component={Board} />
-            <Route path="users" component={Users} />
-            <Route path="settings" component={Settings} />
-            <Route path="status" component={Status} />
-            <Route path="version" component={Update} />
-            <Route path="backup" component={Backup} />
-            <Route path="restore" component={Backup} />
-            <Route path="*" component={NotFound} />
+            <Route path='post/:posthash' component={PostPage} />
+            <Route path='board/:boardname' component={Board} />
+            <Route path='users' component={Users} />
+            <Route path='settings' component={Settings} />
+            <Route path='status' component={Status} />
+            <Route path='version' component={Update} />
+            <Route path='backup' component={Backup} />
+            <Route path='restore' component={Backup} />
+            <Route path='*' component={NotFound} />
           </Route>
         </Router>
       } else {
-        return <div className="loading" style={{ marginTop: '2rem' }} >
-          <div className="text-center">
-            <Icon className="center-block fa-spin fa-3x light" name="refresh" />
-            <h4 className="top-half-em">Downloading Components</h4>
+        return <div className='loading' style={{ marginTop: '2rem' }} >
+          <div className='text-center'>
+            <Icon className='center-block fa-spin fa-3x light' name='refresh' />
+            <h4 className='top-half-em'>Downloading Components</h4>
           </div>
         </div>
       }
