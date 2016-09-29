@@ -26,13 +26,9 @@ This is the Post view with reddit style comments.
 
 ## State of development
 
-__Most mentioned functionality is already implemented and a lot more is coming__, although development has been paused for
-a few months now. This is due to me studying for university and dedicating to simpler, smaller projects (mostly related to
-my exams). _This does not mean this is dead_. I'll probably resume development, meanwhile the IPFS ecosystem stabilizes
-and matures, because this project is mostly based on alpha quality software and libraries that while being
-a pleasure to work with, they make building something more than a prototype harder, at least for a not very experienced developer like me.
+Even though the application kind of works, __the project needs quite a rewrite__. Development has been paused for months because I didn't have time, meanwhile I've grown a bit as a programmer and quickly realized I made many bad mistakes when writing this. Also, ipfs now supposedly works in the browser so I'd probably rewrite the lib around it and drop support for the http gateway, while using Redux or something like that to handle the state and lifecycle, then separating react components containing logic from the stateless rendering ones.
 
-Anyway, this project already accomplished many things, like having a working prototype and being a great proof of
+Anyway, this project already accomplished many things, like having a kind of working prototype and being a great proof of
 concept. I hope to resume development soon and update it, but __pull requests are still very welcome, as I'd probably review them with pleasure.__
 
 ## Why this project?
