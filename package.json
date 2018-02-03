@@ -11,7 +11,9 @@
     "react-router-redux": "^5.0.0-alpha.9",
     "react-scripts": "1.1.0",
     "redux": "^3.7.2",
-    "redux-saga": "^0.16.0"
+    "redux-saga": "^0.16.0",
+    "semantic-ui-css": "^2.2.14",
+    "semantic-ui-react": "^0.77.2"
   },
   "scripts": {
     "start": "react-scripts start",
