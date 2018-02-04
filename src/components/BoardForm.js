@@ -15,7 +15,7 @@ export default class BoardForm extends Component {
 
     render() {
         const { title, content } = this.state
-        const { onSave } = this.props
+        const { onSave, creating } = this.props
         return <Form>
             <Form.Field>
                 <label>Title</label>
@@ -28,7 +28,9 @@ export default class BoardForm extends Component {
             <Button
                 type='submit'
                 onClick={() => onSave({ title, content })}
+                disabled={creating}
             >Create</Button>
+            {creating ? 'Creating the board...' : ''}
         </Form>
     }
 }

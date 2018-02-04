@@ -1,12 +1,12 @@
 import React from 'react'
 import { List } from 'semantic-ui-react'
 
-export default function BoardsItem(props) {
+export default function BoardsItem({ title }) {
     return <List.Item>
-        <List.Icon name='board' size='large' verticalAlign='middle' />
+        <List.Icon name='comments' size='large' verticalAlign='middle' />
         <List.Content>
-            <List.Header>Board Name</List.Header>
-            <List.Description>Updated 10 mins ago</List.Description>
+            <List.Header>{title}</List.Header>
+            <List.Description>Experimental</List.Description>
         </List.Content>
     </List.Item>
 }

@@ -1,3 +1,5 @@
 
 export const ADD_POST = 'ADD_POST'
 export const CREATE_BOARD = 'CREATE_BOARD'
+export const CREATING_BOARD = 'CREATING_BOARD'
+export const CREATED_BOARD = 'CREATED_BOARD'
