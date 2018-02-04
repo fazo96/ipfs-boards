@@ -5,6 +5,7 @@
   "dependencies": {
     "ipfs": "^0.27.7",
     "orbit-db": "^0.19.4",
+    "orbit-db-discussion-board": "https://github.com/fazo96/orbit-db-discussion-board.git",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-hot-loader": "^3.1.3",

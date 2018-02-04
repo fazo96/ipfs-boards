@@ -1,6 +1,16 @@
 import BoardStore from 'orbit-db-discussion-board'
+import multihashes from 'multihashes'
 
-export async function open(address, metadata, options = {}) {
+export function isValidID(id) {
+  try {
+    if (typeof id === 'string' && multihashes.fromB58String(id)) return true
+  } catch (error) {
+    return false
+  }
+  return false
+}
+
+export async function open(id, metadata, options = {}) {
   if (!window.ipfs) {
     const IPFS = await import('ipfs')
     window.ipfs = new IPFS({
@@ -28,12 +38,13 @@ export async function open(address, metadata, options = {}) {
     window.orbitDb = new OrbitDB(window.ipfs)
   }
   const defaultOptions = {
-    create: address === undefined,
+    create: id === undefined,
     type: BoardStore.type
   }
-  if (!address) {
+  let address
+  if (!id) {
     address = 'board-v0'
-  } else if (!address.indexOf('/orbitdb/') < 0 || address.indexOf('/board-v0') < 0) {
+  } else if (!isValidID(id)) {
     throw new Error('invalid address')
   }
   const db = await window.orbitDb.open(address, Object.assign(defaultOptions, options))

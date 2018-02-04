@@ -5040,7 +5040,7 @@ level-js@^2.2.4, level-js@~2.2.4:
     typedarray-to-buffer "~1.0.0"
     xtend "~2.1.2"
 
-"level-js@github:timkuijsten/level.js#idbunwrapper":
+level-js@timkuijsten/level.js#idbunwrapper:
   version "2.2.3"
   resolved "https://codeload.github.com/timkuijsten/level.js/tar.gz/18e03adab34c49523be7d3d58fafb0c632f61303"
   dependencies:
@@ -5922,7 +5922,7 @@ multihashing-async@~0.4.6, multihashing-async@~0.4.7:
     murmurhash3js "^3.0.1"
     nodeify "^1.0.1"
 
-"multiplex@github:dignifiedquire/multiplex":
+multiplex@dignifiedquire/multiplex:
   version "6.7.0"
   resolved "https://codeload.github.com/dignifiedquire/multiplex/tar.gz/b5d5edd30454e2c978ee8c52df86f5f4840d2eab"
   dependencies:
@@ -6273,6 +6273,12 @@ orbit-db-counterstore@~1.2.0:
     crdts "~0.1.2"
     orbit-db-store "~2.2.0"
 
+"orbit-db-discussion-board@https://github.com/fazo96/orbit-db-discussion-board.git":
+  version "0.1.0"
+  resolved "https://github.com/fazo96/orbit-db-discussion-board.git#b71b93f2415a867f8ed29cc76fe7af0e9fb570ce"
+  dependencies:
+    orbit-db-store "^2.2.1"
+
 orbit-db-docstore@~1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/orbit-db-docstore/-/orbit-db-docstore-1.2.0.tgz#c5d7fe291de148db4e1adebdf3bad12422dc44c6"
@@ -6313,7 +6319,7 @@ orbit-db-pubsub@~0.3.8:
     ipfs-pubsub-room "github:haadcode/ipfs-pubsub-room#orbitdb"
     logplease "~1.2.14"
 
-orbit-db-store@~2.2.0:
+orbit-db-store@^2.2.1, orbit-db-store@~2.2.0:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/orbit-db-store/-/orbit-db-store-2.2.1.tgz#49ac9c054ae157e3a0052a9a178a73e2e8b7f914"
   dependencies:

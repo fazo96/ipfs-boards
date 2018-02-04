@@ -5,7 +5,7 @@ import { Button } from 'semantic-ui-react'
 
 export default function Boards({ boards, createBoard }) {
     return <List divided relaxed>
-        {boards.map(board => <BoardsItem {...board} />)}
+        {Object.values(boards).map(board => <BoardsItem {...board} />)}
         <Button onClick={createBoard}>New Board</Button>
     </List>
 }

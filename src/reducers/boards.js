@@ -1,4 +1,5 @@
 import { CREATED_BOARD } from '../actions/actionTypes'
+import { getBoardIdFromAddress } from '../utils/orbitdb'
 
 function getInitialState() {
     return {
@@ -9,7 +10,9 @@ function getInitialState() {
 export default function BoardsReducer(state = getInitialState(), action) {
     switch (action.type) {
         case CREATED_BOARD:
-            return Object.assign({}, state, { boards: state.boards.concat(action.board) })
+            const id = getBoardIdFromAddress(action.board.address)
+            const newBoards = Object.assign({}, state.boards.boards, { [id]: action.board })
+            return Object.assign({}, state, { boards: newBoards })
         default:
             return state;
     }

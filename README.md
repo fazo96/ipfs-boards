@@ -1,4 +1,4 @@
-# Experimental stuff
+# IPFS Boards
 
 This is a branch with a brand new implementation of boards. Nothing works yet
 
