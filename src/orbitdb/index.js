@@ -1,5 +1,6 @@
 import BoardStore from 'orbit-db-discussion-board'
 import multihashes from 'multihashes'
+import { getBoardIdFromAddress } from '../utils/orbitdb'
 
 export function isValidID(id) {
   try {
@@ -48,10 +49,66 @@ export async function open(id, metadata, options = {}) {
     throw new Error('invalid address')
   }
   const db = await window.orbitDb.open(address, Object.assign(defaultOptions, options))
-  if (metadata) {
+  await db.load()
+  if (metadata && defaultOptions.create) {
     await db.updateMetadata(metadata)
   }
   if (!window.dbs) window.dbs = {}
   window.dbs[db.address.toString()] = db
   return db
+}
+
+export function connectDb(db, dispatch) {
+  db.events.on('write', (dbname, hash, entry) => {
+    dispatch({
+        type: 'ORBITDB_WRITE',
+        id: getBoardIdFromAddress(db.address.toString()),
+        hash,
+        entry
+    })
+  })
+  db.events.on('replicated', address => {
+    dispatch({
+        type: 'ORBITDB_REPLICATED',
+        id: getBoardIdFromAddress(db.address.toString())
+    })
+  })
+  db.events.on('replicate.progress', (address, hash, entry, progress, have) => {
+    dispatch({
+        type: 'ORBITDB_REPLICATE_PROGRESS',
+        id: getBoardIdFromAddress(db.address.toString()),
+        hash,
+        entry,
+        progress,
+        have
+    })
+  })
+  db.events.on('replicate', address => {
+    dispatch({
+        type: 'ORBITDB_REPLICATE',
+        id: getBoardIdFromAddress(db.address.toString())
+    })
+  })
+  db.events.on('close', address => {
+    dispatch({
+        type: 'ORBITDB_CLOSE',
+        id: getBoardIdFromAddress(db.address.toString())
+    })
+  })
+  db.events.on('load', address => {
+    dispatch({
+        type: 'ORBITDB_LOAD',
+        id: getBoardIdFromAddress(db.address.toString())
+    })
+  })
+  db.events.on('load.progress', (address, hash, entry, progress, total) => {
+    dispatch({
+        type: 'ORBITDB_LOAD_PROGRESS',
+        id: getBoardIdFromAddress(db.address.toString()),
+        hash,
+        entry,
+        progress,
+        total
+    })
+  })
 }
