@@ -48,14 +48,18 @@ export async function open(id, metadata, options = {}) {
   } else if (!isValidID(id)) {
     throw new Error('invalid address')
   }
-  const db = await window.orbitDb.open(address, Object.assign(defaultOptions, options))
-  await db.load()
-  if (metadata && defaultOptions.create) {
-    await db.updateMetadata(metadata)
+  try {
+    const db = await window.orbitDb.open(address, Object.assign(defaultOptions, options))
+    await db.load()
+    if (metadata && defaultOptions.create) {
+      await db.updateMetadata(metadata)
+    }
+    if (!window.dbs) window.dbs = {}
+    window.dbs[getBoardIdFromAddress(db.address.toString())] = db
+    return db
+  } catch (error) {
+    console.log(error)
   }
-  if (!window.dbs) window.dbs = {}
-  window.dbs[db.address.toString()] = db
-  return db
 }
 
 export function connectDb(db, dispatch) {
