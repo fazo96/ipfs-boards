@@ -1,4 +1,4 @@
-import { OPENED_BOARD, UPDATE_BOARD } from '../actions/actionTypes'
+import { OPENED_BOARD, UPDATE_BOARD, ORBITDB_REPLICATED, ORBITDB_REPLICATE } from '../actions/actionTypes'
 import { getBoardIdFromAddress } from '../utils/orbitdb'
 
 function getInitialState() {
@@ -7,20 +7,32 @@ function getInitialState() {
     }
 }
 
+function updateBoard(existingBoards, address, value) {
+    return Object.assign({}, existingBoards, {
+        [address]: Object.assign({}, existingBoards[address] || {}, value)
+    })
+}
+
 export default function BoardsReducer(state = getInitialState(), action) {
-    let address, newBoards
+    let address
     switch (action.type) {
         case OPENED_BOARD:
             address = action.board.address
-            newBoards = Object.assign({}, state.boards, { [address]: action.board })
-            return Object.assign({}, state, { boards: newBoards })
+            return Object.assign({}, state, { boards: updateBoard(state.boards, address, action.board) })
         case UPDATE_BOARD:
             address = action.address
             let { posts, metadata } = action
-            newBoards = Object.assign({}, state.boards, {
-                [address]: Object.assign({}, state.boards[address], { posts, metadata })
-            })
-            return Object.assign({}, state, { boards: newBoards })
+            return Object.assign({}, state, { boards: updateBoard(state.boards, address, { posts, metadata })})
+        case ORBITDB_REPLICATE:
+            address = action.address
+            return Object.assign({}, state, { boards: updateBoard(state.boards, address, {
+                replicating: true
+            })})
+        case ORBITDB_REPLICATED:
+            address = action.address
+            return Object.assign({}, state, { boards: updateBoard(state.boards, address, {
+                replicating: false
+            })})
         default:
             return state;
     }

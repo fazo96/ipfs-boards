@@ -4,7 +4,10 @@ import { Card, Icon } from 'semantic-ui-react'
 export default function Post({ title, multihash}) {
     return <Card fluid>
         <Card.Content>
-            <Icon name="file text outline"/> {title}
+            <Card.Header>
+                {title}
+            </Card.Header>
+            <Card.Meta>Post</Card.Meta>
         </Card.Content>
         <Card.Content style={{wordBreak:'break-all'}}>
             <Icon name="chain"/> <a href={'//ipfs.io/ipfs/'+multihash}>View</a>

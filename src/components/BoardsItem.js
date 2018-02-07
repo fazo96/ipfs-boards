@@ -4,14 +4,16 @@ import { Link } from 'react-router-dom'
 import { shortenAddress } from '../utils/orbitdb'
 
 export default function BoardsItem({ address, title }) {
-    return <Card>
+    return <Card fluid>
         <Card.Content>
             <Card.Header>
-                { title || 'Untitled board' }
+                { title || 'Unnamed board' }
             </Card.Header>
             <Card.Meta>
                 Board
             </Card.Meta>
+            </Card.Content>
+            <Card.Content>
             <Card.Description style={{wordBreak:'break-all'}}>
                 {address}
             </Card.Description>

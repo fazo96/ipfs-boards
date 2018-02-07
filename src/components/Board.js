@@ -4,7 +4,7 @@ import { Divider, Icon, Grid, Segment, Header, List, Button, Card } from 'semant
 import { Link } from 'react-router-dom'
 import { shortenAddress } from '../utils/orbitdb';
 
-export default function Board({ address, posts, metadata }) {
+export default function Board({ address, posts, metadata, replicating }) {
     const { email, website, title } = metadata || {}
     const url = window.location.href
     return <Grid container divided colums={2}>
@@ -39,10 +39,10 @@ export default function Board({ address, posts, metadata }) {
                     </List.Content>
                 </List.Item>
                 <List.Item>
-                    <List.Icon name='wifi' size="large" verticalAlign="middle"/>
+                    <List.Icon color={replicating ? 'green' : null} name='wifi' size="large" verticalAlign="middle"/>
                     <List.Content>
-                        <List.Header>Replication Status</List.Header>
-                        <List.Content>Idle</List.Content>
+                        <List.Header>Replication</List.Header>
+                        <List.Content>{replicating ? 'Receiving Content...' : 'Idle'}</List.Content>
                     </List.Content>
                 </List.Item>
                 <List.Item>
@@ -60,9 +60,16 @@ export default function Board({ address, posts, metadata }) {
                     </List.Content>
                 </List.Item>
             </List>
-            <div className='ui two buttons'>
-                <Button>Edit</Button>
-                <Button as={Link} to={shortenAddress(address)+'/p/new'}>New Post</Button>
+            <div className='ui three buttons basic'>
+                <Button>
+                    <Icon name='left arrow'/> Boards
+                </Button>
+                <Button>
+                    <Icon name='pencil'/> Edit
+                </Button>
+                <Button as={Link} to={shortenAddress(address)+'/p/new'}>
+                    <Icon name='plus'/> New Post
+                </Button>
             </div>
         </Grid.Column>
         <Grid.Column width={8}>

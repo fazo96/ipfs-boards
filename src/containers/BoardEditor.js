@@ -3,13 +3,13 @@ import { connect } from 'react-redux'
 import BoardForm from '../components/BoardForm'
 import { openBoard } from '../actions/board'
 
-function BoardEditor({ board, openBoard }) {
-    return <BoardForm board={board} onSave={openBoard} />
+function BoardEditor(props) {
+    return <BoardForm {...props} />
 }
 
 function mapStateToProps(state){
     return {
-        board: state.boardEditor.board
+        opening: state.boardEditor.opening
     }
 }
 

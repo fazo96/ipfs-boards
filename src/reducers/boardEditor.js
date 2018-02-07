@@ -5,19 +5,16 @@ import {
 
 function getInitialState() {
     return {
-        board: {
-            name: ''
-        },
-        creating: false
+        opening: false
     }
 }
 
 export default function BoardEditorReducer(state = getInitialState(), action) {
     switch (action.type) {
         case OPEN_BOARD:
-            return Object.assign({}, state, { board: action.board, opening: true })
+            return Object.assign({}, state, { opening: true })
         case OPENED_BOARD:
-            return Object.assign({}, state, { opening: false, board: action.board })
+            return Object.assign({}, state, { opening: false })
         default:
             return state
     }

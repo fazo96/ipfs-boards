@@ -3,8 +3,12 @@ import { eventChannel } from 'redux-saga'
 import { push } from 'react-router-redux'
 import { open, connectDb } from '../orbitdb'
 import { creatingBoard, createdBoard, boardError } from '../actions/board'
-import { getBoardIdFromAddress } from '../utils/orbitdb'
+import { getBoardIdFromAddress, shortenAddress } from '../utils/orbitdb'
 import { UPDATE_BOARD } from '../actions/actionTypes'
+
+export function* goToBoard({ board }){
+    yield put(push(shortenAddress(board.address))) 
+}
 
 export function* updateBoard({ address }){
     const db = window.dbs[address]
