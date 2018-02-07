@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Loader, Dimmer } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { openBoard } from '../actions/board'
 import { getBoardAddress } from '../utils/orbitdb'
@@ -40,7 +41,9 @@ export default function WithBoard(WrappedComponent) {
             if (board) {
                 return <WrappedComponent {...board} {...this.props} />
             } else {
-                return <div>Opening this board...</div>
+                return <Dimmer page active={true}> 
+                    Opening this board 
+                </Dimmer>
             }
         }
     }
