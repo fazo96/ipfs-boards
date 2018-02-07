@@ -11,7 +11,7 @@ export function isValidID(id) {
   return false
 }
 
-export async function open(id, metadata, options = {}) {
+export async function open(address, metadata) {
   if (!window.ipfs) {
     const IPFS = await import('ipfs')
     window.ipfs = new IPFS({
@@ -38,24 +38,18 @@ export async function open(id, metadata, options = {}) {
     OrbitDB.addDatabaseType(BoardStore.type, BoardStore)
     window.orbitDb = new OrbitDB(window.ipfs)
   }
-  const defaultOptions = {
-    create: id === undefined,
-    type: BoardStore.type
-  }
-  let address
-  if (!id) {
-    address = 'board-v0'
-  } else if (!isValidID(id)) {
-    throw new Error('invalid address')
+  const options = {
+    type: BoardStore.type,
+    create: true
   }
   try {
-    const db = await window.orbitDb.open(address, Object.assign(defaultOptions, options))
+    const db = await window.orbitDb.open(address, options)
     await db.load()
-    if (metadata && defaultOptions.create) {
+    if (metadata) {
       await db.updateMetadata(metadata)
     }
     if (!window.dbs) window.dbs = {}
-    window.dbs[getBoardIdFromAddress(db.address.toString())] = db
+    window.dbs[db.address.toString()] = db
     return db
   } catch (error) {
     console.log(error)
@@ -66,7 +60,7 @@ export function connectDb(db, dispatch) {
   db.events.on('write', (dbname, hash, entry) => {
     dispatch({
         type: 'ORBITDB_WRITE',
-        id: getBoardIdFromAddress(db.address.toString()),
+        address: db.address.toString(),
         hash,
         entry
     })
@@ -74,13 +68,13 @@ export function connectDb(db, dispatch) {
   db.events.on('replicated', address => {
     dispatch({
         type: 'ORBITDB_REPLICATED',
-        id: getBoardIdFromAddress(db.address.toString())
+        address: db.address.toString()
     })
   })
   db.events.on('replicate.progress', (address, hash, entry, progress, have) => {
     dispatch({
         type: 'ORBITDB_REPLICATE_PROGRESS',
-        id: getBoardIdFromAddress(db.address.toString()),
+        address: db.address.toString(),
         hash,
         entry,
         progress,
@@ -90,25 +84,25 @@ export function connectDb(db, dispatch) {
   db.events.on('replicate', address => {
     dispatch({
         type: 'ORBITDB_REPLICATE',
-        id: getBoardIdFromAddress(db.address.toString())
+        address: db.address.toString()
     })
   })
   db.events.on('close', address => {
     dispatch({
         type: 'ORBITDB_CLOSE',
-        id: getBoardIdFromAddress(db.address.toString())
+        address: db.address.toString()
     })
   })
   db.events.on('load', address => {
     dispatch({
         type: 'ORBITDB_LOAD',
-        id: getBoardIdFromAddress(db.address.toString())
+        address: db.address.toString()
     })
   })
   db.events.on('load.progress', (address, hash, entry, progress, total) => {
     dispatch({
         type: 'ORBITDB_LOAD_PROGRESS',
-        id: getBoardIdFromAddress(db.address.toString()),
+        address: db.address.toString(),
         hash,
         entry,
         progress,

@@ -1,10 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import BoardForm from '../components/BoardForm'
-import { createBoard } from '../actions/board'
+import { openBoard } from '../actions/board'
 
-function BoardEditor({ board, createBoard }) {
-    return <BoardForm board={board} onSave={createBoard} />
+function BoardEditor({ board, openBoard }) {
+    return <BoardForm board={board} onSave={openBoard} />
 }
 
 function mapStateToProps(state){
@@ -15,7 +15,7 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch) {
     return {
-        createBoard: board => dispatch(createBoard(board))
+        openBoard: board => dispatch(openBoard(board))
     }
 }
 

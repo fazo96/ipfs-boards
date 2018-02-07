@@ -1,28 +1,11 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
-import { push } from 'react-router-redux'
 import BoardComponent from '../components/Board'
-import { createBoard } from '../actions/board'
+import { getBoardAddress } from '../utils/orbitdb'
 
-class Board extends Component {
-
-    componentDidMount() {
-        const { boards, match } = this.props
-        if (!boards[match.params.boardId]) {
-            this.props.openBoard(match.params.boardId)
-        }
-    }
-
-    render() {
-        const { boards, match } = this.props
-        const id = match.params.boardId
-        const board = boards[id]
-        if (board) {
-            return <BoardComponent {...board} />
-        } else {
-            return <div>Opening this board...</div>
-        }
-    }
+function Board({ location, match, boards }) {
+    const { hash, name } = match.params
+    return <BoardComponent {...boards[getBoardAddress(hash, name)]} />
 }
 
 function mapStateToProps(state){
@@ -31,13 +14,6 @@ function mapStateToProps(state){
     }
 }
 
-function mapDispatchToProps(dispatch){
-    return {
-        openBoard: id => dispatch(createBoard(id))
-    }
-}
-
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+    mapStateToProps
 )(Board)

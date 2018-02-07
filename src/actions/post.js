@@ -1,9 +1,9 @@
 import { ADD_POST } from './actionTypes'
 
-export function addPost(boardId, post) {
+export function addPost(address, post) {
     return {
         type: ADD_POST,
         post,
-        boardId
+        address 
     }
 }

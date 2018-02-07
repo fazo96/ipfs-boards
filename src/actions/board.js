@@ -1,27 +1,19 @@
 import {
-    CREATE_BOARD,
-    CREATING_BOARD,
-    CREATED_BOARD,
+    OPEN_BOARD,
+    OPENED_BOARD,
     BOARD_ERROR
 } from './actionTypes'
 
-export function createBoard(board) {
+export function openBoard(board) {
     return {
-        type: CREATE_BOARD,
-        board
-    }
-}
-
-export function creatingBoard(board) {
-    return {
-        type: CREATING_BOARD,
+        type: OPEN_BOARD,
         board
     }
 }
 
 export function createdBoard(board) {
     return {
-        type: CREATED_BOARD,
+        type: OPENED_BOARD,
         board
     }
 }

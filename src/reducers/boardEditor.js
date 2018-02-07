@@ -1,13 +1,12 @@
 import {
-    CREATE_BOARD,
-    CREATING_BOARD,
-    CREATED_BOARD
+    OPEN_BOARD,
+    OPENED_BOARD
 } from '../actions/actionTypes'
 
 function getInitialState() {
     return {
         board: {
-            title: ''
+            name: ''
         },
         creating: false
     }
@@ -15,12 +14,10 @@ function getInitialState() {
 
 export default function BoardEditorReducer(state = getInitialState(), action) {
     switch (action.type) {
-        case CREATE_BOARD:
-            return Object.assign({}, state, { board: action.board, creating: false })
-        case CREATING_BOARD:
-            return Object.assign({}, state, { creating: true })
-        case CREATED_BOARD:
-            return Object.assign({}, state, { creating: false })
+        case OPEN_BOARD:
+            return Object.assign({}, state, { board: action.board, opening: true })
+        case OPENED_BOARD:
+            return Object.assign({}, state, { opening: false, board: action.board })
         default:
             return state
     }

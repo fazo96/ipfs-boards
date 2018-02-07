@@ -1,6 +1,8 @@
 
-export function getBoardIdFromAddress(address) {
-    const match = /\/orbitdb\/(.+)\//.exec(address)
-    if (match[1]) return match[1]
-    return undefined
+export function getBoardAddress(hash, name) {
+    return '/orbitdb/' + hash + '/' + name
+}
+
+export function shortenAddress(address) {
+    return address.replace(/^\/orbitdb/, '/b')
 }

@@ -2,12 +2,13 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PostForm from '../components/PostForm'
 import { addPost } from '../actions/post'
+import { getBoardAddress } from '../utils/orbitdb';
 
 class PostEditor extends Component {
     render() {
         const { post, addPost, match } = this.props
-        const { boardId } = match.params
-        return <PostForm post={post} onSave={p => addPost(boardId, p)} />
+        const address = getBoardAddress(match.params.hash, match.params.name)
+        return <PostForm post={post} onSave={p => addPost(address, p)} />
     }
 }
 
@@ -19,7 +20,7 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch) {
     return {
-        addPost: (boardId, post) => dispatch(addPost(boardId, post))
+        addPost: (address, post) => dispatch(addPost(address, post))
     }
 }
 
