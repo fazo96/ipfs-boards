@@ -9,7 +9,7 @@ function getInitialState() {
     }
 }
 
-export default function BoardEditorReducer(state = getInitialState(), action) {
+export default function openBoardReducer(state = getInitialState(), action) {
     switch (action.type) {
         case OPEN_BOARD:
             return Object.assign({}, state, { opening: true })

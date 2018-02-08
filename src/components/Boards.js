@@ -20,7 +20,7 @@ export default function Boards({ stats, boards, createBoard }) {
                     </List.Content>
                 </List.Item>
                 <List.Item>
-                    <List.Icon name='wifi' size="large" verticalAlign="middle"/>
+                    <List.Icon name='signal' size="large" verticalAlign="middle"/>
                     <List.Content>
                         <List.Header>Connected Peers</List.Header>
                         <List.Content>{stats.peers.length}</List.Content>

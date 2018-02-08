@@ -1,15 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import BoardForm from '../components/BoardForm'
+import OpenBoardForm from '../components/OpenBoardForm'
 import { openBoard } from '../actions/board'
 
-function BoardEditor(props) {
-    return <BoardForm {...props} />
+function OpenBoard(props) {
+    return <OpenBoardForm {...props} />
 }
 
 function mapStateToProps(state){
     return {
-        opening: state.boardEditor.opening
+        opening: state.openBoard.opening
     }
 }
 
@@ -22,4 +22,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(BoardEditor)
+)(OpenBoard)

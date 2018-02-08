@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Container, Card, Form, Button } from 'semantic-ui-react'
 
-export default class BoardForm extends Component {
+export default class OpenBoardForm extends Component {
     constructor(props){
         super(props)
         this.state = {

@@ -35,6 +35,7 @@ export function* openBoard({ board }) {
         const dbInfo = { address }
         dbInfo.posts = db.posts
         dbInfo.metadata = db.metadata
+        dbInfo.name = db.dbname
         try {
             const channel = yield call(createDbEventChannel, db)
             yield fork(watchDb, channel)
