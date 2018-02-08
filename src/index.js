@@ -7,6 +7,7 @@ import App from './components/App'
 import registerServiceWorker from './registerServiceWorker'
 import { Provider } from 'react-redux'
 import { ConnectedRouter } from 'react-router-redux'
+import { start } from './orbitdb'
 
 const store = configureStore();
 
@@ -23,7 +24,7 @@ render(
 
 if (module.hot) {
   module.hot.accept('./components/App', () => {
-    const NewApp = require('./components/App').default;
+    const NewApp = require('./components/App').default
     render(
       <AppContainer>
         <Provider store={store}>
@@ -33,8 +34,9 @@ if (module.hot) {
         </Provider>
       </AppContainer>,
       document.getElementById('root')
-    );
-  });
+    )
+  })
 }
 
-registerServiceWorker();
+registerServiceWorker()
+start(store.dispatch)

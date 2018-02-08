@@ -2,9 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import BoardsComponent from '../components/Boards'
+import WithStats from './WithStats'
+
+const WrappedComponent = WithStats(BoardsComponent)
 
 function Boards({ boards, createBoard }) {
-    return <BoardsComponent boards={boards} createBoard={createBoard} />
+    return <WrappedComponent boards={boards} createBoard={createBoard} />
 }
 
 function mapStateToProps(state){

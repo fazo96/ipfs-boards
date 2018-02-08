@@ -3,7 +3,7 @@ import { List, Icon, Segment, Divider, Grid, Header, Button, Card } from 'semant
 import { Link } from 'react-router-dom'
 import BoardsItem from './BoardsItem'
 
-export default function Boards({ boards, createBoard }) {
+export default function Boards({ stats, boards, createBoard }) {
     return <Grid container divided colums={2}>
         <Grid.Column width={8}>
             <Header size='large' style={{marginTop:'.5em'}}>
@@ -13,43 +13,43 @@ export default function Boards({ boards, createBoard }) {
             <Divider />
             <List relaxed>
                 <List.Item>
-                    <List.Icon name='file text outline' size="large" verticalAlign="middle"/>
+                    <List.Icon name='leaf' size="large" verticalAlign="middle"/>
                     <List.Content>
-                        <List.Header>Boards</List.Header>
-                        <List.Content>{Object.keys(boards).length}</List.Content>
+                        <List.Header>Seeding</List.Header>
+                        <List.Content>{Object.keys(boards).length} Boards</List.Content>
                     </List.Content>
                 </List.Item>
                 <List.Item>
                     <List.Icon name='wifi' size="large" verticalAlign="middle"/>
                     <List.Content>
                         <List.Header>Connected Peers</List.Header>
-                        <List.Content>?</List.Content>
+                        <List.Content>{stats.peers.length}</List.Content>
                     </List.Content>
                 </List.Item>
                 <List.Item>
                     <List.Icon name='disk outline' size="large" verticalAlign="middle"/>
                     <List.Content>
                         <List.Header>Used Space</List.Header>
-                        <List.Content>?</List.Content>
+                        <List.Content>Not Supported Yet</List.Content>
                     </List.Content>
                 </List.Item>
                 <List.Item>
-                    <List.Icon name='user' size="large" verticalAlign="middle"/>
+                    <List.Icon name='user circle' size="large" verticalAlign="middle"/>
                     <List.Content>
                         <List.Header>IPFS ID</List.Header>
-                        <List.Content>?</List.Content>
+                        <List.Content>{stats.id}</List.Content>
                     </List.Content>
                 </List.Item>
                 <List.Item>
                     <List.Icon name='key' size="large" verticalAlign="middle"/>
                     <List.Content>
                         <List.Header>OrbitDB Public Key</List.Header>
-                        <List.Content>?</List.Content>
+                        <List.Content style={{wordBreak:'break-all'}}>{stats.pubKey}</List.Content>
                     </List.Content>
                 </List.Item>
             </List>
             <div className="ui two buttons">
-                <Button as='a' href="https://github.com/fazo96/ipfs-boards">
+                <Button as='a' href="https://github.com/fazo96/ipfs-boards" target="__blank" >
                     <Icon name="github"/> GitHub
                 </Button>
                 <Button as={Link} to={'/b/new'}>

@@ -2,7 +2,6 @@ import IPFS from 'ipfs'
 import OrbitDB from 'orbit-db'
 import BoardStore from 'orbit-db-discussion-board'
 import multihashes from 'multihashes'
-import { getBoardIdFromAddress } from '../utils/orbitdb'
 
 export function isValidID(id) {
   try {
@@ -13,7 +12,7 @@ export function isValidID(id) {
   return false
 }
 
-export async function open(address, metadata) {
+export async function start() {
   if (!window.ipfs) {
     window.ipfs = new IPFS({
       repo: 'ipfs-v6-boards-v0',
@@ -38,23 +37,23 @@ export async function open(address, metadata) {
     OrbitDB.addDatabaseType(BoardStore.type, BoardStore)
     window.orbitDb = new OrbitDB(window.ipfs)
   }
+}
+
+export async function open(address, metadata) {
+  await start()
   const options = {
     type: BoardStore.type,
     create: true,
     write: ['*']
   }
-  try {
-    const db = await window.orbitDb.open(address, options)
-    await db.load()
-    if (metadata) {
-      await db.updateMetadata(metadata)
-    }
-    if (!window.dbs) window.dbs = {}
-    window.dbs[db.address.toString()] = db
-    return db
-  } catch (error) {
-    console.log(error)
+  const db = await window.orbitDb.open(address, options)
+  await db.load()
+  if (metadata) {
+    await db.updateMetadata(metadata)
   }
+  if (!window.dbs) window.dbs = {}
+  window.dbs[db.address.toString()] = db
+  return db
 }
 
 export function connectDb(db, dispatch) {
@@ -83,10 +82,7 @@ export function connectDb(db, dispatch) {
         progress,
         have,
         time: Date.now(),
-        replicationInfo: {
-          progress: db._replicationInfo.progress,
-          max: db._replicationInfo.max
-        }
+        replicationInfo: Object.assign({}, db._replicationInfo)
     })
   })
   db.events.on('replicate', address => {

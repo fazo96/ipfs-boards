@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Loader, Dimmer } from 'semantic-ui-react'
+import { Dimmer } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { openBoard } from '../actions/board'
 import { getBoardAddress } from '../utils/orbitdb'

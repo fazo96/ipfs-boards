@@ -1,7 +1,7 @@
 import React from 'react'
-import { Card, Icon } from 'semantic-ui-react'
+import { List, Card } from 'semantic-ui-react'
 
-export default function Post({ title, multihash}) {
+export default function Post({ title, multihash, pubKey }) {
     return <Card fluid>
         <Card.Content>
             <Card.Header>
@@ -10,10 +10,31 @@ export default function Post({ title, multihash}) {
             <Card.Meta>Post</Card.Meta>
         </Card.Content>
         <Card.Content style={{wordBreak:'break-all'}}>
-            <Icon name="chain"/> <a href={'//ipfs.io/ipfs/'+multihash}>View</a>
-        </Card.Content>
-        <Card.Content extra>
-            <Icon name="comments"/> Comments not supported yet
+            <List>
+                <List.Item>
+                    <List.Icon name="key" verticalAlign="middle"/>
+                    <List.Content>
+                        <List.Header>Signed By</List.Header>
+                        <List.Content>{pubKey || 'Unknown'}</List.Content>
+                    </List.Content>
+                </List.Item>
+                <List.Item>
+                    <List.Icon name="comments" verticalAlign="middle"/>
+                    <List.Content>
+                        <List.Header>Comments</List.Header>
+                        <List.Content>Not Supported Yet</List.Content>
+                    </List.Content>
+                </List.Item>
+                <List.Item>
+                    <List.Icon name="chain" verticalAlign="middle"/>
+                    <List.Content>
+                        <List.Header>Content</List.Header>
+                        <List.Content>
+                            <a href={'//ipfs.io/ipfs/'+multihash}>{multihash}</a>
+                        </List.Content>
+                    </List.Content>
+                </List.Item>
+            </List>
         </Card.Content>
     </Card>
 }

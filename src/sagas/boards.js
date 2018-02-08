@@ -2,8 +2,8 @@ import { put, call, fork, take } from 'redux-saga/effects'
 import { eventChannel } from 'redux-saga'
 import { push } from 'react-router-redux'
 import { open, connectDb } from '../orbitdb'
-import { creatingBoard, createdBoard, boardError } from '../actions/board'
-import { getBoardIdFromAddress, shortenAddress } from '../utils/orbitdb'
+import { createdBoard, boardError } from '../actions/board'
+import { shortenAddress } from '../utils/orbitdb'
 import { UPDATE_BOARD } from '../actions/actionTypes'
 
 export function* goToBoard({ board }){
@@ -35,9 +35,13 @@ export function* openBoard({ board }) {
         const dbInfo = { address }
         dbInfo.posts = db.posts
         dbInfo.metadata = db.metadata
-        const channel = yield call(createDbEventChannel, db)
-        yield fork(watchDb, channel)
-        yield put(createdBoard(Object.assign({}, board, dbInfo)))
+        try {
+            const channel = yield call(createDbEventChannel, db)
+            yield fork(watchDb, channel)
+            yield put(createdBoard(Object.assign({}, board, dbInfo)))
+        } catch (error) {
+            yield put({ type: 'ERROR', error })
+        }
     }
 }
 

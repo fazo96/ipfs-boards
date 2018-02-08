@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
 import { Container, Card, Form, Button } from 'semantic-ui-react'
-import { shortenAddress } from '../utils/orbitdb'
 
 export default class BoardForm extends Component {
     constructor(props){

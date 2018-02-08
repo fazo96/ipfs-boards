@@ -5,7 +5,6 @@ import {
     ORBITDB_REPLICATED,
     ORBITDB_REPLICATE
 } from '../actions/actionTypes'
-import { getBoardIdFromAddress } from '../utils/orbitdb'
 
 function getInitialState() {
     return {
@@ -43,7 +42,8 @@ export default function BoardsReducer(state = getInitialState(), action) {
         case ORBITDB_REPLICATED:
             address = action.address
             return Object.assign({}, state, { boards: updateBoard(state.boards, address, {
-                replicating: false
+                replicating: false,
+                lastReplicated: action.time
             })})
         default:
             return state;

@@ -1,12 +1,23 @@
 import React from 'react'
 import Post from './Post'
-import { Divider, Icon, Grid, Segment, Header, List, Button, Card } from 'semantic-ui-react'
+import { Divider, Icon, Grid, Header, List, Button, Card } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { shortenAddress } from '../utils/orbitdb';
+import moment from 'moment'
 
-export default function Board({ address, posts, metadata, replicating }) {
+export default function Board({ address, posts, metadata, replicating, stats, replicationInfo, lastReplicated }) {
     const { email, website, title } = metadata || {}
-    const url = window.location.href
+    const peerCount = (stats.peers || []).length
+    const online = peerCount > 0
+    const writeable = stats.access ? (stats.access.writeable ? 'Yes' : 'No') : '?'
+    let replicationMessage = lastReplicated ? ('Last Activity at ' + moment(lastReplicated).format('H:mm')) : 'No Activity'
+    if (replicating) {
+        if (replicationInfo && replicationInfo.max !== undefined) {
+            replicationMessage = 'Progress: ' + (replicationInfo.progress || 0) + '/' + replicationInfo.max
+        } else {
+            replicationMessage = 'Initializing Transfer'
+        }
+    }
     return <Grid container divided colums={2}>
         <Grid.Column width={8}>
             <Header size='large' style={{marginTop:'.5em'}}>
@@ -18,31 +29,46 @@ export default function Board({ address, posts, metadata, replicating }) {
                 <List.Item>
                     <List.Icon name='linkify' size="large" verticalAlign="middle"/>
                     <List.Content>
-                        <List.Header>Board Address</List.Header>
+                        <List.Header>Address</List.Header>
                         <List.Content>
-                            <a href={url}>{address}</a>
+                            {address}
                         </List.Content>
                     </List.Content>
                 </List.Item>
                 <List.Item>
-                    <List.Icon name='users' size="large" verticalAlign="middle"/>
+                    <List.Icon name='disk outline' size="large" verticalAlign="middle"/>
                     <List.Content>
-                        <List.Header>Users</List.Header>
-                        <List.Content>?</List.Content>
+                        <List.Header>Size</List.Header>
+                        <List.Content>{stats.opLogLength || 0} Entries</List.Content>
                     </List.Content>
                 </List.Item>
+                <List.Item>
+                    <List.Icon name={online ? 'heart' : 'heartbeat'} size="large" verticalAlign="middle"/>
+                    <List.Content>
+                        <List.Header>{online ? 'Online' : 'Offline'}</List.Header>
+                        <List.Content>{online ? peerCount + ' Connections' : 'No Connections'}</List.Content>
+                    </List.Content>
+                </List.Item>
+                <List.Item>
+                    <List.Icon color={replicating ? 'green' : null} name='feed' size="large" verticalAlign="middle"/>
+                    <List.Content>
+                        <List.Header>{replicating ? 'Downloading' : 'Download'}</List.Header>
+                        <List.Content>{replicationMessage}</List.Content>
+                    </List.Content>
+                </List.Item>
+                <List.Item>
+                    <List.Icon name='edit' size="large" verticalAlign="middle"/>
+                    <List.Content>
+                        <List.Header>Write Access</List.Header>
+                        <List.Content>{writeable}</List.Content>
+                    </List.Content>
+                </List.Item>
+                <Divider/>
                 <List.Item>
                     <List.Icon name='file text outline' size="large" verticalAlign="middle"/>
                     <List.Content>
                         <List.Header>Posts</List.Header>
                         <List.Content>{Object.values(posts || {}).length}</List.Content>
-                    </List.Content>
-                </List.Item>
-                <List.Item>
-                    <List.Icon color={replicating ? 'green' : null} name='wifi' size="large" verticalAlign="middle"/>
-                    <List.Content>
-                        <List.Header>Replication</List.Header>
-                        <List.Content>{replicating ? 'Receiving Content...' : 'Idle'}</List.Content>
                     </List.Content>
                 </List.Item>
                 <List.Item>
@@ -61,13 +87,13 @@ export default function Board({ address, posts, metadata, replicating }) {
                 </List.Item>
             </List>
             <div className='ui three buttons basic'>
-                <Button>
+                <Button as={Link} to={'/'}>
                     <Icon name='left arrow'/> Boards
                 </Button>
-                <Button>
+                <Button disabled={!writeable}>
                     <Icon name='pencil'/> Edit
                 </Button>
-                <Button as={Link} to={shortenAddress(address)+'/p/new'}>
+                <Button disabled={!writeable} as={Link} to={shortenAddress(address)+'/p/new'}>
                     <Icon name='plus'/> New Post
                 </Button>
             </div>

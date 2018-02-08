@@ -3,9 +3,11 @@ import { connect } from 'react-redux'
 import BoardComponent from '../components/Board'
 import { getBoardAddress } from '../utils/orbitdb'
 
-function Board({ location, match, boards }) {
+function Board({ stats, location, match, boards }) {
     const { hash, name } = match.params
-    return <BoardComponent {...boards[getBoardAddress(hash, name)]} />
+    const address = getBoardAddress(hash, name)
+    const boardStats = stats.dbs[address] || {}
+    return <BoardComponent stats={boardStats} {...boards[address]} />
 }
 
 function mapStateToProps(state){
