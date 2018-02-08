@@ -7,8 +7,11 @@ export default function Boards({ stats, boards, createBoard }) {
     return <Grid container divided colums={2}>
         <Grid.Column width={8}>
             <Header size='large' style={{marginTop:'.5em'}}>
-                <Header.Content>IPFS Boards</Header.Content>
-                <Header.Subheader>Experimental Build</Header.Subheader>
+                <Icon name="cube" color="blue" circular verticalAlign="middle" floated="right"/> 
+                <Header.Content>
+                    <Header.Content>IPFS Boards</Header.Content>
+                    <Header.Subheader>Experimental Build</Header.Subheader>
+                </Header.Content>
             </Header>
             <Divider />
             <List relaxed>
@@ -48,12 +51,15 @@ export default function Boards({ stats, boards, createBoard }) {
                     </List.Content>
                 </List.Item>
             </List>
-            <div className="ui two buttons">
+            <div className="ui three buttons">
                 <Button as='a' href="https://github.com/fazo96/ipfs-boards" target="__blank" >
                     <Icon name="github"/> GitHub
                 </Button>
                 <Button as={Link} to={'/b/new'}>
-                    Open or Create Board
+                    <Icon name="plus"/> Add Board
+                </Button>
+                <Button as='a' href="https://github.com/fazo96/ipfs-boards/issues/new" target="__blank">
+                    <Icon name="comment"/> Leave Feedback
                 </Button>
             </div>
         </Grid.Column>
