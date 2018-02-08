@@ -6,15 +6,17 @@ import { getBoardAddress } from '../utils/orbitdb';
 
 class PostEditor extends Component {
     render() {
-        const { post, addPost, match } = this.props
+        const { post, addPost, match, boards } = this.props
         const address = getBoardAddress(match.params.hash, match.params.name)
-        return <PostForm post={post} onSave={p => addPost(address, p)} />
+        const board = boards[address]
+        return <PostForm post={post} board={board} onSave={p => addPost(address, p)} />
     }
 }
 
 function mapStateToProps(state){
     return {
-        post: state.postEditor.post
+        post: state.postEditor.post,
+        boards: state.boards.boards
     }
 }
 

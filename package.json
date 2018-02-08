@@ -22,6 +22,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "prebuild": "cp webpack.config.prod.js node_modules/react-scripts/config",
+    "postbuild": "npx uglify-es build/static/js/main.*.js -o build/static/js/$(ls build/static/js | head -n 1)",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },

@@ -16,7 +16,9 @@ export function* updateBoard({ address }){
         type: UPDATE_BOARD,
         address,
         posts: db.posts,
-        metadata: db.metadata
+        metadata: db.metadata,
+        syncRequestsReceived: db._stats.syncRequestsReceived,
+        opLogLength: db._oplog.length
     }) 
 }
 

@@ -1,3 +1,5 @@
+import IPFS from 'ipfs'
+import OrbitDB from 'orbit-db'
 import BoardStore from 'orbit-db-discussion-board'
 import multihashes from 'multihashes'
 import { getBoardIdFromAddress } from '../utils/orbitdb'
@@ -13,7 +15,6 @@ export function isValidID(id) {
 
 export async function open(address, metadata) {
   if (!window.ipfs) {
-    const IPFS = await import('ipfs')
     window.ipfs = new IPFS({
       repo: 'ipfs-v6-boards-v0',
       EXPERIMENTAL: {
@@ -34,13 +35,13 @@ export async function open(address, metadata) {
     })
   }
   if (!window.orbitDb) {
-    const OrbitDB = await import('orbit-db')
     OrbitDB.addDatabaseType(BoardStore.type, BoardStore)
     window.orbitDb = new OrbitDB(window.ipfs)
   }
   const options = {
     type: BoardStore.type,
-    create: true
+    create: true,
+    write: ['*']
   }
   try {
     const db = await window.orbitDb.open(address, options)
@@ -60,6 +61,7 @@ export function connectDb(db, dispatch) {
   db.events.on('write', (dbname, hash, entry) => {
     dispatch({
         type: 'ORBITDB_WRITE',
+        time: Date.now(),
         address: db.address.toString(),
         hash,
         entry
@@ -68,6 +70,7 @@ export function connectDb(db, dispatch) {
   db.events.on('replicated', address => {
     dispatch({
         type: 'ORBITDB_REPLICATED',
+        time: Date.now(),
         address: db.address.toString()
     })
   })
@@ -78,30 +81,39 @@ export function connectDb(db, dispatch) {
         hash,
         entry,
         progress,
-        have
+        have,
+        time: Date.now(),
+        replicationInfo: {
+          progress: db._replicationInfo.progress,
+          max: db._replicationInfo.max
+        }
     })
   })
   db.events.on('replicate', address => {
     dispatch({
         type: 'ORBITDB_REPLICATE',
+        time: Date.now(),
         address: db.address.toString()
     })
   })
   db.events.on('close', address => {
     dispatch({
         type: 'ORBITDB_CLOSE',
+        time: Date.now(),
         address: db.address.toString()
     })
   })
   db.events.on('load', address => {
     dispatch({
         type: 'ORBITDB_LOAD',
+        time: Date.now(),
         address: db.address.toString()
     })
   })
   db.events.on('load.progress', (address, hash, entry, progress, total) => {
     dispatch({
         type: 'ORBITDB_LOAD_PROGRESS',
+        time: Date.now(),
         address: db.address.toString(),
         hash,
         entry,
