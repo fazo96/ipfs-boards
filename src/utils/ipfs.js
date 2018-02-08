@@ -37,9 +37,9 @@ export async function getStats() {
                 },
                 peers: []
             }
-            const subscription = orbitDb._pubsub._subscriptions
+            const subscription = orbitDb._pubsub._subscriptions[db.address]
             if (subscription && subscription.room) {
-                dbInfo.peers = subscription.room._peers
+                dbInfo.peers = [...(subscription.room._peers || [])]
             }
             dbs[db.address] = dbInfo
         }) 
