@@ -90,7 +90,7 @@ export default function Board({ address, posts, metadata, replicating, stats, re
                 <Button as={Link} to={'/'}>
                     <Icon name='left arrow'/> Boards
                 </Button>
-                <Button disabled={!writeable}>
+                <Button disabled={!writeable} as={Link} to={shortenAddress(address)+'/edit'}>
                     <Icon name='pencil'/> Edit
                 </Button>
                 <Button disabled={!writeable} as={Link} to={shortenAddress(address)+'/p/new'}>

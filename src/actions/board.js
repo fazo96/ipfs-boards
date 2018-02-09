@@ -1,7 +1,7 @@
 import {
     OPEN_BOARD,
     OPENED_BOARD,
-    BOARD_ERROR
+    UPDATE_BOARD_METADATA
 } from './actionTypes'
 
 export function openBoard(board) {
@@ -18,9 +18,10 @@ export function createdBoard(board) {
     }
 }
 
-export function boardError(error) {
+export function updateBoardMetadata(address, metadata) {
     return {
-        type: BOARD_ERROR,
-        error
+        type: UPDATE_BOARD_METADATA,
+        address,
+        metadata 
     }
 }

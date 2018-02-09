@@ -1,8 +1,8 @@
-import { put, call, fork, take } from 'redux-saga/effects'
+import { put, call, fork, take, apply } from 'redux-saga/effects'
 import { eventChannel } from 'redux-saga'
 import { push } from 'react-router-redux'
 import { open, connectDb } from '../orbitdb'
-import { createdBoard, boardError } from '../actions/board'
+import { createdBoard } from '../actions/board'
 import { shortenAddress } from '../utils/orbitdb'
 import { UPDATE_BOARD } from '../actions/actionTypes'
 
@@ -16,10 +16,18 @@ export function* updateBoard({ address }){
         type: UPDATE_BOARD,
         address,
         posts: db.posts,
-        metadata: db.metadata,
-        syncRequestsReceived: db._stats.syncRequestsReceived,
-        opLogLength: db._oplog.length
+        metadata: Object.assign({}, db._index._index.metadata) // TODO: fix in lib and use db.metadata
     }) 
+}
+
+export function* updateBoardMetadata({ address, metadata }){
+    const db = window.dbs[address]
+    if (db) {
+        yield apply(db, db.updateMetadata, [metadata])
+        yield goToBoard({ board: { address } });
+    } else {
+        yield put({ type: 'ERROR', error: address + ' not found' })
+    }
 }
 
 export function* openBoard({ board }) {
@@ -28,13 +36,13 @@ export function* openBoard({ board }) {
         const metadata = board.title ? { title: board.title } : null
         db = yield call(open, board.address, metadata)
     } catch (error) {
-        yield put(boardError(error))
+        yield put({ type: 'ERROR', error })
     }
     if (db) {
         const address = db.address.toString()
         const dbInfo = { address }
         dbInfo.posts = db.posts
-        dbInfo.metadata = db.metadata
+        dbInfo.metadata = Object.assign({}, db._index._index.metadata) // TODO: fix in lib and use db.metadata
         dbInfo.name = db.dbname
         try {
             const channel = yield call(createDbEventChannel, db)

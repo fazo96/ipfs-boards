@@ -3,11 +3,11 @@ import { List, Button, Card } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { shortenAddress } from '../utils/orbitdb'
 
-export default function BoardsItem({ address, title, name }) {
+export default function BoardsItem({ address, metadata, name }) {
     return <Card fluid>
         <Card.Content>
             <Card.Header>
-                { title || 'Unnamed board' }
+                { metadata.title || 'Unnamed board' }
             </Card.Header>
             <Card.Meta>Board</Card.Meta>
         </Card.Content>

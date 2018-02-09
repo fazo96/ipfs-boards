@@ -12,7 +12,7 @@ export default function(WrappedComponent) {
                     pubKey: '?',
                     dbs: {}
                 },
-                interval: null
+                timeout: null
             }
         }
 
@@ -23,10 +23,9 @@ export default function(WrappedComponent) {
         }
 
         refreshDelayed() {
-            const timeout = setTimeout(() => {
+            this.timeout = setTimeout(() => {
                 this.refresh()
             }, 2000)
-            this.setState({ timeout })
         }
         
         componentDidMount() {
@@ -34,7 +33,7 @@ export default function(WrappedComponent) {
         }
 
         componentWillUnmount() {
-            if (this.state.interval) clearInterval(this.state.interval)
+            if (this.timeout) clearTimeout(this.timeout)
         }
 
         render() {

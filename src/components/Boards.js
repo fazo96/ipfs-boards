@@ -7,7 +7,7 @@ export default function Boards({ stats, boards, createBoard }) {
     return <Grid container divided colums={2}>
         <Grid.Column width={8}>
             <Header size='large' style={{marginTop:'.5em'}}>
-                <Icon name="cube" color="blue" circular verticalAlign="middle" floated="right"/> 
+                <Icon name="cube" color="blue" circular/> 
                 <Header.Content>
                     <Header.Content>IPFS Boards</Header.Content>
                     <Header.Subheader>Experimental Build</Header.Subheader>
