@@ -45,4 +45,4 @@ Clone this repo, then run
 ## Old Version
 
 You're looking at the new implementation of Boards. If you want to check out the
-old one [follow this link](https://github.com/fazo96/ipfs-boards)
+old one [follow this link](https://github.com/fazo96/ipfs-boards/tree/legacy)
