@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Container, Card, Form, Button } from 'semantic-ui-react'
+import { Icon, Container, Card, Form, Button } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 
 export default class OpenBoardForm extends Component {
     constructor(props){
@@ -38,7 +39,14 @@ export default class OpenBoardForm extends Component {
                                 onChange={this.updateAddress.bind(this)}
                             />
                         </Form.Field>
-                        <Button fluid onClick={() => openBoard({ address })}>Open</Button>
+                        <div className="ui two buttons">
+                            <Button as={Link} to={'/'}>
+                                <Icon name="arrow left"/> Back
+                            </Button>
+                            <Button type="submit" onClick={() => openBoard({ address })}>
+                                <Icon name="plus"/> Open
+                            </Button>
+                        </div>
                     </Form>
                 </Card.Content>
             </Card>

@@ -1,16 +1,19 @@
 import React, { Component } from 'react'
 import { Icon, Container, Card, Form, Button } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 
 export default class BoardEditorForm extends Component {
     constructor(props){
         super(props)
         this.state = {
-            title: props.title || ''
+            title: props.title || '',
+            website: props.website || '',
+            email: props.email || ''
         }
     }
 
     render() {
-        const { title } = this.state
+        const { title, website, email } = this.state
         const { address, updateBoardMetadata } = this.props
         return <Container>
             <Card fluid centered style={{marginTop:'5em',maxWidth:'40em'}}>
@@ -33,9 +36,31 @@ export default class BoardEditorForm extends Component {
                                 onChange={this.updateTitle.bind(this)}
                             />
                         </Form.Field>
-                        <Button fluid onClick={() => updateBoardMetadata(address, this.state)}>
-                            <Icon name="save"/> Save
-                        </Button>
+                        <Form.Group fluid widths="equal">
+                            <Form.Field>
+                                <label>Website</label>
+                                <input
+                                    value={website}
+                                    onChange={this.updateWebsite.bind(this)}
+                                />
+                            </Form.Field>
+                            <Form.Field>
+                                <label>Email</label>
+                                <input
+                                    value={email}
+                                    type="email"
+                                    onChange={this.updateEmail.bind(this)}
+                                />
+                            </Form.Field>
+                        </Form.Group>
+                        <div className="ui two buttons">
+                            <Button as={Link} to={'/'}>
+                                <Icon name="arrow left"/> Back
+                            </Button>
+                            <Button type="submit" onClick={() => updateBoardMetadata(address, this.state)}>
+                                <Icon name="save"/> Save
+                            </Button>
+                        </div>
                     </Form>
                 </Card.Content>
             </Card>
@@ -45,5 +70,15 @@ export default class BoardEditorForm extends Component {
     updateTitle(event) {
         const title = event.target.value
         this.setState({ title })
+    }
+
+    updateWebsite(event) {
+        const website = event.target.value
+        this.setState({ website })
+    }
+
+    updateEmail(event) {
+        const email = event.target.value
+        this.setState({ email })
     }
 }

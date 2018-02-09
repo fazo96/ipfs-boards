@@ -6,7 +6,7 @@ import { shortenAddress } from '../utils/orbitdb';
 import moment from 'moment'
 
 export default function Board({ address, posts, metadata, replicating, stats, replicationInfo, lastReplicated }) {
-    const { email, website, title } = metadata || {}
+    const { email, website, title, description } = metadata || {}
     const peerCount = (stats.peers || []).length
     const online = peerCount > 0
     const writeable = stats.access ? (stats.access.writeable ? 'Yes' : 'No') : '?'
@@ -24,6 +24,7 @@ export default function Board({ address, posts, metadata, replicating, stats, re
                 <Header.Content>{title || 'Unnamed Board'}</Header.Content>
                 <Header.Subheader>Board</Header.Subheader>
             </Header>
+            { description ? <p>{description}</p> : null }
             <Divider />
             <List relaxed>
                 <List.Item>
@@ -75,7 +76,7 @@ export default function Board({ address, posts, metadata, replicating, stats, re
                     <List.Icon name='globe' size="large" verticalAlign="middle"/>
                     <List.Content>
                         <List.Header>Website</List.Header>
-                        <List.Content>{website ? <a href={website}>{website}</a> : 'N/A'}</List.Content>
+                        <List.Content>{website ? <a href={website} target="__blank">{website}</a> : 'N/A'}</List.Content>
                     </List.Content>
                 </List.Item>
                 <List.Item>

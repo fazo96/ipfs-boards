@@ -13,14 +13,13 @@ function BoardEditor({ boards, boardEditor, match, updateBoardMetadata }) {
         board={board}
         address={address}
         updateBoardMetadata={updateBoardMetadata}
-        {...boardEditor}
+        {...board.metadata}
     />
 }
 
 function mapStateToProps(state){
     return {
-        boards: state.boards.boards,
-        boardEditor: state.boardEditor
+        boards: state.boards.boards
     }
 }
 
