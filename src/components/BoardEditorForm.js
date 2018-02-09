@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Icon, Container, Card, Form, Button } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
+import { shortenAddress } from '../utils/orbitdb';
 
 export default class BoardEditorForm extends Component {
     constructor(props){
@@ -54,7 +55,7 @@ export default class BoardEditorForm extends Component {
                             </Form.Field>
                         </Form.Group>
                         <div className="ui two buttons">
-                            <Button as={Link} to={'/'}>
+                            <Button as={Link} to={shortenAddress(address)}>
                                 <Icon name="arrow left"/> Back
                             </Button>
                             <Button type="submit" onClick={() => updateBoardMetadata(address, this.state)}>
