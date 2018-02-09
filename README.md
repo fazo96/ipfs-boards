@@ -17,16 +17,18 @@ and/or replicated between the users
 The project is in prototype stage and works thanks to the [IPFS](https://ipfs.io)
 distributed file system.
 
-You're looking at the new implementation of Boards. If you want to check out the
-old one [follow this link](https://github.com/fazo96/ipfs-boards)
-
 The first iteration focuses on creating boards, posting content and commenting.
 Moderation tools, encryption, friends lists, private messages, real time chat and
 other features will be attempted in the future
 
 ## Try it out
 
-There is no public build yet, check out the next section
+Super early build hosted on IPFS:
+
+https://ipfs.io/ipfs/QmYT9EzvQY8zwtxQxUhPcphSGR4XtTRkT4MnXmQKPFamQ7
+
+This allows you to create boards and posts. There is no moderation
+or commenting yet and a lot of things are super wonky
 
 ## Working on the code
 
@@ -40,3 +42,7 @@ Clone this repo, then run
 - `yarn start` to start a development server
 - `yarn run build` to create a production build
 
+## Old Version
+
+You're looking at the new implementation of Boards. If you want to check out the
+old one [follow this link](https://github.com/fazo96/ipfs-boards)
