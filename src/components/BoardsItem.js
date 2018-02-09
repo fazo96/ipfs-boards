@@ -1,9 +1,9 @@
 import React from 'react'
-import { List, Button, Card } from 'semantic-ui-react'
+import { Icon, List, Button, Card } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { shortenAddress } from '../utils/orbitdb'
 
-export default function BoardsItem({ address, metadata, name }) {
+export default function BoardsItem({ address, metadata, name, closeBoard }) {
     return <Card fluid>
         <Card.Content>
             <Card.Header>
@@ -29,8 +29,15 @@ export default function BoardsItem({ address, metadata, name }) {
                 </List.Item>
             </List>
         </Card.Content>
-        <Card.Content extra>
-            <Button as={Link} to={shortenAddress(address)} basic fluid>View</Button>
+        <Card.Content>
+            <div className="ui two buttons">
+                <Button onClick={() => closeBoard(address)} basic>
+                    <Icon name="close"/> Close
+                </Button>
+                <Button as={Link} to={shortenAddress(address)} basic>
+                    <Icon name="list"/> View
+                </Button>
+            </div>
         </Card.Content>
     </Card>
 }

@@ -3,11 +3,14 @@ import { eventChannel } from 'redux-saga'
 import { push } from 'react-router-redux'
 import { open, connectDb } from '../orbitdb'
 import { createdBoard } from '../actions/board'
-import { shortenAddress } from '../utils/orbitdb'
+import { shortenAddress, closeBoard as closeOrbitDBBoard } from '../utils/orbitdb'
 import { UPDATE_BOARD } from '../actions/actionTypes'
+import { saveSaga } from './persistence'
 
 export function* goToBoard({ board }){
-    yield put(push(shortenAddress(board.address))) 
+    if (board.redirect) {
+        yield put(push(shortenAddress(board.address))) 
+    }
 }
 
 export function* updateBoard({ address }){
@@ -18,6 +21,11 @@ export function* updateBoard({ address }){
         posts: db.posts,
         metadata: Object.assign({}, db._index._index.metadata) // TODO: fix in lib and use db.metadata
     }) 
+}
+
+export function* closeBoard({ address }){
+    yield call(closeOrbitDBBoard, address)
+    yield saveSaga()
 }
 
 export function* updateBoardMetadata({ address, metadata }){
@@ -47,7 +55,7 @@ export function* openBoard({ board }) {
         try {
             const channel = yield call(createDbEventChannel, db)
             yield fork(watchDb, channel)
-            yield put(createdBoard(Object.assign({}, board, dbInfo)))
+            yield put(createdBoard(Object.assign({ redirect: !!board.redirect }, board, dbInfo)))
         } catch (error) {
             yield put({ type: 'ERROR', error })
         }

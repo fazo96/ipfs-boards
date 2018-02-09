@@ -3,7 +3,7 @@ import { List, Icon, Segment, Divider, Grid, Header, Button, Card } from 'semant
 import { Link } from 'react-router-dom'
 import BoardsItem from './BoardsItem'
 
-export default function Boards({ stats, boards, createBoard }) {
+export default function Boards({ stats, boards, createBoard, closeBoard }) {
     return <Grid container divided colums={2}>
         <Grid.Column width={8}>
             <Header size='large' style={{marginTop:'.5em'}}>
@@ -65,7 +65,7 @@ export default function Boards({ stats, boards, createBoard }) {
         </Grid.Column>
         <Grid.Column width={8} style={{paddingTop:'3em'}}>
             <Card.Group className="centered">
-                {Object.values(boards).map(board => <BoardsItem key={board.address} {...board} />)}
+                {Object.values(boards).map(board => <BoardsItem key={board.address} closeBoard={closeBoard} {...board} />)}
                 {Object.keys(boards).length === 0 ? <Segment>No boards opened</Segment> : null}
             </Card.Group>
         </Grid.Column>

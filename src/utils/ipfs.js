@@ -17,7 +17,7 @@ export async function getStats() {
     const orbitDb = window.orbitDb
     const dbs = {}
     const stats = {}
-    if (ipfs) {
+    if (ipfs && ipfs.isOnline()) {
         stats.ipfsLoaded = true
         const peers = await ipfs.swarm.peers()
         const id = await ipfs.id()
@@ -26,7 +26,7 @@ export async function getStats() {
     } else {
         stats.ipfsLoaded = false
     }
-    if (orbitDb) {
+    if (stats.ipfsLoaded && orbitDb) {
         stats.orbitDbLoaded = true
         stats.pubKey = await orbitDb.key.getPublic('hex')
         Object.values(window.dbs || {}).forEach(db => {

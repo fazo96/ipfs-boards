@@ -4,6 +4,7 @@ export const UPDATE_BOARD_METADATA = 'UPDATE_BOARD_METADATA'
 
 export const OPEN_BOARD = 'OPEN_BOARD'
 export const OPENED_BOARD = 'OPENED_BOARD'
+export const CLOSE_BOARD = 'CLOSE_BOARD'
 
 export const UPDATE_BOARD = 'UPDATE_BOARD'
 

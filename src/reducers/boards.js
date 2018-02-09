@@ -1,5 +1,6 @@
 import {
     OPENED_BOARD,
+    CLOSE_BOARD,
     UPDATE_BOARD,
     ORBITDB_REPLICATE_PROGRESS,
     ORBITDB_REPLICATED,
@@ -18,12 +19,18 @@ function updateBoard(existingBoards, address, value) {
     })
 }
 
+function deleteBoard(existingBoards, address) {
+    const boards = Object.assign({}, existingBoards)
+    delete boards[address]
+    return boards
+}
+
 export default function BoardsReducer(state = getInitialState(), action) {
     let address
     switch (action.type) {
         case OPENED_BOARD:
             address = action.board.address
-            return Object.assign({}, state, { boards: updateBoard(state.boards, address, action.board) })
+            return Object.assign({}, state, { boards: updateBoard(state.boards, address, Object.assign({}, action.board, { open: true })) })
         case UPDATE_BOARD:
             address = action.address
             let { posts, metadata } = action
@@ -45,6 +52,11 @@ export default function BoardsReducer(state = getInitialState(), action) {
                 replicating: false,
                 lastReplicated: action.time
             })})
+        case CLOSE_BOARD:
+            address = action.address
+            return Object.assign({}, state, {
+                boards: deleteBoard(state.boards, address)
+            })
         default:
             return state;
     }

@@ -37,7 +37,7 @@ export default class BoardEditorForm extends Component {
                                 onChange={this.updateTitle.bind(this)}
                             />
                         </Form.Field>
-                        <Form.Group fluid widths="equal">
+                        <Form.Group widths="equal">
                             <Form.Field>
                                 <label>Website</label>
                                 <input

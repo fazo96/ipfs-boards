@@ -12,7 +12,7 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch){
     return {
-        openBoard: address => dispatch(openBoard({ address }))
+        openBoard: address => dispatch(openBoard({ address, redirect: false }))
     }
 }
 

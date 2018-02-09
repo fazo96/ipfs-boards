@@ -43,7 +43,7 @@ export default class OpenBoardForm extends Component {
                             <Button as={Link} to={'/'}>
                                 <Icon name="arrow left"/> Back
                             </Button>
-                            <Button type="submit" onClick={() => openBoard({ address })}>
+                            <Button type="submit" onClick={() => openBoard({ address, redirect: true })}>
                                 <Icon name="plus"/> Open
                             </Button>
                         </div>
