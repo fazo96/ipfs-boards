@@ -21,6 +21,11 @@ The first iteration focuses on creating boards, posting content and commenting.
 Moderation tools, encryption, friends lists, private messages, real time chat and
 other features will be attempted in the future
 
+### Under the hood
+
+This project is a web UI, [orbit-db-discussion-board](https://github.com/fazo96/orbit-db-discussion-board)
+is the underlying library
+
 ## Try it out
 
 Super early build hosted on IPFS:
