@@ -4,8 +4,24 @@ import { goToBoard } from './boards';
 
 export function* addPost({ address, post }) {
     const db = window.dbs[address]
-    const { title, content } = post
-    const multihash = yield call(ipfsPut, content)
-    yield apply(db, db.addPost, [title, multihash])
+    const { title, text } = post
+    yield apply(db, db.addPost, { title, text })
     yield goToBoard({ board: { address } });
+    // TODO: goto post
+}
+
+export function* editPost({ address, postId, post }) {
+    const db = window.dbs[address]
+    const { title, text } = post
+    yield apply(db, db.updatePost, [postId, { title, text }])
+    yield goToBoard({ board: { address } });
+    // TODO: goto post
+}
+
+export function* editPost({ address, postId, post }) {
+    const db = window.dbs[address]
+    const { title, text } = post
+    yield apply(db, db.updatePost, [postId, { title, text }])
+    yield goToBoard({ board: { address } });
+    // TODO: goto post
 }
