@@ -60,7 +60,7 @@ export default class PostForm extends Component {
                         <Button as={Link} to={shortenAddress(address)}>
                             <Icon name="chevron left"/> Board
                         </Button>
-                        <Button type='submit' onClick={() => onSave({ title, content })}>
+                        <Button type='submit' onClick={() => onSave({ title, text: content })}>
                             <Icon name="save"/> Submit
                         </Button>
                     </Form>

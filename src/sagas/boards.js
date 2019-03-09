@@ -1,4 +1,4 @@
-import { put, call, fork, take, apply } from 'redux-saga/effects'
+import { put, call, fork, take } from 'redux-saga/effects'
 import { eventChannel } from 'redux-saga'
 import { push } from 'react-router-redux'
 import { open, connectDb } from '../orbitdb'
@@ -31,7 +31,7 @@ export function* closeBoard({ address }){
 export function* updateBoardMetadata({ address, metadata }){
     const db = window.dbs[address]
     if (db) {
-        yield apply(db, db.updateMetadata, [metadata])
+        yield call([db, db.updateMetadata], [metadata])
         yield goToBoard({ board: { address } });
     } else {
         yield put({ type: 'ERROR', error: address + ' not found' })

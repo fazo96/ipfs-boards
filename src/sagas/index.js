@@ -9,7 +9,6 @@ import {
     UPDATE_BOARD_METADATA
 } from '../actions/actionTypes'
 import { openBoard, updateBoard, goToBoard, updateBoardMetadata, closeBoard } from './boards'
-import { openBoard as openBoardAction } from '../actions/board'
 import { addPost } from './posts'
 import { openPreviousBoards, saveSaga } from './persistence'
 

@@ -17,20 +17,11 @@ export async function start() {
     window.ipfs = new IPFS({
       repo: 'ipfs-v6-boards-v0',
       EXPERIMENTAL: {
-          pubsub: true
-      },
-      config: {
-        Addresses: {
-          Swarm: [
-            '/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star',
-            '/dns4/ws-star-signal-1.servep2p.com/tcp/443/wss/p2p-websocket-star',
-            '/dns4/ws-star-signal-2.servep2p.com/tcp/443/wss/p2p-websocket-star'
-          ]
-        }
+        pubsub: true
       }
     });
-    await new Promise(fullfill => {
-      window.ipfs.on('ready', () => fullfill())
+    await new Promise(resolve => {
+      window.ipfs.on('ready', () => resolve())
     })
   }
   if (!window.orbitDb) {
@@ -40,6 +31,7 @@ export async function start() {
 }
 
 export async function open(address, metadata) {
+  if (window.dbs && window.dbs[address]) return window.dbs[address]
   await start()
   const options = {
     type: BoardStore.type,
