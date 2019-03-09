@@ -43,9 +43,9 @@ The UI is being implemented using semantic-ui-react
 
 Clone this repo, then run
 
-- `yarn` to install dependencies
-- `yarn start` to start a development server
-- `yarn run build` to create a production build
+- `npm install` to install dependencies
+- `npm start` to start a development server
+- `npm run build` to create a production build
 
 ## Old Version
 

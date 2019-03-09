@@ -6,7 +6,7 @@ import configureStore, { history } from './store/configureStore'
 import App from './components/App'
 import registerServiceWorker from './registerServiceWorker'
 import { Provider } from 'react-redux'
-import { ConnectedRouter } from 'react-router-redux'
+import { ConnectedRouter } from 'connected-react-router'
 import { start } from './orbitdb'
 
 const store = configureStore();

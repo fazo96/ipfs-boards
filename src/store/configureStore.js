@@ -3,22 +3,20 @@ import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
 import createSagaMiddleware from 'redux-saga';
 import saga from '../sagas';
 import createHistory from 'history/createHashHistory';
-// 'routerMiddleware': the new way of storing route changes with redux middleware since rrV4.
-import { routerMiddleware } from 'react-router-redux';
-import rootReducer from '../reducers';
+import { routerMiddleware } from 'connected-react-router';
+import createRootReducer from '../reducers';
 
 const sagaMiddleware = createSagaMiddleware();
 
 export const history = createHistory();
 
 function configureStoreProd(initialState) {
-  const reactRouterMiddleware = routerMiddleware(history);
   const middlewares = [
-    reactRouterMiddleware,
+    routerMiddleware(history),
     sagaMiddleware,
   ];
 
-  const store = createStore(rootReducer, initialState, compose(
+  const store = createStore(createRootReducer(history), initialState, compose(
     applyMiddleware(...middlewares)
     )
   );
@@ -29,16 +27,15 @@ function configureStoreProd(initialState) {
 }
 
 function configureStoreDev(initialState) {
-  const reactRouterMiddleware = routerMiddleware(history);
   const middlewares = [
     // Redux middleware that spits an error on you when you try to mutate your state either inside a dispatch or between dispatches.
     reduxImmutableStateInvariant(),
-    reactRouterMiddleware,
+    routerMiddleware(history),
     sagaMiddleware,
   ];
 
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; // add support for Redux dev tools
-  const store = createStore(rootReducer, initialState, composeEnhancers(
+  const store = createStore(createRootReducer(history), initialState, composeEnhancers(
     applyMiddleware(...middlewares)
     )
   );

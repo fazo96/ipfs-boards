@@ -17,11 +17,3 @@ export function* editPost({ address, postId, post }) {
     yield goToBoard({ board: { address } });
     // TODO: goto post
 }
-
-export function* editPost({ address, postId, post }) {
-    const db = window.dbs[address]
-    const { title, text } = post
-    yield apply(db, db.updatePost, [postId, { title, text }])
-    yield goToBoard({ board: { address } });
-    // TODO: goto post
-}
