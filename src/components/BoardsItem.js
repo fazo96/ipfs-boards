@@ -50,7 +50,7 @@ export default function BoardsItem({
           {' '}
 Close
         </Button>
-        <Button as={Link} to={shortenAddress(address)}>
+        <Button component={Link} to={shortenAddress(address)}>
           <Assignment />
           {' '}
 View

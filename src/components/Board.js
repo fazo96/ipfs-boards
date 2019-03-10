@@ -48,7 +48,7 @@ export default function Board({
   }
   return (
     <Grid container>
-      <Grid item xs="12" md="6">
+      <Grid item xs={12} md={6}>
         <Card>
           <CardHeader
             title={title || 'Unnamed Board'}
@@ -120,24 +120,24 @@ export default function Board({
           </List>
         </CardContent>
         <CardActions>
-          <Button as={Link} to="/">
+          <Button component={Link} to="/">
             <ArrowLeft />
             {' '}
 Boards
           </Button>
-          <Button disabled={!writeable} as={Link} to={`${shortenAddress(address)}/edit`}>
+          <Button disabled={!writeable} component={Link} to={`${shortenAddress(address)}/edit`}>
             <Edit />
             {' '}
 Edit
           </Button>
-          <Button disabled={!writeable} as={Link} to={`${shortenAddress(address)}/p/new`}>
+          <Button disabled={!writeable} component={Link} to={`${shortenAddress(address)}/p/new`}>
             <Add />
             {' '}
 New Post
           </Button>
         </CardActions>
       </Grid>
-      <Grid xs="12" md="6">
+      <Grid xs={12} md={6}>
         {Object.keys(posts || {}).map(i => <Post key={posts[i].multihash} {...posts[i]} />)}
       </Grid>
     </Grid>

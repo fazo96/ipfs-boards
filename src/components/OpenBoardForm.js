@@ -53,7 +53,7 @@ export default class OpenBoardForm extends Component {
             />
           </CardContent>
           <CardActions>
-            <Button as={Link} to="/">
+            <Button component={Link} to="/">
               <ArrowLeft />
               {' '}
 Back

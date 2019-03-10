@@ -31,7 +31,7 @@ export default function Boards({
 }) {
   return (
     <Grid>
-      <Grid item xs="12" md="8">
+      <Grid item xs={12} md={8}>
         <Card>
           <CardHeader
             avatar={<Avatar><AccountBox /></Avatar>}
@@ -83,7 +83,7 @@ export default function Boards({
               {' '}
 GitHub
             </Button>
-            <Button as={Link} to="/b/new">
+            <Button component={Link} to="/b/new">
               <Add />
               {' '}
 Add Board

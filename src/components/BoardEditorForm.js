@@ -64,7 +64,7 @@ export default class BoardEditorForm extends Component {
           />
         </CardContent>
         <CardActions>
-          <Button as={Link} to={shortenAddress(address)}>
+          <Button component={Link} to={shortenAddress(address)}>
             <ArrowLeft />
             {' '}
 Back

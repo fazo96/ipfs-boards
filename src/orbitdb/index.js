@@ -1,7 +1,7 @@
-import IPFS from 'ipfs';
 import OrbitDB from 'orbit-db';
 import BoardStore from 'orbit-db-discussion-board';
 import multihashes from 'multihashes';
+import { getIPFS } from '../utils/ipfs';
 
 export function isValidID(id) {
   try {
@@ -13,20 +13,10 @@ export function isValidID(id) {
 }
 
 export async function start() {
-  if (!window.ipfs) {
-    window.ipfs = new IPFS({
-      repo: 'ipfs-v6-boards-v0',
-      EXPERIMENTAL: {
-        pubsub: true,
-      },
-    });
-    await new Promise((resolve) => {
-      window.ipfs.on('ready', () => resolve());
-    });
-  }
+  const ipfs = await getIPFS();
   if (!window.orbitDb) {
     OrbitDB.addDatabaseType(BoardStore.type, BoardStore);
-    window.orbitDb = new OrbitDB(window.ipfs);
+    window.orbitDb = new OrbitDB(ipfs);
   }
 }
 

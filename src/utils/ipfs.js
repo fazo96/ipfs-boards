@@ -1,19 +1,50 @@
+export async function createIPFS() {
+  const IPFS = (await import('ipfs')).default;
+  const node = new IPFS({
+    EXPERIMENTAL: {
+      pubsub: true,
+    },
+  });
+  return new Promise(resolve => node.on('ready', () => resolve(node)));
+}
+
+export async function getIPFS() {
+  let ipfs = window.ipfs_enabled || window.ipfs;
+  if (!ipfs) {
+    ipfs = await createIPFS();
+  } else if (typeof ipfs.enable === 'function') {
+    // support window.ipfs from IPFS companion
+    // https://github.com/ipfs-shipyard/ipfs-companion/blob/master/docs/window.ipfs.md
+    try {
+      ipfs = await window.ipfs.enable({
+        commands: ['object', 'files', 'pubsub'],
+      });
+    } catch (error) {
+      ipfs = await createIPFS();
+    }
+  }
+  window.ipfs_enabled = ipfs;
+  return ipfs;
+}
+
 export async function ipfsPut(content) {
+  const ipfs = await getIPFS();
   const obj = {
     content: Buffer.from(content),
     path: '/',
   };
-  const response = await window.ipfs.files.add(obj);
+  const response = await ipfs.files.add(obj);
   return response[0].hash;
 }
 
 export async function readText(multihash) {
-  const buffer = await window.ipfs.object.get(multihash);
+  const ipfs = await getIPFS();
+  const buffer = await ipfs.object.get(multihash);
   return buffer.toString('utf-8');
 }
 
 export async function getStats() {
-  const ipfs = window.ipfs;
+  const ipfs = await getIPFS();
   const orbitDb = window.orbitDb;
   const dbs = {};
   const stats = {};

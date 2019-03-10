@@ -71,7 +71,7 @@ export default class PostForm extends Component {
             />
           </CardContent>
           <CardActions>
-            <Button as={Link} to={shortenAddress(address)}>
+            <Button component={Link} to={shortenAddress(address)}>
               <ArrowLeft />
               {' '}
 Board
