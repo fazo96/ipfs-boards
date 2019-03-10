@@ -39,7 +39,7 @@ or commenting yet and a lot of things are super wonky
 
 This is a react project using redux, react-router-redux and redux-saga
 
-The UI is being implemented using semantic-ui-react
+The UI is being implemented using material-ui
 
 Clone this repo, then run
 
