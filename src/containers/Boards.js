@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { push } from 'react-router-redux'
+import { push } from 'connected-react-router'
 import BoardsComponent from '../components/Boards'
 import WithStats from './WithStats'
 import { closeBoard } from '../actions/board'

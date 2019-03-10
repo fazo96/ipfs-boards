@@ -1,40 +1,47 @@
-import React from 'react'
-import { List, Card } from 'semantic-ui-react'
+import React from 'react';
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+} from '@material-ui/core';
+import { Comment, Link as LinkIcon } from '@material-ui/icons';
 
 export default function Post({ title, multihash, pubKey }) {
-    return <Card fluid>
-        <Card.Content>
-            <Card.Header>
-                {title}
-            </Card.Header>
-            <Card.Meta>Post</Card.Meta>
-        </Card.Content>
-        <Card.Content style={{wordBreak:'break-all'}}>
-            <List>
-                <List.Item>
-                    <List.Icon name="key" verticalAlign="middle"/>
-                    <List.Content>
-                        <List.Header>Signed By</List.Header>
-                        <List.Content>{pubKey || 'Unknown'}</List.Content>
-                    </List.Content>
-                </List.Item>
-                <List.Item>
-                    <List.Icon name="comments" verticalAlign="middle"/>
-                    <List.Content>
-                        <List.Header>Comments</List.Header>
-                        <List.Content>Not Supported Yet</List.Content>
-                    </List.Content>
-                </List.Item>
-                <List.Item>
-                    <List.Icon name="chain" verticalAlign="middle"/>
-                    <List.Content>
-                        <List.Header>Content</List.Header>
-                        <List.Content>
-                            <a href={'//ipfs.io/ipfs/'+multihash}>{multihash}</a>
-                        </List.Content>
-                    </List.Content>
-                </List.Item>
-            </List>
-        </Card.Content>
+  return (
+    <Card>
+      <CardHeader
+        title={title}
+        subheader="Post"
+      />
+      <CardContent style={{ wordBreak: 'break-all' }}>
+        <List>
+          <ListItem>
+            <ListItemIcon name="key" verticalAlign="middle" />
+            <ListItemText
+              primary={pubKey || 'Unknown'}
+              secondary="Signed By"
+            />
+          </ListItem>
+          <ListItem>
+            <ListItemIcon><Comment /></ListItemIcon>
+            <ListItemText
+              primary="Not supported yet"
+              secondary="Comments"
+            />
+          </ListItem>
+          <ListItem>
+            <ListItemIcon><LinkIcon /></ListItemIcon>
+            <ListItemText
+              primary={<a href={`//ipfs.io/ipfs/${multihash}`}>{multihash}</a>}
+              secondary="Content"
+            />
+          </ListItem>
+        </List>
+      </CardContent>
     </Card>
+  );
 }

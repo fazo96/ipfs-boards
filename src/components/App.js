@@ -4,7 +4,6 @@ import Boards from '../containers/Boards'
 import OpenBoard from '../containers/OpenBoard'
 import WithBoard from '../containers/WithBoard'
 import BoardPage from '../components/BoardPage'
-import 'semantic-ui-css/semantic.css'
 
 class App extends Component {
   render() {

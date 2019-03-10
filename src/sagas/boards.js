@@ -1,6 +1,6 @@
 import { put, call, fork, take } from 'redux-saga/effects'
 import { eventChannel } from 'redux-saga'
-import { push } from 'react-router-redux'
+import { push } from 'connected-react-router'
 import { open, connectDb } from '../orbitdb'
 import { createdBoard } from '../actions/board'
 import { shortenAddress, closeBoard as closeOrbitDBBoard } from '../utils/orbitdb'

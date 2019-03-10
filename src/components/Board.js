@@ -1,108 +1,145 @@
-import React from 'react'
-import Post from './Post'
-import { Divider, Icon, Grid, Header, List, Button, Card } from 'semantic-ui-react'
-import { Link } from 'react-router-dom'
+import React from 'react';
+import {
+  Grid,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Card,
+  CardHeader,
+  CardContent,
+  Divider,
+  Button,
+  CardActions,
+} from '@material-ui/core';
+import {
+  Add,
+  Link as LinkIcon,
+  Usb,
+  NetworkCell,
+  NetworkCheck,
+  CloudDownload,
+  Edit,
+  Assignment,
+  Mail,
+  ArrowLeft,
+} from '@material-ui/icons';
+import { Link } from 'react-router-dom';
+import moment from 'moment';
 import { shortenAddress } from '../utils/orbitdb';
-import moment from 'moment'
+import Post from './Post';
 
-export default function Board({ address, posts, metadata, replicating, stats, replicationInfo, lastReplicated }) {
-    const { email, website, title, description } = metadata || {}
-    const peerCount = (stats.peers || []).length
-    const online = peerCount > 0
-    const writeable = stats.access ? (stats.access.writeable ? 'Yes' : 'No') : '?'
-    let replicationMessage = lastReplicated ? ('Last Activity at ' + moment(lastReplicated).format('H:mm')) : 'No Activity'
-    if (replicating) {
-        if (replicationInfo && replicationInfo.max !== undefined) {
-            replicationMessage = 'Progress: ' + (replicationInfo.progress || 0) + '/' + replicationInfo.max
-        } else {
-            replicationMessage = 'Initializing Transfer'
-        }
+export default function Board({
+  address, posts, metadata, replicating, stats, replicationInfo, lastReplicated,
+}) {
+  const {
+    email, website, title, description,
+  } = metadata || {};
+  const peerCount = (stats.peers || []).length;
+  const online = peerCount > 0;
+  const writeable = stats.access ? (stats.access.writeable ? 'Yes' : 'No') : '?';
+  let replicationMessage = lastReplicated ? (`Last Activity at ${moment(lastReplicated).format('H:mm')}`) : 'No Activity';
+  if (replicating) {
+    if (replicationInfo && replicationInfo.max !== undefined) {
+      replicationMessage = `Progress: ${replicationInfo.progress || 0}/${replicationInfo.max}`;
+    } else {
+      replicationMessage = 'Initializing Transfer';
     }
-    return <Grid container divided colums={2}>
-        <Grid.Column width={8}>
-            <Header size='large' style={{marginTop:'.5em'}}>
-                <Header.Content>{title || 'Unnamed Board'}</Header.Content>
-                <Header.Subheader>Board</Header.Subheader>
-            </Header>
-            { description ? <p>{description}</p> : null }
+  }
+  return (
+    <Grid container>
+      <Grid item xs="12" md="6">
+        <Card>
+          <CardHeader
+            title={title || 'Unnamed Board'}
+            subheader="Board"
+          />
+        </Card>
+        <CardContent>
+          { description ? <p>{description}</p> : null }
+        </CardContent>
+        <CardContent>
+          <List>
+            <ListItem>
+              <ListItemIcon><LinkIcon /></ListItemIcon>
+              <ListItemText
+                primary={address}
+                secondary="Address"
+              />
+            </ListItem>
+            <ListItem>
+              <ListItemIcon><Usb /></ListItemIcon>
+              <ListItemText
+                primary={`${stats.opLogLength || 0} Entries`}
+                secondary="Size"
+              />
+            </ListItem>
+            <ListItem>
+              <ListItemIcon><NetworkCell /></ListItemIcon>
+              <ListItemText
+                primary={online ? `${peerCount} Connections` : 'No Connections'}
+                secondary={online ? 'Online' : 'Offline'}
+              />
+            </ListItem>
+            <ListItem>
+              <ListItemIcon><CloudDownload /></ListItemIcon>
+              <ListItemText
+                primary={replicationMessage}
+                secondary={replicating ? 'Downloading' : 'Download'}
+              />
+            </ListItem>
+            <ListItem>
+              <ListItemIcon><Edit /></ListItemIcon>
+              <ListItemText
+                primary={writeable}
+                secondary="Write Access"
+              />
+            </ListItem>
             <Divider />
-            <List relaxed>
-                <List.Item>
-                    <List.Icon name='linkify' size="large" verticalAlign="middle"/>
-                    <List.Content>
-                        <List.Header>Address</List.Header>
-                        <List.Content>
-                            {address}
-                        </List.Content>
-                    </List.Content>
-                </List.Item>
-                <List.Item>
-                    <List.Icon name='disk outline' size="large" verticalAlign="middle"/>
-                    <List.Content>
-                        <List.Header>Size</List.Header>
-                        <List.Content>{stats.opLogLength || 0} Entries</List.Content>
-                    </List.Content>
-                </List.Item>
-                <List.Item>
-                    <List.Icon name={online ? 'heart' : 'heartbeat'} size="large" verticalAlign="middle"/>
-                    <List.Content>
-                        <List.Header>{online ? 'Online' : 'Offline'}</List.Header>
-                        <List.Content>{online ? peerCount + ' Connections' : 'No Connections'}</List.Content>
-                    </List.Content>
-                </List.Item>
-                <List.Item>
-                    <List.Icon color={replicating ? 'green' : null} name='feed' size="large" verticalAlign="middle"/>
-                    <List.Content>
-                        <List.Header>{replicating ? 'Downloading' : 'Download'}</List.Header>
-                        <List.Content>{replicationMessage}</List.Content>
-                    </List.Content>
-                </List.Item>
-                <List.Item>
-                    <List.Icon name='edit' size="large" verticalAlign="middle"/>
-                    <List.Content>
-                        <List.Header>Write Access</List.Header>
-                        <List.Content>{writeable}</List.Content>
-                    </List.Content>
-                </List.Item>
-                <Divider/>
-                <List.Item>
-                    <List.Icon name='file text outline' size="large" verticalAlign="middle"/>
-                    <List.Content>
-                        <List.Header>Posts</List.Header>
-                        <List.Content>{Object.values(posts || {}).length}</List.Content>
-                    </List.Content>
-                </List.Item>
-                <List.Item>
-                    <List.Icon name='globe' size="large" verticalAlign="middle"/>
-                    <List.Content>
-                        <List.Header>Website</List.Header>
-                        <List.Content>{website ? <a href={website} target="__blank">{website}</a> : 'N/A'}</List.Content>
-                    </List.Content>
-                </List.Item>
-                <List.Item>
-                    <List.Icon name='mail' size="large" verticalAlign="middle"/>
-                    <List.Content>
-                        <List.Header>Mail</List.Header>
-                        <List.Content>{email ? <a href={'mailto:'+email}>{email}</a> : 'N/A'}</List.Content>
-                    </List.Content>
-                </List.Item>
-            </List>
-            <div className='ui three buttons basic'>
-                <Button as={Link} to={'/'}>
-                    <Icon name='left arrow'/> Boards
-                </Button>
-                <Button disabled={!writeable} as={Link} to={shortenAddress(address)+'/edit'}>
-                    <Icon name='pencil'/> Edit
-                </Button>
-                <Button disabled={!writeable} as={Link} to={shortenAddress(address)+'/p/new'}>
-                    <Icon name='plus'/> New Post
-                </Button>
-            </div>
-        </Grid.Column>
-        <Grid.Column width={8}>
-            <Card.Group className="centered" style={{marginTop:'.5em'}}>
-                {Object.keys(posts || {}).map(i => <Post key={posts[i].multihash} {...posts[i]}/>)}
-            </Card.Group>
-        </Grid.Column>
+            <ListItem>
+              <ListItemIcon><Assignment /></ListItemIcon>
+              <ListItemText
+                primary={Object.values(posts || {}).length}
+                secondary="Posts"
+              />
+            </ListItem>
+            <ListItem>
+              <ListItemIcon><NetworkCheck /></ListItemIcon>
+              <ListItemText
+                primary={website ? <a href={website} target="__blank">{website}</a> : 'N/A'}
+                secondary="Website"
+              />
+            </ListItem>
+            <ListItem>
+              <ListItemIcon><Mail /></ListItemIcon>
+              <ListItemText
+                primary={email ? <a href={`mailto:${email}`}>{email}</a> : 'N/A'}
+                secondary="Email"
+              />
+            </ListItem>
+          </List>
+        </CardContent>
+        <CardActions>
+          <Button as={Link} to="/">
+            <ArrowLeft />
+            {' '}
+Boards
+          </Button>
+          <Button disabled={!writeable} as={Link} to={`${shortenAddress(address)}/edit`}>
+            <Edit />
+            {' '}
+Edit
+          </Button>
+          <Button disabled={!writeable} as={Link} to={`${shortenAddress(address)}/p/new`}>
+            <Add />
+            {' '}
+New Post
+          </Button>
+        </CardActions>
+      </Grid>
+      <Grid xs="12" md="6">
+        {Object.keys(posts || {}).map(i => <Post key={posts[i].multihash} {...posts[i]} />)}
+      </Grid>
     </Grid>
+  );
 }
