@@ -1,9 +1,9 @@
-import {createStore, compose, applyMiddleware} from 'redux';
+import { createStore, compose, applyMiddleware } from 'redux';
 import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
 import createSagaMiddleware from 'redux-saga';
-import saga from '../sagas';
 import createHistory from 'history/createHashHistory';
 import { routerMiddleware } from 'connected-react-router';
+import saga from '../sagas';
 import createRootReducer from '../reducers';
 
 const sagaMiddleware = createSagaMiddleware();
@@ -17,9 +17,8 @@ function configureStoreProd(initialState) {
   ];
 
   const store = createStore(createRootReducer(history), initialState, compose(
-    applyMiddleware(...middlewares)
-    )
-  );
+    applyMiddleware(...middlewares),
+  ));
 
   sagaMiddleware.run(saga);
 
@@ -36,9 +35,8 @@ function configureStoreDev(initialState) {
 
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; // add support for Redux dev tools
   const store = createStore(createRootReducer(history), initialState, composeEnhancers(
-    applyMiddleware(...middlewares)
-    )
-  );
+    applyMiddleware(...middlewares),
+  ));
 
   let sagaTask = sagaMiddleware.run(saga);
 
