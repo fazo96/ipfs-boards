@@ -28,7 +28,7 @@ is the underlying library
 
 ## Try it out
 
-Super early build hosted on IPFS:
+Years old build hosted on IPFS, probably broken by now:
 
 https://ipfs.io/ipfs/QmYT9EzvQY8zwtxQxUhPcphSGR4XtTRkT4MnXmQKPFamQ7
 
@@ -37,15 +37,13 @@ or commenting yet and a lot of things are super wonky
 
 ## Working on the code
 
-This is a react project using redux, react-router-redux and redux-saga
-
-The UI is being implemented using semantic-ui-react
+This is a next.js project, a React framework.
 
 Clone this repo, then run
 
 - `npm install` to install dependencies
-- `npm start` to start a development server
-- `npm run build` to create a production build
+- `npm run dev` to start a development server
+- `npm run build` to create a production build then `npm start` to start the frontend server
 
 ## Old Version
 
