@@ -2,22 +2,18 @@ import React from 'react'
 import { Fab, Card, CardActions, CardHeader, Button } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import ViewIcon from '@material-ui/icons/Visibility'
-import DeleteIcon from '@material-ui/icons/Delete'
 
-const Home = () => {
+const Board = () => {
   return (
     <React.Fragment>
       <Card>
         <CardHeader
-          title="First Board"
-          subheader="Last Activity X time ago"
+          title="First Post"
+          subheader="Last Activity X Time Ago"
         />
         <CardActions>
           <Button variant="contained" color="primary">
             <ViewIcon /> View
-          </Button>
-          <Button variant="contained" color="secondary">
-            <DeleteIcon /> Remove
           </Button>
         </CardActions>
       </Card>
@@ -26,4 +22,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default Board
