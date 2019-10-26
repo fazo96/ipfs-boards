@@ -4,6 +4,9 @@
 # build
 .next/
 
+# data
+orbitdb/
+
 # misc
 .DS_Store
 
