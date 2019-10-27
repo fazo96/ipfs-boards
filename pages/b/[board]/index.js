@@ -1,11 +1,8 @@
 import React from 'react'
-import { Fab, Card, CardActions, CardHeader, Button } from '@material-ui/core'
-import AddIcon from '@material-ui/icons/Add'
-import ViewIcon from '@material-ui/icons/Visibility'
-import { openBoard } from '../../../components/system'
-import Router from 'next/router'
+import { openBoard, refreshInfo } from '../../../components/system'
+import Board from '../../../components/Board'
 
-class Board extends React.PureComponent { 
+class BoardPage extends React.PureComponent { 
   state = { posts: [] }
 
   componentDidMount() {
@@ -14,41 +11,25 @@ class Board extends React.PureComponent {
 
   async refreshPosts() {
     const { boardId } = this.props
-    const board = await openBoard(boardId) 
-    this.setState({ posts: board.posts })
+    if (boardId) {
+      const board = await openBoard(boardId) 
+      this.setState({ posts: board.posts })
+    } else {
+      throw new Error('Missing boardId')
+    }
   }
 
   render() {
     const { boardId } = this.props
     const posts = this.state.posts || this.props.posts
-    return (
-      <React.Fragment>
-        {posts.map(p => <Card key={p.multihash}>
-          <CardHeader
-            title={p.title}
-            subheader="Last Activity X Time Ago"
-          />
-          <CardActions>
-            <Button variant="contained" color="primary" onClick={() => Router.push(`/b/${boardId}/p/${p.multihash}`)}>
-              <ViewIcon /> View
-            </Button>
-          </CardActions>
-        </Card>)}
-        {posts.length === 0 && <Card>
-          <CardHeader
-            title="No Posts Yet"
-            subheader="Why don't you break the ice?"
-          />
-        </Card>}
-        <Fab color="primary" onClick={() => Router.push(`/b/${boardId}/p/new`)}><AddIcon /></Fab>
-      </React.Fragment>
-    )
+    return <Board boardId={boardId} posts={posts} /> 
   }
 }
 
-Board.getInitialProps = async ({ query }) => {
+BoardPage.getInitialProps = async ({ query }) => {
+  await refreshInfo()
   const board = await openBoard(query.board)
   return { posts: await board.posts, boardId: query.board }
 }
 
-export default Board
+export default BoardPage
