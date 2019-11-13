@@ -5,6 +5,8 @@ import { ThemeProvider } from '@material-ui/styles';
 import AppBar from '../components/AppBar'
 import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../components/theme';
+import Container from '../components/Container'
+import { connectIPFSToBackend } from '../components/system';
 
 export default class MyApp extends App {
   componentDidMount() {
@@ -13,6 +15,8 @@ export default class MyApp extends App {
     if (jssStyles) {
       jssStyles.parentNode.removeChild(jssStyles);
     }
+    // Connect IPFS to backend server to improve connectivity
+    connectIPFSToBackend().catch(error => console.log('connectIPFSToBackend failed', error))
   }
 
   render() {
@@ -27,7 +31,9 @@ export default class MyApp extends App {
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
           <AppBar />
-          <Component {...pageProps} />
+          <Container>
+            <Component {...pageProps} />
+          </Container>
         </ThemeProvider>
       </React.Fragment>
     );

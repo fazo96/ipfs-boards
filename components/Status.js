@@ -28,11 +28,12 @@ class Status extends React.PureComponent {
     let statusText = 'Pre-Rendered'
     if (!info.isServer) {
       statusText = 'Offline'
+      if (info.ipfsLoading) statusText = 'Starting IPFS'
       if (info.ipfsReady) {
-        statusText = 'Starting DB'
         Icon = ConnectedIcon
+        statusText = `${info.ipfsPeers.length} Peers`
       }
-      if (info.orbitDbReady) statusText = `${info.ipfsPeers.length} Peers`
+      if (info.orbitDbLoading) statusText = 'Starting DB'
     }
 
     return <Button color="inherit">

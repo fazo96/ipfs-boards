@@ -37,7 +37,7 @@ export default function Board({ boardId, posts }){
         <CardHeader
           avatar={<Avatar><EmptyIcon /></Avatar>}
           title="No Posts Yet"
-          subheader="Why don't you break the ice?"
+          subheader="Don't panic. Your device will keep looking for new posts in the network."
         />
       </Card>}
       <Button

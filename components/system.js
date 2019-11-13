@@ -21,12 +21,43 @@ export function getGlobalData() {
   return scope.ipfsBoards
 }
 
+async function getIPFSOptions() {
+  const common = {
+    libp2p: {
+      config: {
+        pubsub: { enabled: true }
+      }
+    }
+  }
+  if (isServer()) {
+    return {
+      relay: { enabled: true, hop: { enabled: true, active: true } },
+      ...common
+    }
+  } else {
+    const serverInfo = await getServerInfo()
+    let additionalOptions = {}
+    if (serverInfo) {
+      additionalOptions = {
+        config: {
+          Bootstrap: [ ...serverInfo.multiaddrs ]
+        }
+      }
+    }
+    return {
+      ...common,
+      ...additionalOptions
+    }
+  }
+}
+
 export async function getIPFS() {
   const data = getGlobalData()
   if (data.ipfs) return data.ipfs
+  const IPFS = await import(/* webpackChunkName: "ipfs" */ 'ipfs')
+  const options = await getIPFSOptions()
   if (!data.ipfsPromise) {
-    const IPFS = await import(/* webpackChunkName: "ipfs" */ 'ipfs')
-    data.ipfsPromise = IPFS.create() 
+    data.ipfsPromise = IPFS.create(options) 
   }
   data.ipfs = await data.ipfsPromise
   delete data.ipfsPromise
@@ -34,19 +65,24 @@ export async function getIPFS() {
 }
 
 export async function getOrbitDB() {
-  const data = getGlobalData()
-  if (data.orbitDb) return data.orbitDb
-  const ipfs = await getIPFS()
-  if (!data.orbitDbPromise) {
+  try {
+    const data = getGlobalData()
+    if (data.orbitDb) return data.orbitDb
+    const ipfs = await getIPFS()
     const OrbitDB = await import(/* webpackChunkName: "orbit-db" */ 'orbit-db').then(m => m.default)
     const BoardStore = await import(/* webpackChunkName: "orbit-db-discussion-board" */ 'orbit-db-discussion-board').then(m => m.default)
-    OrbitDB.addDatabaseType(BoardStore.type, BoardStore)
-    data.orbitDbPromise = OrbitDB.createInstance(ipfs)
+    if (!data.orbitDbPromise) {
+      OrbitDB.addDatabaseType(BoardStore.type, BoardStore)
+      data.orbitDbPromise = OrbitDB.createInstance(ipfs)
+    }
+    data.orbitDb = await data.orbitDbPromise
+    delete data.orbitDbPromise
+    if (!data.boards) data.boards = {}
+    return data.orbitDb
+  } catch (error) {
+    console.log('FATAL: COULD NOT LOAD ORBITDB', error)
+    throw error
   }
-  data.orbitDb = await data.orbitDbPromise
-  delete data.orbitDbPromise
-  if (!data.boards) data.boards = {}
-  return data.orbitDb
 }
 
 export async function openBoard(id) {
@@ -106,13 +142,43 @@ export function getInfo() {
 
 export async function refreshInfo() {
   const data = getGlobalData()
+  const ipfsReady = Boolean(data.ipfs)
+  const multiaddrs = ipfsReady ? data.ipfs.libp2p.peerInfo.multiaddrs.toArray().map(m => m.toJSON()) : []
   data.info = {
     isServer: isServer(),
-    ipfsReady: Boolean(data.ipfs),
+    ipfsReady,
+    ipfsLoading: Boolean(data.ipfsPromise),
     orbitDbReady: Boolean(data.orbitDb),
+    orbitDbPromise: Boolean(data.orbitDbPromise),
     openBoards: Object.keys(data.boards || {}),
     ipfsPeers: await getIPFSPeers(),
-    pubsub: await getPubsubInfo()
+    pubsub: await getPubsubInfo(),
+    multiaddrs
   }
   return data.info
+}
+
+export async function getServerInfo() {
+  const response = await fetch('/api/status')
+  if (response.status === 200) {
+    return response.json()
+  }
+  return null
+}
+
+export async function connectoToIPFSMultiaddr(multiaddr) {
+  const ipfs = await getIPFS()
+  try {
+    // console.log(`Connecting to ${multiaddr}...`)
+    await ipfs.swarm.connect(multiaddr)
+    console.log(`Connected to ${multiaddr}!`)
+  } catch (error) {
+    // console.log(`Connection to ${multiaddr} failed:`, error.message)
+  }
+}
+
+export async function connectIPFSToBackend() {
+  const serverInfo = await getServerInfo()
+  const addresses = serverInfo.multiaddrs
+  return Promise.race(addresses.map(connectoToIPFSMultiaddr))
 }

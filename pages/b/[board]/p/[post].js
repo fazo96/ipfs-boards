@@ -1,33 +1,46 @@
-
 import React from 'react'
-import { Fab, Card, CardContent, CardContentText, CardHeader, List, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core'
-import AddIcon from '@material-ui/icons/Add'
-import ProfileIcon from '@material-ui/icons/AccountCircle'
+import { openBoard } from '../../../../components/system'
+import Post from '../../../../components/Post'
 
-const Post = () => {
-  return (
-    <React.Fragment>
-      <Card>
-        <CardHeader
-          title="First Post"
-          subheader="Last Activity X Time Ago"
-        />
-        <CardContent>
-          <CardContentText>Lorem Ipsum...</CardContentText>
-        </CardContent>
-      </Card>
-      <List>
-        <ListItem>
-          <ListItemAvatar><ProfileIcon /></ListItemAvatar>
-          <ListItemText
-            primary="Username"
-            secondary="Discovered X Time Ago"
-          />
-        </ListItem>
-      </List>
-      <Fab color="primary"><AddIcon /></Fab>
-    </React.Fragment>
-  )
+const findPost = (posts, id) => {
+  const results = posts.filter(p => p.multihash === id)
+  if (results.length > 0) return results[0]
+  return undefined
 }
 
-export default Post
+class PostPage extends React.PureComponent {
+  state = {
+    post: undefined
+  }
+
+  componentDidMount() {
+    this.refreshPost() 
+  }
+
+  async refreshPost() {
+    const { boardId, postId } = this.props
+    const board = await openBoard(boardId) 
+    const post = findPost(board.posts, postId)
+    this.setState({ post })
+  }
+
+  render() {
+    const { post: postProp, boardId } = this.props
+    const { post } = this.state
+    return <Post
+      post={post || postProp}
+      boardId={boardId}
+    />
+  }
+}
+
+PostPage.getInitialProps = async ({ query }) => {
+  const board = await openBoard(query.board)
+  return {
+    post: findPost(board.posts, query.post),
+    boardId: query.board,
+    postId: query.post
+  }
+}
+
+export default PostPage

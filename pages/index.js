@@ -1,12 +1,21 @@
 import React from 'react'
 import { Fab, Card, CardActions, CardHeader, Button } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
 import AddIcon from '@material-ui/icons/Add'
 import ViewIcon from '@material-ui/icons/Visibility'
 import DeleteIcon from '@material-ui/icons/Delete'
 import Link from 'next/link'
 import Router from 'next/router'
 
+const useStyles = makeStyles(theme => ({
+  fab: {
+    float: 'right',
+    marginTop: theme.spacing(2)
+  },
+}))
+
 const Home = () => {
+  const styles = useStyles()
   return (
     <React.Fragment>
       <Card>
@@ -24,7 +33,9 @@ const Home = () => {
         </CardActions>
       </Card>
       <Link href="/b/open">
-        <Fab color="primary"><AddIcon /></Fab>
+        <Fab color="primary" className={styles.fab}>
+          <AddIcon />
+        </Fab>
       </Link>
     </React.Fragment>
   )
